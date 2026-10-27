@@ -11,7 +11,7 @@ export const getMissingConfiguration = () =>
     'SUPABASE_URL',
     'SUPABASE_SERVICE_ROLE_KEY',
     'OPENAI_API_KEY'
-  ].filter((variableName) => !process.env[variableName])
+  ].filter(variableName => !process.env[variableName])
 
 // Reads a mandatory server setting without leaking its contents on failure.
 export const requireSetting = (variableName: string) => {

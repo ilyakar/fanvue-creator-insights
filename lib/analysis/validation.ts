@@ -4,7 +4,8 @@ Validates AI evidence references and post scope before any result is stored.
 
 import { createHash } from 'node:crypto'
 import { z } from 'zod'
-import type { Dataset, Insight } from '../types'
+
+import type { Dataset, Insight } from '@/lib/types'
 
 export const analysisSchema = z.object({
   insights: z
@@ -30,24 +31,24 @@ export const analysisSchema = z.object({
 // Validates AI evidence references and post scope before any result is stored.
 export const validateAnalysis = (input: unknown, dataset: Dataset): Insight[] => {
   const parsedAnalysis = analysisSchema.parse(input)
-  const commentLookup = new Map(dataset.comments.map((comment) => [comment.id, comment]))
+  const commentLookup = new Map(dataset.comments.map(comment => [comment.id, comment]))
 
-  return parsedAnalysis.insights.map((insight) => {
+  return parsedAnalysis.insights.map(insight => {
     const commentIds = [...new Set(insight.commentIds)]
 
-    const hasUnknownComments = commentIds.some((identifier) => !commentLookup.has(identifier))
+    const hasUnknownComments = commentIds.some(identifier => !commentLookup.has(identifier))
 
     if (hasUnknownComments) {
       throw new Error('Analysis referenced an unknown comment.')
     }
 
     // Each post summary must have evidence in that exact source post.
-    const supportedPosts = new Set(commentIds.map((identifier) => commentLookup.get(identifier)!.postId))
-    const scopedPosts = new Set(insight.postSummaries.map((summary) => summary.postId))
+    const supportedPosts = new Set(commentIds.map(identifier => commentLookup.get(identifier)!.postId))
+    const scopedPosts = new Set(insight.postSummaries.map(summary => summary.postId))
 
     const hasDuplicateSummaries = scopedPosts.size !== insight.postSummaries.length
     const hasMissingSummaries = scopedPosts.size !== supportedPosts.size
-    const hasUnsupportedSummaries = [...scopedPosts].some((postId) => !supportedPosts.has(postId))
+    const hasUnsupportedSummaries = [...scopedPosts].some(postId => !supportedPosts.has(postId))
 
     if (hasDuplicateSummaries || hasMissingSummaries || hasUnsupportedSummaries) {
       throw new Error('Analysis contained missing or unsupported post summaries.')

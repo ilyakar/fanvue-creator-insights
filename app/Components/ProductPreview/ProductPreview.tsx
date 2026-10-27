@@ -14,6 +14,7 @@ import {
   faSliders,
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
+
 import { getDatasetCounts, getInsightCounts } from '@/lib/insights'
 import type { Dataset, Insight } from '@/lib/types'
 
@@ -26,7 +27,7 @@ const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Ins
     <div className="product-preview" aria-label="Illustrative dashboard preview with sample data">
       <aside className="preview-sidebar">
         <span className="preview-logo">
-          fanvue<span>✳</span>
+          creator<span>✳</span>
         </span>
 
         <span className="preview-workspace">
@@ -85,7 +86,7 @@ const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Ins
               { value: counts.comments, label: 'Comments analysed' },
               { value: counts.fans, label: 'Distinct fans' },
               { value: insights.length, label: 'Audience themes' }
-            ].map((metric) => (
+            ].map(metric => (
               <div key={metric.label}>
                 <span>{metric.label}</span>
                 <strong>{metric.value}</strong>

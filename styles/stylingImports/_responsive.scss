@@ -16,3 +16,9 @@ $breakpoints: (
     @content;
   }
 }
+
+@mixin max-height($height) {
+  @media (max-height: $height) {
+    @content;
+  }
+}

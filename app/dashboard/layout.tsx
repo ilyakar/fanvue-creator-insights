@@ -3,7 +3,7 @@ Protects every dashboard route with the creator's server-side session.
 ---------------------------------------------------------------*/
 
 import { requireAccount } from '@/lib/server/session'
-import AppShell from '../Components/AppShell/AppShell'
+import AppShell from '@/app/Components/AppShell/AppShell'
 
 export const dynamic = 'force-dynamic'
 

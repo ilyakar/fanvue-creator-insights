@@ -1,4 +1,4 @@
-<!-- Records the implementation decisions and boundaries of the Fanvue Insights prototype. -->
+<!-- Records the implementation decisions and boundaries of the Creator Insights prototype. -->
 
 # Architecture
 

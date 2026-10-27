@@ -3,6 +3,7 @@ Rejects cross-origin mutations before reading or changing private records.
 ---------------------------------------------------------------*/
 
 import { NextResponse } from 'next/server'
+
 import { getAppOrigin } from './config'
 
 export class RequestError extends Error {

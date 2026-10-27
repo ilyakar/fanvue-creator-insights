@@ -3,6 +3,7 @@ Creates a server-only database client without any browser authentication state.
 ---------------------------------------------------------------*/
 
 import { createClient } from '@supabase/supabase-js'
+
 import { requireSetting } from './config'
 
 // Creates a server-only database client without any browser authentication state.

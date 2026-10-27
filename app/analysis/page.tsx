@@ -3,10 +3,11 @@ Resumes an existing run or queues the authenticated creator's first analysis.
 ---------------------------------------------------------------*/
 
 import { redirect } from 'next/navigation'
+
 import { requireAccount } from '@/lib/server/session'
 import { getCurrentAnalysis } from '@/lib/server/analysis'
-import Brand from '../Components/Brand/Brand'
-import AnalysisLoading from '../Components/AnalysisLoading/AnalysisLoading'
+import Brand from '@/app/Components/Brand/Brand'
+import AnalysisLoading from '@/app/Components/AnalysisLoading/AnalysisLoading'
 
 export const dynamic = 'force-dynamic'
 

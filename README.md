@@ -1,6 +1,6 @@
-<!-- Describes how to run, configure and review the Fanvue Insights prototype. -->
+<!-- Describes how to run, configure and review the Creator Insights prototype. -->
 
-# ✳ Fanvue Insights
+# ✳ Creator Insights
 
 A responsive creator app that turns sample Fanvue comments into evidence-backed audience insights.
 
@@ -45,7 +45,9 @@ npm test
 npm run build
 ```
 
-`npm run check:style` checks all authored TypeScript, TSX, JavaScript and configuration sources for explicit braces, control-flow spacing and multiline JSX sibling spacing. Use `npm run format` to apply these rules, then manually review logical groups and comments. The reference directory and generated declarations are excluded.
+`npm run check:style` runs ESLint and Prettier checks. `npm run format` runs Prettier followed by ESLint fixes; manually review logical groups and comments afterwards. Use `npm run lint`, `npm run lint:fix` and `npm run format:check` to run the tools separately. The reference directory and generated files are excluded.
+
+The root `eslint.config.mjs` uses OneRent's shared TypeScript, React, import and Prettier rules without additional project-specific rules. `react/jsx-newline` controls JSX sibling spacing. Readability conventions such as braces and control flow spacing are documented in `AGENTS.md` and reviewed manually. The Prettier options match OneRent, excluding its Tailwind plugin because this project uses SCSS. TypeScript is pinned to 6.0.3, which the ESLint parser supports. There is no custom style checking script.
 
 Tests cover dataset integrity, distinct fan counts, post-scoped evidence, invalid model references, cache isolation, authenticated encryption, OAuth request shape, CSRF checks, and the SQL migration, worker claims, job recovery, refresh locking, database privileges and cascaded deletion. Database tests run real Postgres in memory through PGlite; no production database is contacted.
 
@@ -79,6 +81,6 @@ See `ARCHITECTURE.md` for ownership, job lifecycle and integration decisions, an
 
 ## Design and source references
 
-The interface follows the supplied Brex-inspired composition and Stripe-inspired palette, adapted to a creator product. Typography is DM Sans, stored locally. Sample post photography is from Unsplash; source URLs are listed in `public/ASSETS.md`. All creator, fan and comment records are fictional.
+The interface follows the supplied Brex-inspired composition and Stripe-inspired palette, adapted to a creator product. Typography is Inter, hosted locally. Regular interface text is at least 14px, with a sparse 12px fine print variant for secondary supporting notes and footer details. Sample post photography is from Unsplash; source URLs are listed in `public/ASSETS.md`. All creator, fan and comment records are fictional.
 
 The copied `good-code-from-another-project/` directory is reference material only and remains unchanged.

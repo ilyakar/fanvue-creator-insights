@@ -3,6 +3,7 @@ Gives missing posts and unavailable routes a useful route back to the product.
 ---------------------------------------------------------------*/
 
 import Link from 'next/link'
+
 import Brand from './Components/Brand/Brand'
 
 // Gives missing posts and unavailable routes a useful route back to the product.

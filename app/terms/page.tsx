@@ -3,7 +3,8 @@ Clearly identifies the assignment as a prototype rather than a generally availab
 ---------------------------------------------------------------*/
 
 import Link from 'next/link'
-import Brand from '../Components/Brand/Brand'
+
+import Brand from '@/app/Components/Brand/Brand'
 
 // Clearly identifies the assignment as a prototype rather than a generally available service.
 const AboutPrototypePage = () => (
@@ -18,7 +19,7 @@ const AboutPrototypePage = () => (
       <h1>A little idea, brought to life.</h1>
 
       <p>
-        Fanvue Insights is a product prototype exploring how creators could understand audience feedback more easily.
+        Creator Insights is a product prototype exploring how creators could understand audience feedback more easily.
       </p>
 
       <h2>What’s real</h2>

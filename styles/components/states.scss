@@ -20,7 +20,7 @@ Defines shared visual styles for the audience insights experience.
     margin-bottom: 15px;
   }
   p {
-    font-size: 13px;
+    font-size: $font-size-small;
     margin-bottom: 25px;
   }
   &.page-error {
@@ -64,7 +64,7 @@ Defines shared visual styles for the audience insights experience.
         letter-spacing: -0.02em;
       }
       p {
-        font-size: 11px;
+        font-size: $font-size-small;
         color: #727789;
       }
     }
@@ -85,10 +85,10 @@ Defines shared visual styles for the audience insights experience.
           display: flex;
           flex-direction: column;
           strong {
-            font-size: 12px;
+            font-size: $font-size-small;
           }
           span {
-            font-size: 10px;
+            font-size: $font-size-small;
             color: #727789;
           }
         }
@@ -98,7 +98,7 @@ Defines shared visual styles for the audience insights experience.
         align-items: center;
         gap: 5px;
         color: #7f968b;
-        font-size: 10px;
+        font-size: $font-size-small;
         &.warning {
           color: #a08345;
         }
@@ -112,16 +112,16 @@ Defines shared visual styles for the audience insights experience.
       > p,
       > div p {
         color: #727789;
-        font-size: 11px;
+        font-size: $font-size-small;
         max-width: 440px;
         line-height: 1.8;
       }
       h3 {
-        font-size: 13px;
+        font-size: $font-size-small;
         margin-bottom: 5px;
       }
       .button {
-        font-size: 11px;
+        font-size: $font-size-small;
         min-height: 40px;
         padding: 10px 20px;
       }
@@ -156,18 +156,18 @@ Defines shared visual styles for the audience insights experience.
     }
     p {
       color: #9a9487;
-      font-size: 12px;
+      font-size: $font-size-small;
       line-height: 1.9;
       margin-bottom: 20px;
       max-width: 650px;
     }
     .text-button {
-      font-size: 11px;
+      font-size: $font-size-small;
     }
   }
   .settings-privacy {
     margin-top: 25px;
-    font-size: 10px;
+    font-size: $font-size-fine-print;
     color: #73788a;
     svg {
       margin-right: 5px;
@@ -193,7 +193,7 @@ Defines shared visual styles for the audience insights experience.
       margin-bottom: 15px;
     }
     p {
-      font-size: 13px;
+      font-size: $font-size-small;
       line-height: 1.8;
       color: $color-muted;
       margin-bottom: 25px;
@@ -240,7 +240,7 @@ Defines shared visual styles for the audience insights experience.
   }
   .coming-pill {
     color: #9d90b6;
-    font-size: 9px;
+    font-size: $font-size-small;
     font-weight: 600;
     letter-spacing: 0.09em;
     margin-bottom: 20px;
@@ -252,13 +252,13 @@ Defines shared visual styles for the audience insights experience.
   }
   > p {
     color: #73788a;
-    font-size: 13px;
+    font-size: $font-size-small;
     line-height: 1.9;
     max-width: 390px;
     margin-bottom: 25px;
   }
   .privacy-reassurance {
-    font-size: 10px;
+    font-size: $font-size-fine-print;
     color: #73788a;
     margin-bottom: 30px;
     svg {
@@ -296,12 +296,12 @@ Defines shared visual styles for the audience insights experience.
     > div {
       flex: 1;
       strong {
-        font-size: 12px;
+        font-size: $font-size-small;
         font-weight: 600;
       }
       p {
         color: #9996a9;
-        font-size: 11px;
+        font-size: $font-size-small;
         margin-top: 5px;
       }
     }
@@ -322,7 +322,7 @@ Defines shared visual styles for the audience insights experience.
     justify-content: space-between;
     .back-link {
       margin: 0;
-      font-size: 11px;
+      font-size: $font-size-small;
     }
   }
   @include max-width(phone) {
@@ -357,7 +357,7 @@ Defines shared visual styles for the audience insights experience.
     font-size: 25px;
   }
   > .eyebrow {
-    font-size: 9px;
+    font-size: $font-size-small;
     color: #a296b4;
     margin-bottom: 15px;
   }
@@ -367,7 +367,7 @@ Defines shared visual styles for the audience insights experience.
     margin-bottom: 20px;
   }
   > p {
-    font-size: 13px;
+    font-size: $font-size-small;
     line-height: 1.85;
     color: #73788a;
     margin-bottom: 25px;
@@ -381,14 +381,14 @@ Defines shared visual styles for the audience insights experience.
     margin: 0 0 25px;
     li {
       color: #9691a7;
-      font-size: 11px;
+      font-size: $font-size-small;
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 5px 0;
       svg {
         color: #b3a2c4;
-        font-size: 9px;
+        font-size: $font-size-small;
       }
     }
   }
@@ -397,7 +397,7 @@ Defines shared visual styles for the audience insights experience.
   }
   .connection-footnote {
     margin: 20px 0 0;
-    font-size: 10px;
+    font-size: $font-size-fine-print;
     color: #73788a;
     svg {
       margin-right: 5px;
@@ -405,7 +405,7 @@ Defines shared visual styles for the audience insights experience.
   }
   .connection-message {
     padding: 15px;
-    font-size: 11px;
+    font-size: $font-size-small;
     color: #9c8254;
     background: #fcf8ed;
     border-radius: 10px;
@@ -435,7 +435,7 @@ Defines shared visual styles for the audience insights experience.
       gap: 15px;
       color: #73788a;
       padding-bottom: 25px;
-      font-size: 12px;
+      font-size: $font-size-small;
       &:last-child {
         padding-bottom: 0;
       }
@@ -446,7 +446,7 @@ Defines shared visual styles for the audience insights experience.
         place-items: center;
         border: 1px solid #e6e2ee;
         border-radius: 50%;
-        font-size: 10px;
+        font-size: $font-size-small;
       }
       &.done {
         color: #9393a9;
@@ -472,7 +472,7 @@ Defines shared visual styles for the audience insights experience.
   }
   .analysis-notice,
   .analysis-error {
-    font-size: 11px;
+    font-size: $font-size-small;
     background: #faf7f0;
     color: #a89677;
     border-radius: 10px;
@@ -503,7 +503,7 @@ Defines shared visual styles for the audience insights experience.
     align-items: center;
     > a:last-child {
       color: #9992ac;
-      font-size: 12px;
+      font-size: $font-size-small;
     }
   }
   > main {
@@ -525,7 +525,7 @@ Defines shared visual styles for the audience insights experience.
     }
     p {
       color: #86889b;
-      font-size: 14px;
+      font-size: $font-size-small;
       line-height: 1.9;
       margin-bottom: 35px;
     }
@@ -538,7 +538,7 @@ Defines shared visual styles for the audience insights experience.
   justify-content: center;
   min-height: 60vh;
   color: #a09bab;
-  font-size: 13px;
+  font-size: $font-size-small;
   .loading-dot {
     width: 10px;
     height: 10px;

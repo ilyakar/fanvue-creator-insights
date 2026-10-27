@@ -3,10 +3,11 @@ Processes persisted analysis jobs with renewable leases and graceful shutdown.
 ---------------------------------------------------------------*/
 
 import { randomUUID } from 'node:crypto'
-import { getDatabase, unwrapDatabase } from '../lib/server/database'
-import { sampleDataProvider } from '../lib/data/provider'
-import { analyseAudience } from '../lib/analysis/service'
-import type { AnalysisJob } from '../lib/types'
+
+import { getDatabase, unwrapDatabase } from '@/lib/server/database'
+import { sampleDataProvider } from '@/lib/data/provider'
+import { analyseAudience } from '@/lib/analysis/service'
+import type { AnalysisJob } from '@/lib/types'
 
 let isStopping = false
 
@@ -29,7 +30,7 @@ const runWorker = async () => {
     const job = jobs?.[0]
 
     if (!job) {
-      await new Promise((resolve) => setTimeout(resolve, 2000))
+      await new Promise(resolve => setTimeout(resolve, 2000))
 
       continue
     }
@@ -41,7 +42,7 @@ const runWorker = async () => {
         .update({ lease_until: new Date(Date.now() + 600000).toISOString() })
         .eq('id', job.id)
         .eq('lease_token', leaseToken)
-        .then((response) => {
+        .then(response => {
           if (response.error) {
             console.error('Analysis lease heartbeat failed.')
           }
@@ -51,7 +52,7 @@ const runWorker = async () => {
     // Persist only results completed by this lease holder, then release its heartbeat.
     await sampleDataProvider
       .getDataset()
-      .then((dataset) =>
+      .then(dataset =>
         analyseAudience(dataset, async () => {
           unwrapDatabase(
             await database
@@ -62,7 +63,7 @@ const runWorker = async () => {
           )
         })
       )
-      .then(async (result) => {
+      .then(async result => {
         unwrapDatabase(
           await database
             .from('analysis_jobs')

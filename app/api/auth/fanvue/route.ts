@@ -5,6 +5,7 @@ Starts the real Fanvue authorization flow with server-stored PKCE and state.
 import { NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { createHash } from 'node:crypto'
+
 import { createSecret, encryptSecret, hashSecret } from '@/lib/server/crypto'
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
 import { getMissingConfiguration, getAppOrigin, requireSetting } from '@/lib/server/config'
@@ -37,6 +38,7 @@ export const GET = async () => {
       const cookieStore = await cookies()
 
       cookieStore.set('fanvue_oauth_state', state, { ...cookieOptions, maxAge: 600 })
+
       // Send only the public challenge; the encrypted verifier stays on the server.
       const authorizationUrl = new URL('https://auth.fanvue.com/oauth2/auth')
 

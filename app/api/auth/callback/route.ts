@@ -5,6 +5,7 @@ Consumes one matching OAuth attempt before creating an authenticated app session
 import { NextRequest, NextResponse } from 'next/server'
 import { cookies } from 'next/headers'
 import { timingSafeEqual } from 'node:crypto'
+
 import { decryptSecret, hashSecret } from '@/lib/server/crypto'
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
 import { getAppOrigin } from '@/lib/server/config'

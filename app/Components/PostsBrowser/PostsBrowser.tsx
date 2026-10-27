@@ -8,6 +8,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faComment, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons'
+
 import { formatDate } from '@/lib/insights'
 import type { DashboardModel } from '@/lib/types'
 
@@ -20,7 +21,7 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
 
   const posts = model.dataset.posts
     .filter(
-      (post) =>
+      post =>
         `${post.title} ${post.caption}`.toLowerCase().includes(searchQuery.toLowerCase()) &&
         (selectedFormat === 'all' || post.format === selectedFormat)
     )
@@ -74,7 +75,7 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
       </div>
 
       <div className="posts-grid">
-        {posts.map((post) => (
+        {posts.map(post => (
           <Link className="post-card" href={`${basePath}/posts/${post.id}`} key={post.id}>
             <div className="thumbnail">
               <img src={post.thumbnail} alt={`Sample imagery for ${post.title}`} loading="lazy" />
@@ -93,7 +94,7 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
               <div className="post-meta">
                 <span>
                   <FontAwesomeIcon icon={faComment} />
-                  {model.dataset.comments.filter((comment) => comment.postId === post.id).length} comments
+                  {model.dataset.comments.filter(comment => comment.postId === post.id).length} comments
                 </span>
 
                 <span>

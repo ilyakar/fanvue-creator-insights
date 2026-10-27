@@ -3,10 +3,11 @@ Rejects duplicate identifiers and broken source relationships before analysis.
 ---------------------------------------------------------------*/
 
 import { z } from 'zod'
+
 import posts from '@/mock-data/posts.json'
 import comments from '@/mock-data/comments.json'
 import fans from '@/mock-data/fans.json'
-import type { Dataset } from '../types'
+import type { Dataset } from '@/lib/types'
 
 const datasetSchema = z.object({
   version: z.string(),
@@ -39,9 +40,9 @@ export interface AudienceDataProvider {
 // Rejects duplicate identifiers and broken source relationships before analysis.
 export const validateDataset = (input: unknown): Dataset => {
   const dataset = datasetSchema.parse(input)
-  const postIdentifiers = new Set(dataset.posts.map((post) => post.id))
-  const fanIdentifiers = new Set(dataset.fans.map((fan) => fan.id))
-  const commentIdentifiers = new Set(dataset.comments.map((comment) => comment.id))
+  const postIdentifiers = new Set(dataset.posts.map(post => post.id))
+  const fanIdentifiers = new Set(dataset.fans.map(fan => fan.id))
+  const commentIdentifiers = new Set(dataset.comments.map(comment => comment.id))
 
   const hasDuplicateIdentifiers =
     postIdentifiers.size !== dataset.posts.length ||
@@ -54,7 +55,7 @@ export const validateDataset = (input: unknown): Dataset => {
   }
 
   const hasOrphanedComments = dataset.comments.some(
-    (comment) => !postIdentifiers.has(comment.postId) || !fanIdentifiers.has(comment.fanId)
+    comment => !postIdentifiers.has(comment.postId) || !fanIdentifiers.has(comment.fanId)
   )
 
   // Reject comments that cannot be mapped to an existing post and fan.
@@ -67,5 +68,5 @@ export const validateDataset = (input: unknown): Dataset => {
 
 // Supplies versioned sample content behind the future live-data boundary.
 export const sampleDataProvider: AudienceDataProvider = {
-  getDataset: async () => validateDataset({ version: 'sample-2026-10-v1', posts, comments, fans })
+  getDataset: async () => validateDataset({ version: 'sample-2026-10-v3', posts, comments, fans })
 }

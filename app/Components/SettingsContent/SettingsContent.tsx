@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faCircleCheck, faDatabase, faLink, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
+
 import type { Account } from '@/lib/types'
 import { useAlert } from '@/app/AlertProvider'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
@@ -30,6 +31,18 @@ const SettingsContent = ({
   const showAlert = useAlert()
 
   const confirmationReference = useRef<HTMLDivElement>(null)
+
+  let connectionStatus = 'Connected'
+
+  // Preview mode has no connected account to report.
+  if (isPreview) {
+    connectionStatus = 'Preview only'
+  }
+
+  // An expired connection takes precedence over the normal connected state.
+  else if (needsReconnect) {
+    connectionStatus = 'Reconnect needed'
+  }
 
   // Dismisses the confirmation without changing any saved information.
   const _handleConfirmationClose = useCallback(() => setPendingAction(null), [])
@@ -58,7 +71,7 @@ const SettingsContent = ({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: pendingAction })
     })
-      .then(async (response) => {
+      .then(async response => {
         const body = await response.json()
 
         if (!response.ok) {
@@ -78,7 +91,7 @@ const SettingsContent = ({
         showAlert('Saved analysis cleared', 'You can prepare your insights again whenever you’re ready.')
         router.refresh()
       })
-      .catch((error) => showAlert('Couldn’t complete that action', error.message || 'Please try again.'))
+      .catch(error => showAlert('Couldn’t complete that action', error.message || 'Please try again.'))
       .finally(() => setIsPending(false))
   }
 
@@ -116,7 +129,7 @@ const SettingsContent = ({
 
           <span className={['connection-status', needsReconnect && 'warning'].filter(Boolean).join(' ')}>
             <FontAwesomeIcon icon={faCircleCheck} />
-            {isPreview ? 'Preview only' : needsReconnect ? 'Reconnect needed' : 'Connected'}
+            {connectionStatus}
           </span>
         </div>
 
@@ -190,8 +203,7 @@ const SettingsContent = ({
           role="alertdialog"
           aria-labelledby="confirmation-title"
           aria-describedby="confirmation-description"
-          aria-modal="true"
-        >
+          aria-modal="true">
           <div className="confirmation-card" ref={confirmationReference} tabIndex={-1}>
             <h2 id="confirmation-title">
               {pendingAction === 'disconnect' ? 'Disconnect your account?' : 'Clear your saved analysis?'}

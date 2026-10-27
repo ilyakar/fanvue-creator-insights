@@ -14,10 +14,11 @@ import {
   faLightbulb,
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
+
 import type { Dataset, Insight } from '@/lib/types'
 import { categoryLabels, formatDate, getEvidence, getInsightCounts } from '@/lib/insights'
 import { useAlert } from '@/app/AlertProvider'
-import CategoryIcon from '../CategoryIcon/CategoryIcon'
+import CategoryIcon from '@/app/Components/CategoryIcon/CategoryIcon'
 
 // Reveals the original evidence in a keyboard-accessible modal with honest source links.
 const InsightDrawer = ({
@@ -40,7 +41,7 @@ const InsightDrawer = ({
 
   const comments = getEvidence(insight, dataset, postId)
   const counts = getInsightCounts(insight, dataset, postId)
-  const scopedSummary = insight.postSummaries.find((entry) => entry.postId === postId)
+  const scopedSummary = insight.postSummaries.find(entry => entry.postId === postId)
   const summary = postId ? scopedSummary?.summary : insight.summary
   const opportunity = postId ? scopedSummary?.opportunity : insight.opportunity
 
@@ -103,7 +104,7 @@ const InsightDrawer = ({
     showAlert('You’re viewing sample data', 'Links to Fanvue aren’t available in this prototype.')
 
   // Reveals more original comments without changing the supporting evidence counts.
-  const _handleShowMore = () => setVisibleCount((previousValue) => previousValue + 12)
+  const _handleShowMore = () => setVisibleCount(previousValue => previousValue + 12)
 
   return (
     <div className="drawer-backdrop">
@@ -115,8 +116,7 @@ const InsightDrawer = ({
         aria-modal="true"
         aria-labelledby="insight-title"
         tabIndex={-1}
-        ref={panelReference}
-      >
+        ref={panelReference}>
         <div className="drawer-toolbar">
           <span>THE STORY BEHIND THE INSIGHT</span>
 
@@ -163,8 +163,8 @@ const InsightDrawer = ({
 
           <div className="comment-list">
             {comments.slice(0, visibleCount).map((comment, position) => {
-              const fan = dataset.fans.find((entry) => entry.id === comment.fanId)!
-              const post = dataset.posts.find((entry) => entry.id === comment.postId)!
+              const fan = dataset.fans.find(entry => entry.id === comment.fanId)!
+              const post = dataset.posts.find(entry => entry.id === comment.postId)!
 
               return (
                 <article className="comment-row" key={comment.id}>

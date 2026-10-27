@@ -7,6 +7,7 @@ Provides isolated interface state without delaying server-rendered content behin
 import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
 import { makeStore, persistStore } from '@redux/stores'
+
 import AlertProvider from './AlertProvider'
 
 // Provides isolated interface state without delaying server-rendered content behind rehydration.

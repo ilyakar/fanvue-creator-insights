@@ -40,7 +40,7 @@ Defines shared visual styles for the audience insights experience.
     align-items: center;
     padding: 15px 30px;
     > span {
-      font-size: 9px;
+      font-size: $font-size-small;
       color: #9194a5;
       letter-spacing: 0.1em;
       font-weight: 600;
@@ -52,7 +52,7 @@ Defines shared visual styles for the audience insights experience.
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 11px;
+      font-size: $font-size-small;
       color: #7e8193;
       margin-bottom: 20px;
     }
@@ -64,7 +64,7 @@ Defines shared visual styles for the audience insights experience.
     .drawer-counts {
       display: flex;
       gap: 10px;
-      font-size: 11px;
+      font-size: $font-size-small;
       color: #6d7384;
       margin-bottom: 25px;
       strong {
@@ -73,7 +73,7 @@ Defines shared visual styles for the audience insights experience.
       }
     }
     .drawer-summary {
-      font-size: 14px;
+      font-size: $font-size-small;
       line-height: 1.85;
       color: #6c7285;
       margin-bottom: 25px;
@@ -90,11 +90,11 @@ Defines shared visual styles for the audience insights experience.
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 9px;
+      font-size: $font-size-small;
       margin-bottom: 10px;
     }
     p {
-      font-size: 13px;
+      font-size: $font-size-small;
       color: #6f657c;
       line-height: 1.8;
     }
@@ -107,12 +107,12 @@ Defines shared visual styles for the audience insights experience.
       margin-bottom: 10px;
       span {
         color: #9295a4;
-        font-size: 11px;
+        font-size: $font-size-small;
         padding-left: 5px;
       }
     }
     p {
-      font-size: 10px;
+      font-size: $font-size-small;
       color: #73788a;
       svg {
         margin-right: 5px;
@@ -134,7 +134,7 @@ Defines shared visual styles for the audience insights experience.
       place-items: center;
       background: #eee7f4;
       color: #9c87ad;
-      font-size: 12px;
+      font-size: $font-size-small;
       &.tone-1 {
         background: #e5ede8;
         color: #83a391;
@@ -155,7 +155,7 @@ Defines shared visual styles for the audience insights experience.
         display: flex;
         justify-content: space-between;
         gap: 15px;
-        font-size: 11px;
+        font-size: $font-size-small;
         margin-bottom: 10px;
         strong {
           font-weight: 600;
@@ -163,13 +163,13 @@ Defines shared visual styles for the audience insights experience.
         }
         time {
           color: #73788a;
-          font-size: 9px;
+          font-size: $font-size-small;
           white-space: nowrap;
         }
       }
       > p {
         color: #6d7385;
-        font-size: 12px;
+        font-size: $font-size-small;
         line-height: 1.8;
         margin-bottom: 10px;
       }
@@ -177,7 +177,7 @@ Defines shared visual styles for the audience insights experience.
         display: flex;
         gap: 10px;
         align-items: center;
-        font-size: 10px;
+        font-size: $font-size-small;
         color: #7b6e97;
         > a {
           white-space: nowrap;
@@ -193,7 +193,7 @@ Defines shared visual styles for the audience insights experience.
           color: #b0a9c7;
           min-height: 25px;
           min-width: 25px;
-          font-size: 9px;
+          font-size: $font-size-small;
         }
       }
     }
@@ -204,7 +204,7 @@ Defines shared visual styles for the audience insights experience.
   }
   .evidence-note {
     margin-top: 25px;
-    font-size: 10px;
+    font-size: $font-size-fine-print;
     color: #73788a;
     line-height: 1.8;
   }

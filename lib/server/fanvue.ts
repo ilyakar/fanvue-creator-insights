@@ -3,6 +3,7 @@ Exchanges a code or refresh token using Fanvue's required confidential-client me
 ---------------------------------------------------------------*/
 
 import { z } from 'zod'
+
 import { getDatabase, unwrapDatabase } from './database'
 import { createSecret, decryptSecret, encryptSecret } from './crypto'
 import { requireSetting } from './config'
@@ -116,7 +117,7 @@ export const getFanvueAccessToken = async (userId: string): Promise<string> => {
 
     // Another request is refreshing the connection; wait for its stored token pair.
     if (!claimed) {
-      await new Promise((resolve) => setTimeout(resolve, 500))
+      await new Promise(resolve => setTimeout(resolve, 500))
 
       continue
     }
@@ -124,7 +125,7 @@ export const getFanvueAccessToken = async (userId: string): Promise<string> => {
     return exchangeFanvueTokens(
       new URLSearchParams({ grant_type: 'refresh_token', refresh_token: decryptSecret(connection.refresh_token) })
     )
-      .then(async (tokens) => {
+      .then(async tokens => {
         const updated = unwrapDatabase(
           await database
             .from('fanvue_connections')
@@ -146,7 +147,7 @@ export const getFanvueAccessToken = async (userId: string): Promise<string> => {
 
         return tokens.access_token
       })
-      .catch(async (error) => {
+      .catch(async error => {
         // An ambiguous refresh failure cannot safely reuse the previous single-use credential.
         unwrapDatabase(
           await database

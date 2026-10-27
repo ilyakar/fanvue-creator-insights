@@ -1,0 +1,13 @@
+# Dependencies and generated output.
+node_modules/
+.next/
+out/
+build/
+dist/
+coverage/
+next-env.d.ts
+*.tsbuildinfo
+package-lock.json
+
+# The copied reference remains untouched.
+good-code-from-another-project/

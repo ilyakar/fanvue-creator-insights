@@ -2,11 +2,12 @@
 Creates one durable run per owner and analysis input, reusing completed work.
 ---------------------------------------------------------------*/
 
+import { getAnalysisCacheKey } from '@/lib/analysis/validation'
+import { promptVersion } from '@/lib/analysis/service'
+import { sampleDataProvider } from '@/lib/data/provider'
+import type { AnalysisJob, DashboardModel, Account } from '@/lib/types'
+
 import { getDatabase, unwrapDatabase } from './database'
-import { getAnalysisCacheKey } from '../analysis/validation'
-import { promptVersion } from '../analysis/service'
-import { sampleDataProvider } from '../data/provider'
-import type { AnalysisJob, DashboardModel, Account } from '../types'
 
 // Creates one durable run per owner and analysis input, reusing completed work.
 export const enqueueAnalysis = async (userId: string, retryFailed = false): Promise<AnalysisJob> => {

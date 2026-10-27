@@ -22,7 +22,7 @@ Defines shared visual styles for the audience insights experience.
       gap: 35px;
       margin-left: auto;
       margin-right: 25px;
-      font-size: 12px;
+      font-size: $font-size-small;
       color: #7a7c8b;
       a:hover {
         color: $color-purple;
@@ -30,7 +30,7 @@ Defines shared visual styles for the audience insights experience.
     }
     .button {
       min-height: 40px;
-      font-size: 12px;
+      font-size: $font-size-small;
     }
     @include max-width(tablet) {
       padding: 20px 25px;
@@ -56,7 +56,7 @@ Defines shared visual styles for the audience insights experience.
       align-items: center;
       gap: 10px;
       color: #8f889e;
-      font-size: 10px;
+      font-size: $font-size-small;
       font-weight: 600;
       letter-spacing: 0.11em;
       margin-bottom: 25px;
@@ -89,7 +89,7 @@ Defines shared visual styles for the audience insights experience.
       min-height: 50px;
       min-width: 170px;
       margin-bottom: 15px;
-      font-size: 14px;
+      font-size: $font-size-small;
     }
     .hero-reassurance {
       display: flex;
@@ -97,10 +97,10 @@ Defines shared visual styles for the audience insights experience.
       justify-content: center;
       gap: 5px;
       color: #7b7284;
-      font-size: 10px;
+      font-size: $font-size-fine-print;
       svg {
         color: #a5b49e;
-        font-size: 8px;
+        font-size: $font-size-small;
       }
     }
     .hero-product {
@@ -136,11 +136,11 @@ Defines shared visual styles for the audience insights experience.
           color: #c4a46f;
         }
         > div {
-          font-size: 10px;
+          font-size: $font-size-small;
           color: #b3a2ae;
           strong {
             display: block;
-            font-size: 12px;
+            font-size: $font-size-small;
             font-weight: 500;
             color: #7f6a88;
             margin-top: 5px;
@@ -150,7 +150,7 @@ Defines shared visual styles for the audience insights experience.
     }
     .preview-caption {
       color: #7e6c76;
-      font-size: 9px;
+      font-size: $font-size-fine-print;
       margin-top: 25px;
     }
     @include max-width(tablet) {
@@ -159,7 +159,7 @@ Defines shared visual styles for the audience insights experience.
         font-size: 60px;
       }
       > p:not(.preview-caption) {
-        font-size: 14px;
+        font-size: $font-size-small;
       }
       .hero-product {
         margin-top: 50px;
@@ -173,11 +173,11 @@ Defines shared visual styles for the audience insights experience.
         font-size: 54px;
       }
       .hero-kicker {
-        font-size: 8px;
+        font-size: $font-size-small;
         gap: 5px;
       }
       > p:not(.preview-caption) {
-        font-size: 13px;
+        font-size: $font-size-small;
         max-width: 315px;
       }
     }
@@ -196,7 +196,7 @@ Defines shared visual styles for the audience insights experience.
     }
     > p {
       color: #737082;
-      font-size: 13px;
+      font-size: $font-size-small;
     }
   }
   .benefits-section {
@@ -242,7 +242,7 @@ Defines shared visual styles for the audience insights experience.
         margin-bottom: 15px;
       }
       p {
-        font-size: 12px;
+        font-size: $font-size-small;
         line-height: 1.9;
         color: #737082;
         margin-bottom: 25px;
@@ -250,7 +250,7 @@ Defines shared visual styles for the audience insights experience.
       }
       .benefit-label {
         color: #7b7284;
-        font-size: 10px;
+        font-size: $font-size-small;
       }
     }
     @include max-width(tablet) {
@@ -306,7 +306,7 @@ Defines shared visual styles for the audience insights experience.
           display: block;
           padding-bottom: 20px;
           border-bottom: 1px solid #e5dfe9;
-          font-size: 11px;
+          font-size: $font-size-small;
           color: #b8adc4;
           margin-bottom: 25px;
         }
@@ -325,7 +325,7 @@ Defines shared visual styles for the audience insights experience.
         }
         p {
           color: #737082;
-          font-size: 12px;
+          font-size: $font-size-small;
           line-height: 1.9;
         }
       }
@@ -342,10 +342,10 @@ Defines shared visual styles for the audience insights experience.
       color: #a99eaf;
       > svg {
         margin-top: 5px;
-        font-size: 14px;
+        font-size: $font-size-small;
       }
       p {
-        font-size: 10px;
+        font-size: $font-size-small;
         line-height: 1.9;
         strong {
           font-weight: 500;
@@ -394,7 +394,7 @@ Defines shared visual styles for the audience insights experience.
       position: relative;
       color: #bfb7c9;
       margin-bottom: 20px;
-      font-size: 9px;
+      font-size: $font-size-small;
     }
     > h2 {
       position: relative;
@@ -417,7 +417,7 @@ Defines shared visual styles for the audience insights experience.
       position: relative;
       display: block;
       color: #b0a8bc;
-      font-size: 10px;
+      font-size: $font-size-fine-print;
       margin-top: 20px;
     }
   }
@@ -429,14 +429,14 @@ Defines shared visual styles for the audience insights experience.
     align-items: center;
     gap: 35px;
     > span {
-      font-size: 10px;
+      font-size: $font-size-fine-print;
       color: #7b7284;
     }
     > div {
       display: flex;
       gap: 25px;
       margin-left: auto;
-      font-size: 10px;
+      font-size: $font-size-fine-print;
       color: #7b7284;
       a:hover {
         color: $color-purple;
@@ -446,7 +446,7 @@ Defines shared visual styles for the audience insights experience.
       font-size: 24px;
     }
     .brand .product {
-      font-size: 10px;
+      font-size: $font-size-fine-print;
     }
     @include max-width(tablet) {
       padding: 30px 25px;
@@ -498,7 +498,7 @@ Defines shared visual styles for the audience insights experience.
       border: 1px solid #eeebf2;
       border-radius: 10px;
       padding: 10px;
-      font-size: 9px;
+      font-size: $font-size-small;
       margin-bottom: 25px;
       > span {
         color: #9b94a7;
@@ -508,14 +508,14 @@ Defines shared visual styles for the audience insights experience.
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 10px;
+      font-size: $font-size-small;
       color: #aaa2b3;
       border-radius: 5px;
       padding: 10px;
       margin-bottom: 5px;
       svg {
         width: 10px;
-        font-size: 10px;
+        font-size: $font-size-small;
       }
       &.active {
         color: #8172bf;
@@ -529,13 +529,13 @@ Defines shared visual styles for the audience insights experience.
       padding: 15px;
       > svg {
         color: #b6a8c4;
-        font-size: 12px;
+        font-size: $font-size-small;
         margin-bottom: 10px;
       }
       > span {
         display: block;
         color: #b2a6ba;
-        font-size: 10px;
+        font-size: $font-size-small;
         line-height: 1.8;
       }
     }
@@ -554,20 +554,20 @@ Defines shared visual styles for the audience insights experience.
       padding: 0 25px;
       > span:first-child {
         color: #b4acbd;
-        font-size: 8px;
+        font-size: $font-size-small;
         > span {
           padding: 0 10px;
         }
       }
       .sample-pill {
-        font-size: 8px;
+        font-size: $font-size-small;
         padding: 0 5px;
       }
     }
     .preview-body {
       padding: 25px;
       > .eyebrow {
-        font-size: 7px;
+        font-size: $font-size-small;
         color: #a99fb6;
         margin-bottom: 10px;
       }
@@ -578,7 +578,7 @@ Defines shared visual styles for the audience insights experience.
         margin-bottom: 10px;
       }
       > p {
-        font-size: 9px;
+        font-size: $font-size-small;
         color: #b2aabd;
         margin-bottom: 20px;
       }
@@ -599,7 +599,7 @@ Defines shared visual styles for the audience insights experience.
           > span {
             display: block;
             color: #b6acbf;
-            font-size: 8px;
+            font-size: $font-size-small;
             margin-bottom: 5px;
           }
           > strong {
@@ -625,12 +625,12 @@ Defines shared visual styles for the audience insights experience.
         }
         > div {
           > strong {
-            font-size: 12px;
+            font-size: $font-size-small;
             font-weight: 500;
           }
           > p {
             color: #b3a4b6;
-            font-size: 8px;
+            font-size: $font-size-small;
             margin-top: 5px;
           }
         }
@@ -643,14 +643,14 @@ Defines shared visual styles for the audience insights experience.
       }
       .preview-theme-heading {
         font-weight: 500;
-        font-size: 13px;
+        font-size: $font-size-small;
         margin-bottom: 15px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         > span {
           color: #baaec3;
-          font-size: 7px;
+          font-size: $font-size-small;
           font-weight: 400;
         }
       }
@@ -662,7 +662,7 @@ Defines shared visual styles for the audience insights experience.
           display: flex;
           gap: 5px;
           align-items: center;
-          font-size: 8px;
+          font-size: $font-size-small;
           color: #a397af;
           margin-bottom: 10px;
           svg {
@@ -684,7 +684,7 @@ Defines shared visual styles for the audience insights experience.
           display: flex;
           flex-direction: column;
           > h4 {
-            font-size: 11px;
+            font-size: $font-size-small;
             line-height: 1.4;
             font-weight: 500;
             letter-spacing: -0.02em;
@@ -692,15 +692,19 @@ Defines shared visual styles for the audience insights experience.
           }
           > p {
             color: #b1a7bd;
-            font-size: 8px;
+            font-size: $font-size-small;
             line-height: 1.8;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
             margin-bottom: 15px;
           }
           > span {
             margin-top: auto;
             display: flex;
             align-items: center;
-            font-size: 8px;
+            font-size: $font-size-small;
             color: #b3a9bd;
             border-top: 1px solid #f1eef5;
             padding-top: 10px;
@@ -710,7 +714,7 @@ Defines shared visual styles for the audience insights experience.
             }
             svg {
               margin-left: auto;
-              font-size: 7px;
+              font-size: $font-size-small;
             }
           }
         }
@@ -719,6 +723,7 @@ Defines shared visual styles for the audience insights experience.
   }
   @include max-width(tablet) {
     .preview-sidebar {
+      display: none;
       flex-basis: 120px;
       padding: 20px 10px;
       .preview-logo {
@@ -727,16 +732,16 @@ Defines shared visual styles for the audience insights experience.
       }
       .preview-workspace {
         padding: 5px;
-        font-size: 8px;
+        font-size: $font-size-small;
         gap: 5px;
       }
       .mini-nav {
-        font-size: 8px;
+        font-size: $font-size-small;
       }
       .preview-sidebar-note {
         padding: 10px;
         > span {
-          font-size: 8px;
+          font-size: $font-size-small;
         }
       }
     }
@@ -751,7 +756,7 @@ Defines shared visual styles for the audience insights experience.
           padding: 10px;
         }
         .mini-category {
-          font-size: 7px;
+          font-size: $font-size-small;
         }
       }
       .preview-highlight {
@@ -776,14 +781,14 @@ Defines shared visual styles for the audience insights experience.
         .preview-metrics > div {
           padding: 0 15px;
           > span {
-            font-size: 7px;
+            font-size: $font-size-small;
           }
           > strong {
             font-size: 23px;
           }
         }
         .preview-highlight > div > strong {
-          font-size: 10px;
+          font-size: $font-size-small;
         }
         .preview-insights {
           grid-template-columns: repeat(2, minmax(0, 1fr));

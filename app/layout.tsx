@@ -4,6 +4,7 @@ Applies the shared visual foundation and accessible app providers.
 
 import type { Metadata } from 'next'
 import { config } from '@fortawesome/fontawesome-svg-core'
+
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import '@styles/coreStyling/index.scss'
 import Providers from './Providers'
@@ -11,7 +12,7 @@ import Providers from './Providers'
 config.autoAddCss = false
 
 export const metadata: Metadata = {
-  title: { default: 'Fanvue Insights — Know what your fans want next', template: '%s | Fanvue Insights' },
+  title: { default: 'Creator Insights | Know what your fans want next', template: '%s | Creator Insights' },
   description:
     'A little closer to your audience. Turn Fanvue comments into clear, evidence-backed ideas for what to create next.'
 }

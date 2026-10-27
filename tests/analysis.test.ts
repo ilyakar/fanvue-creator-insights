@@ -4,17 +4,18 @@ Confirms the authored source data is internally consistent and supports repeated
 
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { sampleDataProvider, validateDataset } from '../lib/data/provider'
-import { validateAnalysis, getAnalysisCacheKey } from '../lib/analysis/validation'
-import { getDatasetCounts, getInsightCounts, getEvidence } from '../lib/insights'
-import previewInsights from '../mock-data/preview-insights.json'
-import type { Insight } from '../lib/types'
+
+import { sampleDataProvider, validateDataset } from '@/lib/data/provider'
+import { validateAnalysis, getAnalysisCacheKey } from '@/lib/analysis/validation'
+import { getDatasetCounts, getInsightCounts, getEvidence } from '@/lib/insights'
+import previewInsights from '@/mock-data/preview-insights.json'
+import type { Insight } from '@/lib/types'
 
 // Confirms the authored source data is internally consistent and supports repeated fan identities.
 test('sample data has 18 posts, 360 comments and repeated identities', async () => {
   const dataset = await sampleDataProvider.getDataset()
   assert.deepEqual(getDatasetCounts(dataset), { posts: 18, comments: 360, fans: 96 })
-  assert.equal(new Set(dataset.comments.map((comment) => comment.id)).size, 360)
+  assert.equal(new Set(dataset.comments.map(comment => comment.id)).size, 360)
   assert.ok(dataset.comments.length > dataset.fans.length)
 })
 
@@ -24,7 +25,7 @@ test('theme counts deduplicate fans and comment references', async () => {
   const insights = validateAnalysis({ insights: previewInsights }, dataset)
 
   const insight = insights.find(
-    (entry) => getInsightCounts(entry, dataset).fans < getInsightCounts(entry, dataset).comments
+    entry => getInsightCounts(entry, dataset).fans < getInsightCounts(entry, dataset).comments
   )!
 
   const counts = getInsightCounts(insight, dataset)
@@ -76,7 +77,7 @@ test('post evidence remains inside its source post', async () => {
   const insight = previewInsights[0] as Insight
   const evidence = getEvidence(insight, dataset, 'post-01')
   assert.ok(evidence.length > 0)
-  assert.ok(evidence.every((comment) => comment.postId === 'post-01'))
+  assert.ok(evidence.every(comment => comment.postId === 'post-01'))
   assert.equal(getInsightCounts(insight, dataset, 'post-01').comments, evidence.length)
 })
 

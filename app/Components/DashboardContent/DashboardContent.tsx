@@ -18,12 +18,13 @@ import {
   faUserGroup,
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
+
 import { categoryLabels, formatDate, getDatasetCounts, getEvidence, getInsightCounts } from '@/lib/insights'
 import type { Category, DashboardModel, Insight } from '@/lib/types'
 import { useAlert } from '@/app/AlertProvider'
-import CategoryIcon from '../CategoryIcon/CategoryIcon'
-import InsightCard from '../InsightCard/InsightCard'
-import InsightDrawer from '../InsightDrawer/InsightDrawer'
+import CategoryIcon from '@/app/Components/CategoryIcon/CategoryIcon'
+import InsightCard from '@/app/Components/InsightCard/InsightCard'
+import InsightDrawer from '@/app/Components/InsightDrawer/InsightDrawer'
 
 // Reuses one insight presentation for the cross-post overview and single-post feedback.
 const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: string }) => {
@@ -33,25 +34,25 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
 
   const { dataset, result, isPreview } = model
   const basePath = isPreview ? '/preview' : '/dashboard'
-  const post = dataset.posts.find((entry) => entry.id === postId)
-  const scopedComments = dataset.comments.filter((comment) => !postId || comment.postId === postId)
+  const post = dataset.posts.find(entry => entry.id === postId)
+  const scopedComments = dataset.comments.filter(comment => !postId || comment.postId === postId)
   const counts = getDatasetCounts({ ...dataset, comments: scopedComments, posts: post ? [post] : dataset.posts })
 
   const insights = (result?.insights || []).filter(
-    (insight) => !postId || getInsightCounts(insight, dataset, postId).comments > 0
+    insight => !postId || getInsightCounts(insight, dataset, postId).comments > 0
   )
 
   const categories: Category[] = ['love', 'requests', 'improve']
 
   const featuredInsight = insights
-    .filter((insight) => insight.category === 'requests')
+    .filter(insight => insight.category === 'requests')
     .sort(
       (firstInsight, secondInsight) =>
         getInsightCounts(secondInsight, dataset, postId).fans - getInsightCounts(firstInsight, dataset, postId).fans
     )[0]
 
   const featuredComment = featuredInsight ? getEvidence(featuredInsight, dataset, postId)[0] : null
-  const featuredFan = dataset.fans.find((fan) => fan.id === featuredComment?.fanId)
+  const featuredFan = dataset.fans.find(fan => fan.id === featuredComment?.fanId)
 
   // Closes the evidence panel while preserving the current filters and scroll position.
   const _handleInsightClose = useCallback(() => setSelectedInsight(null), [])
@@ -94,7 +95,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
         {!post && (
           <span className="date-range">
             <FontAwesomeIcon icon={faCalendarDays} />
-            {formatDate(dataset.posts[0].publishedAt)} –{' '}
+            {formatDate(dataset.posts[0].publishedAt)} to{' '}
             {formatDate(dataset.posts[dataset.posts.length - 1].publishedAt, true)}
           </span>
         )}
@@ -124,7 +125,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
           { label: 'Distinct fans', value: counts.fans, icon: faUserGroup },
           { label: 'Audience themes', value: insights.length, icon: faWandMagicSparkles },
           { label: 'Posts analysed', value: counts.posts, icon: faLayerGroup }
-        ].map((metric) => (
+        ].map(metric => (
           <div className="metric" key={metric.label}>
             <span className="metric-label">
               <FontAwesomeIcon icon={metric.icon} />
@@ -188,7 +189,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
             <select value={selectedCategory} onChange={_handleCategoryChange}>
               <option value="all">All insights</option>
 
-              {categories.map((category) => (
+              {categories.map(category => (
                 <option value={category} key={category}>
                   {categoryLabels[category]}
                 </option>
@@ -207,10 +208,10 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
 
         <div className={['insight-columns', selectedCategory !== 'all' && 'filtered'].filter(Boolean).join(' ')}>
           {categories
-            .filter((category) => selectedCategory === 'all' || selectedCategory === category)
-            .map((category) => {
+            .filter(category => selectedCategory === 'all' || selectedCategory === category)
+            .map(category => {
               const categoryInsights = insights
-                .filter((insight) => insight.category === category)
+                .filter(insight => insight.category === category)
                 .sort(
                   (firstInsight, secondInsight) =>
                     getInsightCounts(secondInsight, dataset, postId).fans -
@@ -226,7 +227,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
                   </div>
 
                   <div className="column-cards">
-                    {categoryInsights.map((insight) => (
+                    {categoryInsights.map(insight => (
                       <InsightCard
                         key={insight.id}
                         insight={insight}

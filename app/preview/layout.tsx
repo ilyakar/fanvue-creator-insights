@@ -3,6 +3,7 @@ Makes editorial design fixtures available only to the local development server.
 ---------------------------------------------------------------*/
 
 import { notFound } from 'next/navigation'
+
 import AppShell from '@/app/Components/AppShell/AppShell'
 
 export const dynamic = 'force-dynamic'

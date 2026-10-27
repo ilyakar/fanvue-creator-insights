@@ -5,7 +5,8 @@ Explains the real connection honestly, including setup and declined-authorizatio
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowLeft, faArrowRight, faCheck, faLink, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
-import Brand from '../Components/Brand/Brand'
+
+import Brand from '@/app/Components/Brand/Brand'
 import { getMissingConfiguration } from '@/lib/server/config'
 
 export const dynamic = 'force-dynamic'

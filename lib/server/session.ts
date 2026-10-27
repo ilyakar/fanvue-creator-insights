@@ -5,10 +5,12 @@ Resolves identity solely from an unexpired server-side session.
 import 'server-only'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
+
+import type { Account } from '@/lib/types'
+
 import { getDatabase, unwrapDatabase } from './database'
 import { createSecret, hashSecret } from './crypto'
 import { sessionCookieName } from './config'
-import type { Account } from '../types'
 
 export const cookieOptions = {
   httpOnly: true,

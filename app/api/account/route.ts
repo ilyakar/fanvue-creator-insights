@@ -3,6 +3,7 @@ Applies an authenticated account action without trusting a supplied user identif
 ---------------------------------------------------------------*/
 
 import { NextResponse } from 'next/server'
+
 import { getCurrentAccount, destroySession } from '@/lib/server/session'
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
 import { requireSameOrigin, errorResponse, RequestError } from '@/lib/server/http'

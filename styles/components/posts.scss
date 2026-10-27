@@ -22,7 +22,7 @@ Defines shared visual styles for the audience insights experience.
     max-width: 100%;
     svg {
       color: #a2a5b3;
-      font-size: 12px;
+      font-size: $font-size-small;
     }
     input {
       border: 0;
@@ -32,7 +32,7 @@ Defines shared visual styles for the audience insights experience.
       width: 100%;
       outline-offset: 0;
       color: #565b70;
-      font-size: 12px;
+      font-size: $font-size-small;
       &::placeholder {
         color: #73788a;
       }
@@ -43,7 +43,7 @@ Defines shared visual styles for the audience insights experience.
     align-items: center;
     gap: 20px;
     .post-count {
-      font-size: 11px;
+      font-size: $font-size-small;
       color: #73788a;
     }
   }
@@ -98,12 +98,12 @@ Defines shared visual styles for the audience insights experience.
         color: #6e6571;
         border-radius: 30px;
         backdrop-filter: blur(5px);
-        font-size: 9px;
+        font-size: $font-size-small;
         display: flex;
         align-items: center;
         gap: 5px;
         svg {
-          font-size: 7px;
+          font-size: $font-size-small;
         }
       }
     }
@@ -111,7 +111,7 @@ Defines shared visual styles for the audience insights experience.
       padding: 20px;
       > time {
         color: #73788a;
-        font-size: 9px;
+        font-size: $font-size-small;
       }
       > h2 {
         font-size: 16px;
@@ -120,9 +120,12 @@ Defines shared visual styles for the audience insights experience.
       }
       > p {
         color: #707688;
-        font-size: 11px;
+        font-size: $font-size-small;
         line-height: 1.8;
-        height: 40px;
+        min-height: 50px;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
         overflow: hidden;
         margin-bottom: 20px;
       }
@@ -133,7 +136,7 @@ Defines shared visual styles for the audience insights experience.
         gap: 10px;
         border-top: 1px solid #f0f1f5;
         padding-top: 15px;
-        font-size: 9px;
+        font-size: $font-size-small;
         color: #727789;
         > span {
           display: flex;

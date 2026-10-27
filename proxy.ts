@@ -3,6 +3,7 @@ Guards private route entry and disables design previews in production.
 ---------------------------------------------------------------*/
 
 import { NextResponse, type NextRequest } from 'next/server'
+
 import { sessionCookieName } from '@/lib/server/config'
 
 // Rejects production previews and redirects missing sessions before streaming begins.

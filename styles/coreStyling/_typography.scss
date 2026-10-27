@@ -20,7 +20,7 @@ h4 {
 }
 .eyebrow {
   display: block;
-  font-size: 10px;
+  font-size: $font-size-small;
   font-weight: 700;
   letter-spacing: 0.11em;
   line-height: 1.5;
@@ -42,7 +42,7 @@ h4 {
   }
   p {
     color: $color-muted;
-    font-size: 14px;
+    font-size: $font-size-small;
   }
   @include max-width(tablet) {
     flex-direction: column;
@@ -63,7 +63,7 @@ h4 {
   }
   p {
     color: $color-muted;
-    font-size: 13px;
+    font-size: $font-size-small;
   }
   @include max-width(phone) {
     align-items: flex-start;
@@ -90,7 +90,7 @@ h4 {
     font-weight: 400;
   }
   .product {
-    font-size: 12px;
+    font-size: $font-size-small;
     padding-left: 10px;
     border-left: 1px solid #d6d8e2;
     color: #696e80;

@@ -339,7 +339,9 @@ const database = getDatabase()
 
 These rules apply equally to `.ts`, `.tsx`, `.js`, `.mjs`, configuration files, scripts, tests, and callbacks inside React components. Framework-generated files and the untouched reference directory are excluded.
 
-Run `npm run check:style` after changes. `npm run format` applies the project's formatting, braces, control-flow spacing, and JSX sibling spacing rules; review the result for meaningful grouping and comments.
+Run `npm run check:style` after changes. This uses standard ESLint and Prettier commands. `npm run format` runs Prettier followed by ESLint fixes for imports and JSX sibling spacing. `npm run lint` and `npm run format:check` check each tool separately; `npm run lint:fix` applies ESLint fixes. Review the result for meaningful grouping and comments.
+
+The root `eslint.config.mjs` uses OneRent's shared ESLint rule set, with only file scope and ignored paths adapted for this application. JSX spacing uses `eslint-plugin-react` and its `react/jsx-newline` rule. `.prettierrc.json` uses OneRent's formatting options without its Tailwind plugin because this application uses SCSS. Keep this setup simple: do not add project-specific lint rules or reintroduce a custom style checker. Braces, control flow spacing, logical groups and comments remain code review requirements from this document and the project references.
 
 ---
 
@@ -587,6 +589,26 @@ className={['filter-button', isFilterApplied && 'is-active'].filter(Boolean).joi
 
 ---
 
+### 3.10 Typography and visible copy
+
+- Use locally hosted Inter throughout the landing page and application, including headings, body text, inputs, buttons, navigation, comments and product previews.
+- Regular interface text must be at least 14px. The default body size is 16px.
+- Use the 12px fine print variant sparingly for secondary supporting notes, such as reassurance below a button, preview captions, privacy notes, count explanations and footer details. No visible text may be smaller than 12px.
+- Keep main content, navigation, controls, labels, badges, regular metadata, errors and action guidance at least 14px, including mobile layouts and illustrative product previews. Never scale text down to make a layout fit.
+- Use the shared SCSS typography tokens, including `$font-size-fine-print` for the 12px variant. Adjust wrapping, spacing and responsive layouts when larger type needs more room.
+- Do not use em dashes or en dashes as sentence punctuation in authored visible copy. Use commas, full stops or parentheses instead. Preserve grammatical hyphens in compound words and modifiers, such as "catch-up", "in-between moments", "check-ins" and "day-in-the-life videos". Use words such as "to" for date ranges. Technical identifiers, file paths and URLs retain their required spelling.
+- Ask the AI model to follow the same punctuation convention in titles, summaries and suggestions. Preserve actual fan comments as original evidence.
+
+---
+
+### 3.11 Product identity
+
+- The application is named Creator Insights and is independent of Fanvue.
+- Keep the existing asterisk logo mark and visual treatment when displaying the Creator Insights name.
+- Refer to Fanvue when describing the platform connection, authentication, accounts or source content. Do not use Fanvue as the application's brand name.
+
+---
+
 ## 4. Example, Putting Everything Together ✅
 
 ```tsx
@@ -661,6 +683,8 @@ When making changes, agents must
 - for conditional class names, use an array with `&&`, filter falsy entries, and join with spaces, e.g. `className={['filter-button', isFilterApplied && 'is-active'].filter(Boolean).join(' ')}`
 - prefer promise-based error handling (`.then/.catch`) over `try/catch` when possible
 - prefer default styling when possible; avoid adding explicit colors or extra styling if the defaults already match the desired appearance
+- use Inter and shared typography tokens, with a 14px minimum for regular text and a sparse 12px fine print variant for secondary supporting notes and footer details
+- avoid em dashes and en dashes as sentence punctuation; preserve grammatical hyphens in compound words and modifiers
 - avoid the Font Awesome icon `size` prop; use shared SCSS styling when icon sizing needs adjustment
 - use Font Awesome icons throughout; if a different icon system is in use on a page you are editing (such as Lucide React), replace it with the closest Font Awesome icon without adding a `size` prop
 - preserve existing patterns and formatting in the repository

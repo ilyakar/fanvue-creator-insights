@@ -5,7 +5,8 @@ Creates isolated Redux stores and persists only the sidebar layout preference.
 import { configureStore } from '@reduxjs/toolkit'
 import { persistReducer, persistStore } from 'redux-persist'
 import createWebStorage from 'redux-persist/lib/storage/createWebStorage'
-import preferencesReducer from '../reducers/Preferences'
+
+import preferencesReducer from '@/redux/reducers/Preferences'
 
 // Supplies inert storage during server rendering to avoid cross-request browser state.
 const createStorage = () => {
@@ -34,7 +35,7 @@ export const makeStore = () =>
         preferencesReducer
       )
     },
-    middleware: (getDefaultMiddleware) =>
+    middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
         serializableCheck: {
           ignoredActions: [

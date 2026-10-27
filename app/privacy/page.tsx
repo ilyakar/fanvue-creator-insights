@@ -3,7 +3,8 @@ Explains the prototype's actual data flow without making unsupported privacy pro
 ---------------------------------------------------------------*/
 
 import Link from 'next/link'
-import Brand from '../Components/Brand/Brand'
+
+import Brand from '@/app/Components/Brand/Brand'
 
 // Explains the prototype's actual data flow without making unsupported privacy promises.
 const PrivacyPage = () => (
@@ -55,7 +56,7 @@ const PrivacyPage = () => (
       </p>
 
       <Link className="button secondary" href="/">
-        Back to Fanvue Insights
+        Back to Creator Insights
       </Link>
     </main>
   </div>

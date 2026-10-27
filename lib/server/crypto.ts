@@ -3,6 +3,7 @@ Generates opaque identifiers that cannot be guessed from user information.
 ---------------------------------------------------------------*/
 
 import { createCipheriv, createDecipheriv, createHash, randomBytes } from 'node:crypto'
+
 import { requireSetting } from './config'
 
 // Generates opaque identifiers that cannot be guessed from user information.
@@ -28,12 +29,12 @@ export const encryptSecret = (value: string) => {
   const cipher = createCipheriv('aes-256-gcm', getEncryptionKey(), nonce)
   const ciphertext = Buffer.concat([cipher.update(value, 'utf8'), cipher.final()])
 
-  return [nonce, cipher.getAuthTag(), ciphertext].map((part) => part.toString('base64url')).join('.')
+  return [nonce, cipher.getAuthTag(), ciphertext].map(part => part.toString('base64url')).join('.')
 }
 
 // Rejects modified ciphertext before returning a stored credential.
 export const decryptSecret = (value: string) => {
-  const [nonce, authenticationTag, ciphertext] = value.split('.').map((part) => Buffer.from(part, 'base64url'))
+  const [nonce, authenticationTag, ciphertext] = value.split('.').map(part => Buffer.from(part, 'base64url'))
 
   if (!nonce || !authenticationTag || !ciphertext) {
     throw new Error('Invalid encrypted credential.')

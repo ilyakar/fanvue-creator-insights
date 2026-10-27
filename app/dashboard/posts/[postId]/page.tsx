@@ -3,6 +3,7 @@ Scopes reusable insights and source evidence to one existing post.
 ---------------------------------------------------------------*/
 
 import { notFound, redirect } from 'next/navigation'
+
 import { requireAccount } from '@/lib/server/session'
 import { getDashboardModel } from '@/lib/server/analysis'
 import DashboardContent from '@/app/Components/DashboardContent/DashboardContent'
@@ -13,7 +14,7 @@ const PostPage = async ({ params }: { params: Promise<{ postId: string }> }) => 
   const account = await requireAccount()
   const model = await getDashboardModel(account)
 
-  const postExists = model.dataset.posts.some((post) => post.id === postId)
+  const postExists = model.dataset.posts.some(post => post.id === postId)
 
   // Unknown source posts should resolve to the normal not-found experience.
   if (!postExists) {

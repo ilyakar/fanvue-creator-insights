@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faCheck, faRotateRight, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons'
+
 import type { JobStage } from '@/lib/types'
 
 const stageOrder: JobStage[] = ['queued', 'analysing', 'validating', 'complete']
@@ -37,6 +38,7 @@ const AnalysisLoading = ({
     description = 'Prepare a fresh set of insights from our sample comments, whenever you’re ready.'
     actionLabel = 'Prepare my insights'
   }
+
   // Explains an interrupted analysis without suggesting that source comments were lost.
   else if (stage === 'failed') {
     heading = 'Let’s give that another try.'
@@ -61,7 +63,7 @@ const AnalysisLoading = ({
     // Reads only the current user's job and stops polling after the component unmounts.
     const checkProgress = () =>
       fetch('/api/analysis', { cache: 'no-store' })
-        .then(async (response) => {
+        .then(async response => {
           if (response.status === 401) {
             router.replace('/connect?reason=session')
 
@@ -74,7 +76,7 @@ const AnalysisLoading = ({
 
           return response.json()
         })
-        .then((body) => {
+        .then(body => {
           if (isActive && body?.job) {
             setStage(body.job.status)
             setErrorMessage(body.job.error)
@@ -101,7 +103,7 @@ const AnalysisLoading = ({
     setIsRetrying(true)
 
     fetch('/api/analysis', { method: 'POST' })
-      .then(async (response) => {
+      .then(async response => {
         const body = await response.json()
 
         if (response.status === 401) {
@@ -118,7 +120,7 @@ const AnalysisLoading = ({
         setErrorMessage(null)
         setIsWaiting(false)
       })
-      .catch((error) => setErrorMessage(error.message || 'Please try again in a moment.'))
+      .catch(error => setErrorMessage(error.message || 'Please try again in a moment.'))
       .finally(() => setIsRetrying(false))
   }
 
@@ -127,8 +129,7 @@ const AnalysisLoading = ({
       <div
         className={['analysis-symbol', stage !== 'failed' && stage !== 'idle' && 'processing']
           .filter(Boolean)
-          .join(' ')}
-      >
+          .join(' ')}>
         <FontAwesomeIcon icon={faWandMagicSparkles} />
       </div>
 
@@ -148,7 +149,7 @@ const AnalysisLoading = ({
           { stage: 'analysing' as const, label: 'Analysing comments and discovering themes' },
           { stage: 'validating' as const, label: 'Checking the comments behind each insight' },
           { stage: 'complete' as const, label: 'Preparing your insights' }
-        ].map((entry) => {
+        ].map(entry => {
           const isDone = stageOrder.indexOf(stage as JobStage) > stageOrder.indexOf(entry.stage)
           const isCurrent = stage === entry.stage
 
@@ -165,7 +166,7 @@ const AnalysisLoading = ({
 
       {isWaiting && stage !== 'failed' && (
         <p className="analysis-notice">
-          This is taking a little longer. You can return later—your analysis doesn’t depend on this page staying open.
+          This is taking a little longer. You can return later. Your analysis doesn’t depend on this page staying open.
         </p>
       )}
 

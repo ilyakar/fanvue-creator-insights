@@ -25,9 +25,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { setSidebarCollapsed } from '@redux/reducers/Preferences'
 import type { RootState } from '@redux/stores'
+
 import type { Account } from '@/lib/types'
 import { useAlert } from '@/app/AlertProvider'
-import Brand from '../Brand/Brand'
+import Brand from '@/app/Components/Brand/Brand'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 
 // Gives every authenticated screen a shared, responsive navigation and sample-data context.
@@ -83,12 +84,12 @@ const AppShell = ({
   ]
 
   const activeItem =
-    navigation.find((item) => item.href === pathname) ||
-    navigation.find((item) => item.href !== basePath && pathname.startsWith(item.href)) ||
+    navigation.find(item => item.href === pathname) ||
+    navigation.find(item => item.href !== basePath && pathname.startsWith(item.href)) ||
     navigation[0]
 
   // Toggles the mobile drawer from its accessible menu button.
-  const _handleMenuToggle = () => setIsMenuOpen((previousValue) => !previousValue)
+  const _handleMenuToggle = () => setIsMenuOpen(previousValue => !previousValue)
 
   // Saves the user's preferred desktop sidebar width.
   const _handleCollapse = () => dispatch(setSidebarCollapsed(!isCollapsed))
@@ -109,7 +110,7 @@ const AppShell = ({
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'logout' })
     })
-      .then((response) => {
+      .then(response => {
         if (!response.ok) {
           throw new Error()
         }
@@ -123,8 +124,7 @@ const AppShell = ({
     <div
       className={['app-shell', isCollapsed && !isMobileViewport && 'collapsed', isMenuOpen && 'menu-open']
         .filter(Boolean)
-        .join(' ')}
-    >
+        .join(' ')}>
       {isMenuOpen && <button className="menu-backdrop" aria-label="Close navigation" onClick={_handleMenuToggle} />}
 
       <aside
@@ -132,8 +132,7 @@ const AppShell = ({
         aria-label="Main navigation"
         ref={sidebarReference}
         inert={isMobileViewport && !isMenuOpen}
-        aria-hidden={isMobileViewport && !isMenuOpen ? true : undefined}
-      >
+        aria-hidden={isMobileViewport && !isMenuOpen ? true : undefined}>
         <div className="brand-row">
           <Brand href={basePath} />
 
@@ -154,15 +153,14 @@ const AppShell = ({
         <span className="navigation-label">YOUR WORKSPACE</span>
 
         <nav>
-          {navigation.map((item) => (
+          {navigation.map(item => (
             <Link
               key={item.label}
               href={item.href}
               onClick={_handleNavigate}
               className={['nav-link', activeItem.label === item.label && 'active'].filter(Boolean).join(' ')}
               aria-current={activeItem.label === item.label ? 'page' : undefined}
-              title={isCollapsed ? item.label : undefined}
-            >
+              title={isCollapsed ? item.label : undefined}>
               <FontAwesomeIcon icon={item.icon} />
               <span>{item.label}</span>
               {item.label === 'Messages' && <small>Soon</small>}
@@ -207,8 +205,7 @@ const AppShell = ({
           className="collapse-button"
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           aria-expanded={!isCollapsed}
-          onClick={_handleCollapse}
-        >
+          onClick={_handleCollapse}>
           <FontAwesomeIcon icon={isCollapsed ? faChevronRight : faChevronLeft} />
         </button>
       </aside>
@@ -220,8 +217,7 @@ const AppShell = ({
               className="icon-button mobile-toggle"
               aria-label="Open navigation"
               aria-expanded={isMenuOpen}
-              onClick={_handleMenuToggle}
-            >
+              onClick={_handleMenuToggle}>
               <FontAwesomeIcon icon={faBars} />
             </button>
 
@@ -260,7 +256,7 @@ const AppShell = ({
           <span>Made for creators. Grounded in your audience.</span>
 
           <span>
-            Fanvue Insights <span>✳</span>
+            Creator Insights <span>✳</span>
           </span>
         </footer>
       </div>

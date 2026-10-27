@@ -4,9 +4,10 @@ Verifies authenticated encryption rejects tampering and randomises repeated secr
 
 import test from 'node:test'
 import assert from 'node:assert/strict'
-import { createSecret, hashSecret, encryptSecret, decryptSecret } from '../lib/server/crypto'
-import { requireSameOrigin } from '../lib/server/http'
-import { exchangeFanvueTokens, getFanvueProfile } from '../lib/server/fanvue'
+
+import { createSecret, hashSecret, encryptSecret, decryptSecret } from '@/lib/server/crypto'
+import { requireSameOrigin } from '@/lib/server/http'
+import { exchangeFanvueTokens, getFanvueProfile } from '@/lib/server/fanvue'
 
 // Verifies authenticated encryption rejects tampering and randomises repeated secrets.
 test('credentials are encrypted with unique nonces and reject modifications', () => {
@@ -51,7 +52,7 @@ test('account mutations require the configured origin', () => {
 })
 
 // Checks the OAuth request against Fanvue's official client_secret_basic contract using a stub.
-test('OAuth exchanges use Basic auth, PKCE and validated token lifetimes', async (context) => {
+test('OAuth exchanges use Basic auth, PKCE and validated token lifetimes', async context => {
   process.env.FANVUE_CLIENT_ID = 'test-client'
   process.env.FANVUE_CLIENT_SECRET = 'test-secret'
 
@@ -73,7 +74,7 @@ test('OAuth exchanges use Basic auth, PKCE and validated token lifetimes', async
 })
 
 // Protects the callback against accepting the wrong profile envelope or a missing stable identity.
-test('profile parsing matches the official unwrapped v1 user response', async (context) => {
+test('profile parsing matches the official unwrapped v1 user response', async context => {
   context.mock.method(globalThis, 'fetch', async () =>
     Response.json({
       uuid: '3bbe6394-2830-4646-a8ba-4a0a05426947',

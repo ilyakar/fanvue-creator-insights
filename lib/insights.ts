@@ -15,7 +15,7 @@ export const getEvidence = (insight: Insight, dataset: Dataset, postId?: string)
   const commentIdentifiers = new Set(insight.commentIds)
 
   return dataset.comments.filter(
-    (comment) => commentIdentifiers.has(comment.id) && (!postId || comment.postId === postId)
+    comment => commentIdentifiers.has(comment.id) && (!postId || comment.postId === postId)
   )
 }
 
@@ -23,13 +23,13 @@ export const getEvidence = (insight: Insight, dataset: Dataset, postId?: string)
 export const getInsightCounts = (insight: Insight, dataset: Dataset, postId?: string) => {
   const comments = getEvidence(insight, dataset, postId)
 
-  return { fans: new Set(comments.map((comment) => comment.fanId)).size, comments: comments.length }
+  return { fans: new Set(comments.map(comment => comment.fanId)).size, comments: comments.length }
 }
 
 // Computes overview metrics directly from the source dataset.
 export const getDatasetCounts = (dataset: Dataset) => ({
   comments: dataset.comments.length,
-  fans: new Set(dataset.comments.map((comment) => comment.fanId)).size,
+  fans: new Set(dataset.comments.map(comment => comment.fanId)).size,
   posts: dataset.posts.length
 })
 

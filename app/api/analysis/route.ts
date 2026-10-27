@@ -3,6 +3,7 @@ Returns only the signed-in owner's latest run status for genuine progress report
 ---------------------------------------------------------------*/
 
 import { NextResponse } from 'next/server'
+
 import { getCurrentAccount } from '@/lib/server/session'
 import { enqueueAnalysis } from '@/lib/server/analysis'
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
@@ -52,7 +53,7 @@ export const POST = async (request: Request) =>
         { status: 202, headers: { 'Cache-Control': 'no-store' } }
       )
     })
-    .catch((error) =>
+    .catch(error =>
       errorResponse(
         error instanceof ReconnectRequired
           ? new RequestError('Your Fanvue connection has expired. Please reconnect to continue.', 401)

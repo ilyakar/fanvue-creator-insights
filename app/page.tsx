@@ -14,9 +14,11 @@ import {
   faSliders,
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
+
+import { getPreviewModel } from '@/lib/data/preview'
+
 import Brand from './Components/Brand/Brand'
 import ProductPreview from './Components/ProductPreview/ProductPreview'
-import { getPreviewModel } from '@/lib/data/preview'
 import '@styles/homePage.scss'
 
 // Introduces the product through a concise promise, a real interface preview and the core creator journey.
@@ -51,7 +53,7 @@ const HomePage = async () => {
           </h1>
 
           <p>
-            They’re already telling you. Turn your Fanvue comments into clear insights about what they love—and what
+            They’re already telling you. Turn your Fanvue comments into clear insights about what they love and what
             they’d love to see more of.
           </p>
 
@@ -118,7 +120,7 @@ const HomePage = async () => {
                 description: 'Understand recurring frustrations, with helpful context and a clear place to start.',
                 label: 'Make small, meaningful changes'
               }
-            ].map((benefit) => (
+            ].map(benefit => (
               <article className={`benefit ${benefit.category}`} key={benefit.category}>
                 <span className="benefit-icon">
                   <FontAwesomeIcon icon={benefit.icon} />
@@ -163,7 +165,7 @@ const HomePage = async () => {
                 title: 'Create with a little more clarity.',
                 description: 'Explore the insights, read the original comments and decide what comes next.'
               }
-            ].map((step) => (
+            ].map(step => (
               <article key={step.number}>
                 <span className="step-number">{step.number}</span>
                 <FontAwesomeIcon icon={step.icon} />

@@ -13,7 +13,7 @@ Defines shared visual styles for the audience insights experience.
   padding: 10px 25px;
   border-radius: 30px;
   border: 1px solid transparent;
-  font-size: 13px;
+  font-size: $font-size-small;
   font-weight: 600;
   transition:
     background 180ms,
@@ -45,7 +45,7 @@ Defines shared visual styles for the audience insights experience.
     background: #b73950;
   }
   svg {
-    font-size: 12px;
+    font-size: $font-size-small;
   }
 }
 .text-button {
@@ -57,13 +57,13 @@ Defines shared visual styles for the audience insights experience.
   border: 0;
   background: none;
   font-weight: 600;
-  font-size: 13px;
+  font-size: $font-size-small;
   text-align: left;
   &:hover {
     color: #443cce;
   }
   svg {
-    font-size: 11px;
+    font-size: $font-size-small;
   }
 }
 .icon-button {
@@ -92,7 +92,7 @@ select {
   background: white
     url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23737786' viewBox='0 0 12 12'%3E%3Cpath d='m3 4 3 3 3-3'/%3E%3C/svg%3E")
     right 15px center no-repeat;
-  font-size: 12px;
+  font-size: $font-size-small;
   cursor: pointer;
 }
 .back-link {
@@ -100,7 +100,7 @@ select {
   align-items: center;
   gap: 10px;
   color: $color-muted;
-  font-size: 13px;
+  font-size: $font-size-small;
   margin-bottom: 25px;
   &:hover {
     color: $color-purple;
@@ -115,7 +115,7 @@ select {
   color: #7a6945;
   border-radius: 30px;
   padding: 5px 10px;
-  font-size: 10px;
+  font-size: $font-size-small;
   font-weight: 500;
   white-space: nowrap;
   > span {
