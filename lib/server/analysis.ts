@@ -4,7 +4,7 @@ Creates one durable run per owner and analysis input, reusing completed work.
 
 import { getAnalysisCacheKey } from '@/lib/analysis/validation'
 import { promptVersion } from '@/lib/analysis/service'
-import { sampleDataProvider } from '@/lib/data/provider'
+import { audienceDataProvider } from '@/lib/data/audience'
 import type { AnalysisJob, DashboardModel, Account } from '@/lib/types'
 
 import { getDatabase, unwrapDatabase } from './database'
@@ -12,7 +12,15 @@ import { getDatabase, unwrapDatabase } from './database'
 // Creates one durable run per owner and analysis input, reusing completed work.
 export const enqueueAnalysis = async (userId: string, retryFailed = false): Promise<AnalysisJob> => {
   const database = getDatabase()
-  const dataset = await sampleDataProvider.getDataset()
+  const account = unwrapDatabase(
+    await getDatabase().from('app_users').select('audience_creator_id').eq('id', userId).single()
+  )
+
+  if (!account) {
+    throw new Error('The connected account could not be found.')
+  }
+
+  const dataset = await audienceDataProvider.getDataset(account.audience_creator_id)
   const cacheKey = getAnalysisCacheKey(userId, dataset, process.env.OPENAI_MODEL || 'gpt-4.1-mini', promptVersion)
 
   const existing = unwrapDatabase(
@@ -39,7 +47,12 @@ export const enqueueAnalysis = async (userId: string, retryFailed = false): Prom
   // The database enforces one run for this owner and analysis input.
   const inserted = await database
     .from('analysis_jobs')
-    .insert({ user_id: userId, cache_key: cacheKey, dataset_version: dataset.version })
+    .insert({
+      user_id: userId,
+      audience_creator_id: account.audience_creator_id,
+      cache_key: cacheKey,
+      dataset_version: dataset.version
+    })
     .select()
     .single()
 
@@ -55,7 +68,15 @@ export const enqueueAnalysis = async (userId: string, retryFailed = false): Prom
 
 // Looks up the current input's saved run without starting work as a side effect of reading.
 export const getCurrentAnalysis = async (userId: string): Promise<AnalysisJob | null> => {
-  const dataset = await sampleDataProvider.getDataset()
+  const account = unwrapDatabase(
+    await getDatabase().from('app_users').select('audience_creator_id').eq('id', userId).single()
+  )
+
+  if (!account) {
+    throw new Error('The connected account could not be found.')
+  }
+
+  const dataset = await audienceDataProvider.getDataset(account.audience_creator_id)
   const cacheKey = getAnalysisCacheKey(userId, dataset, process.env.OPENAI_MODEL || 'gpt-4.1-mini', promptVersion)
 
   return unwrapDatabase(
@@ -65,7 +86,7 @@ export const getCurrentAnalysis = async (userId: string): Promise<AnalysisJob | 
 
 // Loads private results only after ownership has been established by a server session.
 export const getDashboardModel = async (account: Account): Promise<DashboardModel> => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = await audienceDataProvider.getDataset(account.audience_creator_id)
   const job = await getCurrentAnalysis(account.id)
 
   return { dataset, result: job?.status === 'complete' ? job.result : null, account, isPreview: false }

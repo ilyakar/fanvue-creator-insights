@@ -8,7 +8,7 @@ import { requireSetting } from './config'
 
 // Creates a server-only database client without any browser authentication state.
 export const getDatabase = () =>
-  createClient(requireSetting('SUPABASE_URL'), requireSetting('SUPABASE_SERVICE_ROLE_KEY'), {
+  createClient(requireSetting('SUPABASE_URL'), requireSetting('SUPABASE_SECRET_KEY'), {
     auth: { persistSession: false, autoRefreshToken: false }
   })
 

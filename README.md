@@ -26,15 +26,15 @@ The development preview is intentionally labelled **illustrative insights**. Its
 
 `vercel.json` selects the Next.js framework preset. Production uses `APP_URL=https://fanvue-creator-insights.vercel.app` in Vercel's environment settings. Local secrets and the copied reference directory are excluded from deployment uploads.
 
-The public site is available while the external connections are being configured. Fanvue login and saved analysis require the remaining server credentials, database migration and separately hosted analysis worker. The local design preview stays unavailable in production.
+The public site is available while the external connections are being configured. Fanvue login and saved analysis require the remaining server credentials and a separately hosted analysis worker. The local design preview stays unavailable in production.
 
 ## Enable the real connection and AI analysis
 
 1. Copy `.env.example` to `.env.local` and fill its six required server-side values. Real credentials stay in the ignored local file.
-2. Create a Supabase project and apply `supabase/migrations/001_initial.sql` in its SQL editor.
+2. Create a Supabase project, apply the migrations in `supabase/migrations/` in order, and run `supabase/seed.sql` to populate the fictional creator dataset.
 3. Register your Fanvue app's exact callback URL: `http://127.0.0.1:3000/api/auth/callback` (or the chosen deployed origin). Enable `openid offline_access offline read:self`. The app reads the creator profile only; audience content is synthetic.
-4. Set `FANVUE_CLIENT_ID`, `FANVUE_CLIENT_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `OPENAI_API_KEY` locally. Never place credentials in chat or client-exposed environment variables.
-5. Generate a separate encryption key with `openssl rand -hex 32` and use it as `TOKEN_ENCRYPTION_KEY`. Keep it stable and separate from the database; losing it makes existing encrypted connections unreadable.
+4. Set `FANVUE_CLIENT_ID`, `FANVUE_CLIENT_SECRET`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `OPENAI_API_KEY` locally. Never place credentials in chat or client-exposed environment variables.
+5. `TOKEN_ENCRYPTION_KEY` protects saved Fanvue access tokens, refresh tokens and temporary OAuth verifiers before they enter the database. It is an app-generated secret, not a provider credential. Generate it once with `openssl rand -hex 32` if it is missing. Keep it stable and use the same value for the web app and worker; losing it makes existing encrypted connections unreadable.
 6. The local origin defaults to `http://127.0.0.1:3000`, so no `APP_URL` entry is needed for the default local setup. Only add it when using another origin or deploying. `127.0.0.1` and `localhost` are different OAuth origins; use the same one throughout.
 7. Restart the web server, then run the durable worker in a second terminal:
 
@@ -79,12 +79,13 @@ Apply the migration before connecting an account. All private tables have RLS en
 - `app/`: routes, providers and reusable `Components/`
 - `styles/`: shared SCSS tokens, mixins, foundations and component styles
 - `redux/`: an isolated store persisting only the sidebar preference
-- `mock-data/`: source posts, comments, fans and separate editorial preview fixtures
+- `mock-data/`: source fixtures retained for seeding and offline tests; the running app reads Supabase
 - `lib/data/`: replaceable provider and dataset validation
 - `lib/analysis/`: model inference, schema and evidence validation
 - `lib/server/`: database, OAuth, encrypted credentials and sessions
 - `scripts/analysis-worker.ts`: durable background processing
 - `supabase/migrations/`: versioned database foundation
+- `supabase/seed.sql`: repeatable import of the fictional creator dataset and editorial preview
 - `tests/`: meaningful data, security and database checks
 
 See `ARCHITECTURE.md` for ownership, job lifecycle and integration decisions, and `docs/AI-EVALUATION.md` for semantic evaluation before accepting live results.

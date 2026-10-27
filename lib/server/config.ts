@@ -9,7 +9,7 @@ export const getMissingConfiguration = () =>
     'FANVUE_CLIENT_SECRET',
     'TOKEN_ENCRYPTION_KEY',
     'SUPABASE_URL',
-    'SUPABASE_SERVICE_ROLE_KEY',
+    'SUPABASE_SECRET_KEY',
     'OPENAI_API_KEY'
   ].filter(variableName => !process.env[variableName])
 

@@ -21,6 +21,8 @@ import Brand from './Components/Brand/Brand'
 import ProductPreview from './Components/ProductPreview/ProductPreview'
 import '@styles/homePage.scss'
 
+export const dynamic = 'force-dynamic'
+
 // Introduces the product through a concise promise, a real interface preview and the core creator journey.
 const HomePage = async () => {
   const model = await getPreviewModel()

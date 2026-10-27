@@ -23,7 +23,7 @@ export const cookieOptions = {
 export const getCurrentAccount = async (): Promise<Account | null> => {
   const identifier = (await cookies()).get(sessionCookieName)?.value
 
-  if (!identifier || !process.env.SUPABASE_URL || !process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!identifier || !process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) {
     return null
   }
 

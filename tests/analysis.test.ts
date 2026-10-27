@@ -5,15 +5,21 @@ Confirms the authored source data is internally consistent and supports repeated
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { sampleDataProvider, validateDataset } from '@/lib/data/provider'
+import { validateDataset } from '@/lib/data/provider'
 import { validateAnalysis, getAnalysisCacheKey } from '@/lib/analysis/validation'
 import { getDatasetCounts, getInsightCounts, getEvidence } from '@/lib/insights'
 import previewInsights from '@/mock-data/preview-insights.json'
 import type { Insight } from '@/lib/types'
+import posts from '@/mock-data/posts.json'
+import comments from '@/mock-data/comments.json'
+import fans from '@/mock-data/fans.json'
+
+// Reads retained seed fixtures without requiring a remote database in unit tests.
+const getFixtureDataset = () => validateDataset({ version: 'sample-2026-10-v3', posts, comments, fans })
 
 // Confirms the authored source data is internally consistent and supports repeated fan identities.
 test('sample data has 18 posts, 360 comments and repeated identities', async () => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = getFixtureDataset()
   assert.deepEqual(getDatasetCounts(dataset), { posts: 18, comments: 360, fans: 96 })
   assert.equal(new Set(dataset.comments.map(comment => comment.id)).size, 360)
   assert.ok(dataset.comments.length > dataset.fans.length)
@@ -21,7 +27,7 @@ test('sample data has 18 posts, 360 comments and repeated identities', async () 
 
 // Ensures a fan posting multiple comments is counted once per insight.
 test('theme counts deduplicate fans and comment references', async () => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = getFixtureDataset()
   const insights = validateAnalysis({ insights: previewInsights }, dataset)
 
   const insight = insights.find(
@@ -37,7 +43,7 @@ test('theme counts deduplicate fans and comment references', async () => {
 
 // Stops invented references from being accepted as evidence.
 test('analysis rejects nonexistent comments', async () => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = getFixtureDataset()
 
   assert.throws(
     () => validateAnalysis({ insights: [{ ...previewInsights[0], commentIds: ['invented-comment'] }] }, dataset),
@@ -47,7 +53,7 @@ test('analysis rejects nonexistent comments', async () => {
 
 // Prevents overview summaries from silently becoming unsupported post-specific claims.
 test('analysis rejects unsupported or missing post summaries', async () => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = getFixtureDataset()
 
   assert.throws(
     () => validateAnalysis({ insights: [{ ...previewInsights[0], postSummaries: [] }] }, dataset),
@@ -73,7 +79,7 @@ test('analysis rejects unsupported or missing post summaries', async () => {
 
 // Verifies post-specific counts and original evidence never include another post.
 test('post evidence remains inside its source post', async () => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = getFixtureDataset()
   const insight = previewInsights[0] as Insight
   const evidence = getEvidence(insight, dataset, 'post-01')
   assert.ok(evidence.length > 0)
@@ -83,7 +89,7 @@ test('post evidence remains inside its source post', async () => {
 
 // Invalidates saved analysis when ownership, content or analysis configuration changes.
 test('cache key includes owner, full content, model and prompt version', async () => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = getFixtureDataset()
   const original = getAnalysisCacheKey('user-one', dataset, 'model-one', 'prompt-one')
   assert.equal(original, getAnalysisCacheKey('user-one', dataset, 'model-one', 'prompt-one'))
   assert.notEqual(original, getAnalysisCacheKey('user-two', dataset, 'model-one', 'prompt-one'))
@@ -94,7 +100,7 @@ test('cache key includes owner, full content, model and prompt version', async (
 
 // Rejects source relationships that would invalidate deterministic metrics.
 test('dataset validation rejects duplicate and orphaned records', async () => {
-  const dataset = await sampleDataProvider.getDataset()
+  const dataset = getFixtureDataset()
   assert.throws(() => validateDataset({ ...dataset, fans: [...dataset.fans, dataset.fans[0]] }), /duplicate/)
 
   assert.throws(
@@ -105,5 +111,5 @@ test('dataset validation rejects duplicate and orphaned records', async () => {
 
 // A quiet dataset must remain an empty result rather than producing fabricated themes.
 test('empty structured analysis remains empty', async () => {
-  assert.deepEqual(validateAnalysis({ insights: [] }, await sampleDataProvider.getDataset()), [])
+  assert.deepEqual(validateAnalysis({ insights: [] }, getFixtureDataset()), [])
 })

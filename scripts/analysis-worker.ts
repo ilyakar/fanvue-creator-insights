@@ -5,7 +5,7 @@ Processes persisted analysis jobs with renewable leases and graceful shutdown.
 import { randomUUID } from 'node:crypto'
 
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
-import { sampleDataProvider } from '@/lib/data/provider'
+import { audienceDataProvider } from '@/lib/data/audience'
 import { analyseAudience } from '@/lib/analysis/service'
 import type { AnalysisJob } from '@/lib/types'
 
@@ -50,8 +50,8 @@ const runWorker = async () => {
     }, 30000)
 
     // Persist only results completed by this lease holder, then release its heartbeat.
-    await sampleDataProvider
-      .getDataset()
+    await audienceDataProvider
+      .getDataset(job.audience_creator_id)
       .then(dataset =>
         analyseAudience(dataset, async () => {
           unwrapDatabase(

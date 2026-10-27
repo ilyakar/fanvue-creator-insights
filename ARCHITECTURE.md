@@ -16,13 +16,13 @@ Refresh-token rotation is serialized by a database lease. Each new pair is writt
 
 ## Storage ownership
 
-Supabase Postgres owns accounts, connections, sessions, OAuth attempts and durable analysis jobs/results. Every private query derives its owner from the server session, never from an arbitrary browser user ID. RLS is enabled and browser roles have no private table privileges. The server-only service role performs explicitly scoped operations.
+Supabase Postgres owns accounts, connections, sessions, OAuth attempts, creator-scoped audience records and durable analysis jobs/results. Every private query derives its owner from the server session, never from an arbitrary browser user ID. RLS is enabled and browser roles have no private table privileges. The server-only service role performs explicitly scoped operations.
 
 Redux follows the reference structure but creates an isolated store per provider. It persists only the sidebar preference. Saved analysis, credentials and session identities never live in persisted Redux. Local component state owns dialogs and transient filters.
 
 ## Source data
 
-`AudienceDataProvider` abstracts loading. `sampleDataProvider` validates versioned JSON records and cross-record identities. The MVP always uses 18 synthetic posts, 360 comments and 96 fans; authenticating a real account does not make the dataset that account's content. Future live data requires a new provider and suitable verified Fanvue permissions/endpoints.
+`AudienceDataProvider` loads and validates creator-scoped records from Supabase. Each Fanvue account is mapped to the same demo creator by default, whose dataset contains 18 synthetic posts, 360 comments and 96 fans. Account sessions and analysis jobs remain individually owned. The JSON files are retained as seed and test fixtures, not runtime data. Future live data can use a different creator mapping and requires suitable verified Fanvue permissions/endpoints.
 
 The source provider is stable for a given dataset version. The result stores comment identifiers, not invented quotations. The matching source dataset must remain available for every saved result. If a live provider is added, persist immutable snapshots before saving any results; this MVP's committed sample files provide that immutable source.
 

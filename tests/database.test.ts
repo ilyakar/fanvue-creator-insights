@@ -76,3 +76,78 @@ test('private database schema, durable jobs and refresh leases', async () => {
   assert.equal((await database.query('select * from analysis_jobs where user_id=$1', [firstUser])).rows.length, 0)
   await database.close()
 })
+
+// Verifies shared demo routing, tenant relationships and browser access restrictions.
+test('creator datasets stay isolated while logins share the demo source', async () => {
+  const database = new PGlite()
+  await database.exec('create role anon; create role authenticated; create role service_role;')
+  await database.exec(await readFile(new URL('../supabase/migrations/001_initial.sql', import.meta.url), 'utf8'))
+  await database.exec(
+    await readFile(new URL('../supabase/migrations/20261027161608_shared_audience_data.sql', import.meta.url), 'utf8')
+  )
+  await database.exec(await readFile(new URL('../supabase/seed.sql', import.meta.url), 'utf8'))
+  await database.exec(await readFile(new URL('../supabase/seed.sql', import.meta.url), 'utf8'))
+
+  const demoCreatorId = '00000000-0000-4000-8000-000000000001'
+  const otherCreatorId = 'aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa'
+  const snapshot = await database.query<{ dataset: { posts: unknown[]; comments: unknown[]; fans: unknown[] } }>(
+    'select get_audience_dataset($1) as dataset',
+    [demoCreatorId]
+  )
+
+  assert.equal(snapshot.rows[0].dataset.posts.length, 18)
+  assert.equal(snapshot.rows[0].dataset.comments.length, 360)
+  assert.equal(snapshot.rows[0].dataset.fans.length, 96)
+  assert.equal(
+    (
+      await database.query<{ count: number }>(
+        'select jsonb_array_length(insights) as count from audience_preview_results'
+      )
+    ).rows[0].count,
+    9
+  )
+
+  await database.exec(
+    "insert into app_users(fanvue_id,username,display_name) values ('one','one','One'),('two','two','Two')"
+  )
+  const accounts = await database.query<{ audience_creator_id: string }>('select audience_creator_id from app_users')
+  assert.deepEqual(
+    accounts.rows.map(account => account.audience_creator_id),
+    [demoCreatorId, demoCreatorId]
+  )
+
+  await database.query(
+    "insert into audience_creators(id,display_name,dataset_version) values ($1,'Other creator','v1')",
+    [otherCreatorId]
+  )
+  await database.query(
+    "insert into audience_posts select $1,id,'Other title',caption,published_at,thumbnail,format from audience_posts where creator_id=$2 and id='post-01'",
+    [otherCreatorId, demoCreatorId]
+  )
+  await assert.rejects(
+    database.query(
+      "insert into audience_comments(creator_id,id,post_id,fan_id,text,created_at) values ($1,'cross-creator','post-01','fan-001','Invalid reference',now())",
+      [otherCreatorId]
+    ),
+    /foreign key/
+  )
+
+  const otherSnapshot = await database.query<{ dataset: { posts: { title: string }[]; comments: unknown[] } }>(
+    'select get_audience_dataset($1) as dataset',
+    [otherCreatorId]
+  )
+  assert.equal(otherSnapshot.rows[0].dataset.posts.length, 1)
+  assert.equal(otherSnapshot.rows[0].dataset.posts[0].title, 'Other title')
+  assert.equal(otherSnapshot.rows[0].dataset.comments.length, 0)
+
+  await database.exec('set role anon')
+  await assert.rejects(database.query('select * from audience_comments'), /permission denied/)
+  await assert.rejects(database.query('select get_audience_dataset($1)', [demoCreatorId]), /permission denied/)
+  await database.exec('reset role; set role authenticated')
+  await assert.rejects(database.query('select * from audience_posts'), /permission denied/)
+  await database.exec('reset role')
+  await database.exec("delete from app_users where fanvue_id='one'")
+  assert.equal((await database.query('select * from audience_comments')).rows.length, 360)
+  assert.equal((await database.query('select * from app_users')).rows.length, 1)
+  await database.close()
+})

@@ -4,9 +4,6 @@ Rejects duplicate identifiers and broken source relationships before analysis.
 
 import { z } from 'zod'
 
-import posts from '@/mock-data/posts.json'
-import comments from '@/mock-data/comments.json'
-import fans from '@/mock-data/fans.json'
 import type { Dataset } from '@/lib/types'
 
 const datasetSchema = z.object({
@@ -34,7 +31,7 @@ const datasetSchema = z.object({
 })
 
 export interface AudienceDataProvider {
-  getDataset: () => Promise<Dataset>
+  getDataset: (creatorId: string) => Promise<Dataset>
 }
 
 // Rejects duplicate identifiers and broken source relationships before analysis.
@@ -64,9 +61,4 @@ export const validateDataset = (input: unknown): Dataset => {
   }
 
   return dataset
-}
-
-// Supplies versioned sample content behind the future live-data boundary.
-export const sampleDataProvider: AudienceDataProvider = {
-  getDataset: async () => validateDataset({ version: 'sample-2026-10-v3', posts, comments, fans })
 }

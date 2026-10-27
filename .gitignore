@@ -8,3 +8,6 @@ out/
 coverage/
 .vercel/
 .vercel
+
+# Supabase CLI cache
+supabase/.temp/

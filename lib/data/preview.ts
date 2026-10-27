@@ -1,22 +1,30 @@
 /* ------------------------------------------------------------
-Supplies explicitly editorial fixtures for the development-only visual preview.
+Loads the shared demo content and explicitly editorial preview insights from Supabase.
 ---------------------------------------------------------------*/
 
-import insights from '@/mock-data/preview-insights.json'
-import type { DashboardModel, Insight } from '@/lib/types'
+import { getDatabase, unwrapDatabase } from '@/lib/server/database'
+import { validateAnalysis } from '@/lib/analysis/validation'
+import type { DashboardModel } from '@/lib/types'
 
-import { sampleDataProvider } from './provider'
+import { audienceDataProvider, demoCreatorId } from './audience'
 
-// Supplies explicitly editorial fixtures for the development-only visual preview.
-export const getPreviewModel = async (): Promise<DashboardModel> => ({
-  dataset: await sampleDataProvider.getDataset(),
-  result: {
-    insights: insights as Insight[],
-    analysedAt: '2026-10-27T08:00:00Z',
-    datasetVersion: 'sample-2026-10-v3',
-    model: 'Editorial design fixture. No AI analysis.',
-    promptVersion: 'preview-only'
-  },
-  account: null,
-  isPreview: true
-})
+// Keeps illustrative preview results separate from private AI analysis jobs.
+export const getPreviewModel = async (): Promise<DashboardModel> => {
+  const dataset = await audienceDataProvider.getDataset(demoCreatorId)
+  const preview = unwrapDatabase(
+    await getDatabase().from('audience_preview_results').select('*').eq('creator_id', demoCreatorId).single()
+  )
+
+  return {
+    dataset,
+    result: {
+      insights: validateAnalysis({ insights: preview.insights }, dataset),
+      analysedAt: preview.analysed_at,
+      datasetVersion: dataset.version,
+      model: preview.model,
+      promptVersion: preview.prompt_version
+    },
+    account: null,
+    isPreview: true
+  }
+}

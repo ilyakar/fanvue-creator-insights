@@ -60,6 +60,7 @@ export interface AnalysisResult {
 
 export interface Account {
   id: string
+  audience_creator_id: string
   fanvue_id: string
   username: string
   display_name: string
@@ -77,6 +78,7 @@ export type JobStage = 'queued' | 'analysing' | 'validating' | 'complete' | 'fai
 
 export interface AnalysisJob {
   id: string
+  audience_creator_id: string
   user_id: string
   cache_key: string
   status: JobStage
