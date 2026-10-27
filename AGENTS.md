@@ -1,0 +1,659 @@
+/* ------------------------------------------------------------
+This file lists the agent instructions and code style guidelines.
+---------------------------------------------------------------*/
+
+# AGENTS.md
+
+## Agent & Code Style Guidelines
+
+These rules define how code is written and maintained in this repository.
+They apply to both human contributors and AI agents.
+The goal is clarity, consistency, and long-term readability.
+
+---
+
+## 0. File Header Comment 🧾
+
+### Every file must start with a brief explanation
+
+Each file must include a short explanatory comment at the very top describing what the file is and what it does.
+
+This applies to
+
+- TS, TSX, JS files
+- Components
+- Hooks
+- Utilities
+- Configuration files where applicable
+
+### Required format
+
+Use a multi-line comment with clear separators.
+
+Example
+
+```ts
+/* ------------------------------------------------------------
+This is the datepicker with range component for selecting date ranges.
+---------------------------------------------------------------*/
+```
+
+Rules
+
+- The comment must be the first thing in the file
+- One short sentence is enough
+- Describe purpose, not implementation details
+
+---
+
+### Special rule for 'use client'
+
+If a file uses the 'use client' directive, it must appear as the very first line in the file.
+
+In this case, the file-level header comment must be placed after a single blank line following 'use client'.
+
+Correct order
+
+```ts
+'use client'
+
+/* ------------------------------------------------------------
+This is the datepicker with range component for selecting date ranges.
+---------------------------------------------------------------*/
+```
+
+Incorrect order
+
+```ts
+/* ------------------------------------------------------------
+This is the datepicker with range component for selecting date ranges.
+---------------------------------------------------------------*/
+
+'use client'
+```
+
+Rules
+
+- 'use client' must always be the first statement in the file
+- No comments, imports, or whitespace may appear before it
+- There must be exactly one blank line between 'use client' and the file header comment
+- The file header comment must come directly after that blank line when present
+
+---
+
+## 1. Naming Conventions 🏷️
+
+### 1.1 User-interaction handlers use a leading underscore
+
+Only functions that are directly triggered by user interaction must use camelCase with a leading underscore.
+
+Examples
+
+- \_handleSubmit
+- \_onClick
+- \_onChange
+- \_onKeyDown
+- \_handleSearchSubmit
+- \_handleModalClose
+
+This applies to
+
+- click handlers (for example `_onClick`, `_handleClick`)
+- input/change handlers (for example `_onChange`, `_handleInputChange`)
+- submit/search handlers triggered by the user (for example `_handleSubmit`, `_handleSearchSubmit`)
+- keyboard handlers triggered by user input (for example `_onKeyDown`)
+
+This does not apply to
+
+- functions not triggered directly by a user action
+- data-fetching helpers (for example `fetchLatestVehicles`)
+- value formatters or getters (for example `getVehicleDisplayName`)
+- pure utility/helper functions that are not event handlers
+- lifecycle or system callbacks that are not direct user interactions
+
+Rule of thumb: if the function runs because the user directly did something (click, type, submit, search), use an underscore; otherwise, do not use one.
+
+---
+
+### 1.2 Variables and functions must be fully spelled out
+
+Do not use abbreviated or single-letter names.
+
+Avoid
+
+- t, b, h, k
+- x, y
+- tmp, val, obj
+- data, res
+
+Exception
+
+- `t` is allowed when it is the translation function (i18n), e.g. `t('home.title')`.
+- `tHome`, `tContact`, or similar `t*` names are allowed when they are translation functions scoped to a namespace, e.g. `tHome('searchPlaceholder')`.
+
+Prefer
+
+- searchQuery
+- selectedVehicleId
+- isFetchingResults
+- reservationStartDate
+- formattedPriceAed
+
+Readability is always preferred over brevity.
+
+This rule applies to
+
+- local variables
+- function names
+- parameters
+- derived values
+
+---
+
+### 1.3 Component naming
+
+React components must use PascalCase, following standard React conventions.
+Component file names must also use PascalCase to match the component.
+
+Examples
+
+- SearchBar
+- FeaturedCollection
+- VehicleCard
+- BookingSummary
+
+---
+
+### 1.4 Component folder naming
+
+Folders that contain components must use PascalCase (capital first letter, camel case).
+
+Examples
+
+- SideMenu
+- CarListingCarousel
+- FeaturedCollection
+
+---
+
+### 1.5 Default exports for single components
+
+When a file exports a single component, it must use a default export so it can be imported without braces.
+
+Example
+
+```ts
+// Correct
+const SideMenu = () => {
+  ...
+}
+
+// Correct import
+import SideMenu from './SideMenu'
+
+export default SideMenu
+```
+
+---
+
+### 1.6 Prefer ES6 arrow functions
+
+Prefer ES6 arrow function expressions over `function` declarations whenever possible.
+
+Use
+
+```ts
+const fetchVehicles = async () => {
+  ...
+}
+```
+
+Avoid
+
+```ts
+async function fetchVehicles() {
+  ...
+}
+```
+
+Exception
+
+When a framework requires a named function export or specific signature, follow the framework requirement.
+
+---
+
+## 2. Function Comments 📝
+
+Every function must include a short comment describing what it does.
+
+Rules
+
+- Place the comment immediately above the function
+- One sentence is usually enough
+- Describe intent, not implementation details
+- Always include a blank line before a function-level comment
+
+Correct
+
+```ts
+doSomething()
+
+// Handles Enter key presses to submit the search.
+const _handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  ...
+}
+```
+
+Incorrect
+
+```ts
+doSomething()
+// Handles Enter key presses to submit the search.
+const _handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+  ...
+}
+```
+
+This spacing rule applies to
+
+- event handlers
+- utility functions
+- helpers
+- hooks and hook helpers
+
+---
+
+## 2.4 Add Inline Comments For Clarity
+
+Use short inline comments inside functions to clarify intent when the code is not immediately obvious.
+
+Examples of good inline comments
+
+- explaining why a guard clause exists
+- describing a non-obvious state transition
+- calling out a subtle condition or assumption
+- indicating why a side effect happens (not just that it happens)
+
+Avoid
+
+- narrating obvious code (e.g. `// Set value`)
+- repeating the function-level comment
+
+Aim for a few well-placed inline comments in any non-trivial function.
+
+---
+
+## 2.1 Conditional Comments
+
+When adding comments for conditional branches, place them immediately before the branch keyword and never inside the previous branch block.
+
+Rules
+
+- Put the comment directly above the `if` line
+- For `else if` or `else`, place the comment between the closing brace of the previous block and the `else` keyword
+- Do not place branch comments inside the block they describe or inside the previous branch block
+
+---
+
+## 2.2 Grouped Declarations and Whitespace
+
+When declaring variables, hooks, and derived values, separate different categories with a blank line for readability.
+
+Examples of categories
+
+- routing/navigation hooks
+- state hooks
+- derived values or memoized values
+- data fetching hooks
+- refs and constants
+
+This keeps related items visually grouped and makes scanning easier.
+
+---
+
+## 2.3 Avoid nested ternaries for multi-branch assignments
+
+Never use nested ternaries to assign a value across multiple branches. It is hard to scan and easy to misread.
+
+Instead, declare the variable first and use an explicit `if/else if/else` chain with a brief comment before each branch.
+
+Avoid
+
+```ts
+const matchedSearchPath = matchedCategoryKey
+  ? `/cars/category:${matchedCategoryKey}`
+  : matchedBrandKey
+    ? `/cars/brand:${matchedBrandKey}`
+    : matchedBodyTypeKey
+      ? `/cars/body-type:${matchedBodyTypeKey}`
+      : null
+```
+
+Preferred
+
+```ts
+let matchedSearchPath = null
+
+// Use category match when present.
+if (matchedCategoryKey) {
+  matchedSearchPath = `/cars/category:${matchedCategoryKey}`
+}
+// Use brand match when category is missing.
+else if (matchedBrandKey) {
+  matchedSearchPath = `/cars/brand:${matchedBrandKey}`
+}
+// Use body type match when both category and brand are missing.
+else if (matchedBodyTypeKey) {
+  matchedSearchPath = `/cars/body-type:${matchedBodyTypeKey}`
+}
+```
+
+---
+
+## 3. TSX Layout and Spacing ✨
+
+### 3.1 Blank lines between sibling JSX elements
+
+Use blank lines between sibling JSX elements only when at least one of the adjacent siblings is multi-line (for example, it has children or its props span multiple lines). When both adjacent siblings are single-line, do not insert a blank line.
+
+Preferred (multi-line sibling gets a blank line)
+
+```tsx
+return (
+  <div>
+    <button type="button" onClick={_onClick}>
+      Search
+    </button>
+
+    <div className="results">...</div>
+  </div>
+)
+```
+
+Preferred (single-line siblings stay adjacent)
+
+```tsx
+return (
+  <div>
+    <SummaryCard />
+    <div className="spacer--sm" />
+    <ResultsList />
+  </div>
+)
+```
+
+---
+
+### 3.2 Grouping rule
+
+If multiple elements belong together conceptually, wrap them in a parent container and keep spacing consistent within that group.
+
+---
+
+### 3.3 Nested elements must be nested in SCSS
+
+When an element is nested inside a parent in the markup, its styles must be nested under the parent selector in SCSS so the structure matches one-to-one.
+
+Example
+
+```tsx
+<div className="details">
+  <div className="text">
+    <div className="name">...</div>
+
+    <div className="meta">...</div>
+  </div>
+
+  <Image className="brand-logo" ... />
+</div>
+```
+
+```scss
+.details {
+  ...
+
+  .text {
+    ...
+
+    .name {
+      ...
+    }
+
+    .meta {
+      ...
+    }
+  }
+
+  .brand-logo {
+    ...
+  }
+}
+```
+
+---
+
+### 3.4 Prefer concise SCSS class names for nested elements
+
+When styles are nested under a parent selector, keep child class names short and avoid repeating the parent name.
+
+Do not repeat the parent class name in nested child class names.
+
+Example of good code:
+
+```scss
+.delivery-and-pickup-map {
+  .popup {
+    .content {
+      .text {
+        ...
+      }
+    }
+  }
+}
+```
+
+Example of bad code:
+
+```scss
+.delivery-and-pickup-map {
+  .delivery-and-pickup-map-popup {
+    .delivery-and-pickup-map-popup-content {
+      .delivery-and-pickup-map-popup-content-text {
+        ...
+      }
+    }
+  }
+}
+```
+
+---
+
+### 3.5 Place responsive rules inside the selector they modify
+
+When adding responsive overrides, use the shared SCSS responsive mixins and place the include inside the selector it affects instead of grouping overrides at the end of the file.
+
+Example
+
+```scss
+.general-search {
+  display: flex;
+
+  @include max-width(tablet) {
+    flex-wrap: wrap;
+  }
+
+  .search-field {
+    flex: 1;
+
+    @include max-width(tablet) {
+      flex: 1 1 100%;
+    }
+  }
+}
+```
+
+---
+
+### 3.6 Use the shared SCSS foundation
+
+Write all application styling in `.scss` files. Follow the organization and import patterns in `good-code-from-another-project/styles/`, and reuse shared variables, functions, mixins, and foundational styles instead of duplicating them in page or component files.
+
+---
+
+### 3.7 Margin direction preference
+
+Prefer adding vertical spacing with `margin-bottom` (margin down) rather than `margin-top` (margin up) so stacks maintain predictable flow and future tweaks only adjust spacing after elements.
+
+---
+
+### 3.8 Sizing must be a multiple of five pixels
+
+When using custom SCSS sizes, only use values that are multiples of 5px (for example 5px, 10px, 15px, 20px) unless explicitly stated otherwise.
+
+Avoid values like 4px or 8px.
+
+Exception
+
+- In very rare cases, 0.5 spacing (2.5px) is allowed when explicitly requested and visually necessary.
+
+---
+
+### 3.9 Prefer short-circuit conditionals for optional strings
+
+When conditionally appending strings (like class names), prefer short-circuit `&&` over ternaries that return empty strings.
+
+Bad
+
+```ts
+${canScrollPrevious ? '' : 'disabled'}
+${canScrollPrevious ? 'enabled' : ''}
+```
+
+Good
+
+```ts
+${!canScrollPrevious && 'disabled'}
+${canScrollPrevious && 'enabled'}
+```
+
+---
+
+## 4. Example, Putting Everything Together ✅
+
+```tsx
+'use client'
+
+/* ------------------------------------------------------------
+This is the search bar component used to filter available vehicles.
+---------------------------------------------------------------*/
+
+// Renders the search bar and handles user interactions.
+const SearchBar = () => {
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isFetchingResults, setIsFetchingResults] = useState(false)
+
+  // Updates the search query when the user types.
+  const _onChangeSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value)
+  }
+
+  // Submits the search request and updates loading state.
+  const _handleSubmitSearch = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    setIsFetchingResults(true)
+
+    try {
+      await fetchSearchResults(searchQuery)
+    } finally {
+      setIsFetchingResults(false)
+    }
+  }
+
+  return (
+    <form onSubmit={_handleSubmitSearch}>
+      <input value={searchQuery} onChange={_onChangeSearchQuery} placeholder="Search cars" />
+
+      <button type="submit" disabled={isFetchingResults}>
+        {isFetchingResults ? 'Loading…' : 'Search'}
+      </button>
+    </form>
+  )
+}
+
+export default SearchBar
+```
+
+---
+
+## 5. Agent Instructions 🤖
+
+When making changes, agents must
+
+- add a file-level header comment at the top of every file
+- ensure 'use client' is the very first line when present
+- place the file header comment after a single blank line following 'use client'
+- use a leading underscore only for functions directly triggered by user interaction (click, type, submit, search)
+- keep camelCase naming for variables and functions
+- prefer ES6 arrow function expressions over `function` declarations
+- fully spell out all names, no abbreviations
+- add a brief comment above every function
+- when a file defines a primary page/component plus helpers, place the primary page/component first and keep helper components below it
+- always include a blank line before function-level comments
+- use PascalCase for folders that contain components
+- default-export files that contain a single component so imports do not use braces
+- maintain blank lines between sibling TSX elements
+- write all application styling in SCSS and follow the structure in `good-code-from-another-project/styles/`
+- reuse shared SCSS variables, functions, mixins, and foundational styles instead of duplicating them
+- use custom SCSS sizing values that are multiples of 5px
+- prefer short-circuit `&&` for conditional strings instead of ternaries with empty strings
+- for conditional class names, use template literals with `&&`, e.g. `className={`filter-button ${isFilterApplied && 'is-active'}`}`
+- prefer promise-based error handling (`.then/.catch`) over `try/catch` when possible
+- prefer default styling when possible; avoid adding explicit colors or extra styling if the defaults already match the desired appearance
+- do not set a Font Awesome icon `size` prop unless explicitly required
+- use Font Awesome icons throughout; if a different icon system is in use on a page you are editing (such as Lucide React), replace it with the closest Font Awesome icon and use `size="lg"` unless explicitly directed otherwise
+- preserve existing patterns and formatting in the repository
+- before making architectural or structural decisions, inspect the closest equivalent in `good-code-from-another-project/` and follow its established approach unless the user explicitly requests a different pattern
+
+Agents should prefer clarity and explicitness over clever or compact code.
+
+---
+
+## 6. Canonical Architecture and Style Reference 🧭
+
+The copied code in `good-code-from-another-project/` is the canonical reference for architectural, structural, and styling decisions in this project.
+
+Before creating or reorganizing code, agents must inspect the closest relevant example in that directory and follow its approach. This applies to
+
+- application and route organization
+- layouts, pages, providers, and component composition
+- component boundaries, naming, imports, and data flow
+- API route structure and external-service integration
+- shared data and library modules
+- Redux reducers, store configuration, persistence, and migrations
+- global styles, page styles, component styles, variables, mixins, and responsive behavior
+
+Use these locations as the primary references by concern:
+
+- app shell, layouts, and providers: `good-code-from-another-project/app/layout.tsx`, `good-code-from-another-project/app/Providers.tsx`, and `good-code-from-another-project/app/AlertProvider.tsx`
+- pages and route organization: `good-code-from-another-project/app/page.tsx`, `good-code-from-another-project/app/home/`, `good-code-from-another-project/app/onboarding/`, and `good-code-from-another-project/app/the-mirror/`
+- reusable components: `good-code-from-another-project/app/Components/`
+- API routes: `good-code-from-another-project/app/api/`
+- shared data and service helpers: `good-code-from-another-project/data/` and `good-code-from-another-project/lib/`
+- application state: `good-code-from-another-project/redux/reducers/` and `good-code-from-another-project/redux/stores/`
+- styling architecture: `good-code-from-another-project/styles/coreStyling/`, `good-code-from-another-project/styles/components/`, `good-code-from-another-project/styles/stylingImports/`, and the page-level SCSS files in `good-code-from-another-project/styles/`
+
+The reference directory is source material, not application code. Do not import runtime code directly from it or modify it unless the user explicitly asks. Recreate the relevant pattern within the active project and adapt names, content, and dependencies to the current feature.
+
+The explicit rules in this `AGENTS.md` and direct user instructions take precedence if the copied code differs from them. Otherwise, treat the closest example in `good-code-from-another-project/` as the default decision. Do not introduce a competing architecture, folder convention, state-management approach, or styling system without a clear requirement.
+
+When adding or refactoring functionality, agents should
+
+- inspect the relevant reference files before deciding on an implementation
+- preserve the reference project's separation of responsibilities and level of component granularity
+- keep changes local and incremental unless the requested feature requires a broader foundation
+- adapt reference patterns to the current project rather than copying feature-specific names or business logic
+- ask for clarification when multiple reference patterns apply and the choice would materially affect the architecture
+
+---
+
+End of file.

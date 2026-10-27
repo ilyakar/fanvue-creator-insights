@@ -1,0 +1,17 @@
+@function fast-transition($properties...) {
+  $duration: 0.3s;
+  $easing: ease;
+
+  $transitions: ();
+
+  @each $prop in $properties {
+    $transitions: append($transitions, #{$prop} #{$duration} #{$easing}, comma);
+  }
+
+  @return $transitions;
+}
+
+@function hexToRGBA($color, $alpha: 1) {
+
+  @return rgba(red($color), green($color), blue($color), $alpha);
+}

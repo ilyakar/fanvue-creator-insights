@@ -1,0 +1,137 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  width: 100%;
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    label {
+      font-weight: 600;
+      font-size: 20px;
+
+      small {
+        display: block;
+        font-size: 12px;
+        font-weight: 400;
+        color: $color-light-blue-1;
+      }
+    }
+
+    .input-wrapper {
+      position: relative;
+
+      &::after {
+        content: '\f00c';
+        // Font Awesome check icon
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        color: $color-super-green;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: 18px;
+        pointer-events: none;
+        opacity: 0;
+        transition: fast-transition(opacity);
+      }
+
+      &.valid {
+
+        &::after {
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+
+input,
+textarea {
+  border-radius: 10px;
+  border: 1px solid $color-light-blue-2;
+  background: $color-light-blue-3;
+  background: linear-gradient(90deg, $color-light-blue-3 0%, darken($color-light-blue-3, 5%) 100%);
+  box-shadow: $box-shadow-small;
+  color: $color-light-blue-1;
+  height: 60px;
+  padding: 0 20px;
+  padding-right: 40px;
+  font-size: 20px;
+  font-weight: 600;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: hexToRGBA($color-light-blue-1, 0.4);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+textarea {
+  padding: 17px 20px;
+  height: 100px;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.checkbox-section {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+  margin-bottom: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-align: left;
+
+  &:hover {
+
+    .checkbox {
+      background-color: $color-light-blue-2;
+    }
+  }
+
+  .checkbox {
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    background-color: $color-light-blue-3;
+    border: solid 1px $color-light-blue-2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 20px;
+    transition: fast-transition(background-color);
+
+    i {
+      opacity: 0;
+      transition: fast-transition(opacity);
+    }
+  }
+
+  &.checked .checkbox {
+
+    i {
+      opacity: 1;
+    }
+  }
+
+  .text {
+    font-size: 16px;
+    color: white;
+  }
+}

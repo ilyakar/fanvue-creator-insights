@@ -1,0 +1,96 @@
+.pill {
+  border: 1px solid $color-light-blue-2;
+  background: $color-light-blue-3;
+  color: $color-light-blue-1;
+  position: relative;
+  line-height: 1.5;
+
+  &.size-m {
+    padding: 5px 20px;
+    border-radius: 20px;
+    font-size: 16px;
+  }
+
+  &.size-s {
+    padding: 4px 15px;
+    border-radius: 16px;
+    font-size: 12px;
+  }
+
+  &.size-xs {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+  }
+
+  &.selectable {
+    cursor: pointer;
+    transition: fast-transition(background-color, padding, border);
+
+    &:active {
+      opacity: 0.7;
+    }
+
+    &.size-m {
+
+      &::after {
+        right: 20px;
+        font-size: 18px;
+      }
+
+      &.selected {
+        padding-right: 45px;
+      }
+    }
+
+    &.size-s {
+
+      &::after {
+        right: 15px;
+        font-size: 16px;
+      }
+
+      &.selected {
+        padding-right: 35px;
+      }
+    }
+
+    &.size-xs {
+
+      &::after {
+        right: 10px;
+        font-size: 12px;
+      }
+
+      &.selected {
+        padding-right: 27px;
+      }
+    }
+
+    &::after {
+      content: '\f00c';
+      // Font Awesome check icon
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      color: $color-super-green;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      opacity: 0;
+      transition: fast-transition(opacity);
+    }
+
+    &:hover {
+      background: $color-light-blue-2;
+    }
+
+    &.selected {
+      border-color: $color-super-green;
+
+      &::after {
+        opacity: 1;
+      }
+    }
+  }
+}

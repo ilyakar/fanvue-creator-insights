@@ -1,0 +1,29 @@
+// Import all fontawsome icons
+@import '@fortawesome/fontawesome-free/css/all.min.css'
+
+// Base styles, resets
+@import '_base'
+
+// Global typography
+@import '_typography'
+
+// Global layout helpers
+@import '_layout'
+
+// Global button styles
+@import '_buttons'
+
+// Global pill styles
+@import '_pills'
+
+// Global image styles
+@import '_images'
+
+// Global form styles
+@import '_form'
+
+// Global components (like footer)
+@import '_footer'
+
+// Other components that we reuse often (e.g., My Future Self card)
+@import '_other'

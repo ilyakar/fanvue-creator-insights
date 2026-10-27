@@ -1,0 +1,124 @@
+@import '../stylingImports/index';
+
+.archetype-preview-button {
+  max-width: 300px;
+  width: 100%;
+  height: 240px;
+  border-radius: 15px;
+  overflow: hidden;
+  position: relative;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: fast-transition(opacity);
+  box-shadow: $box-shadow-medium;
+
+  &:hover {
+    opacity: 0.7;
+  }
+
+  &:before {
+    content: '';
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-image: linear-gradient(to top, transparent, hexToRGBA($color-black, 0.4));
+    position: absolute;
+    z-index: 1;
+  }
+
+  &:after {
+    content: '';
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background-image: linear-gradient(to bottom, transparent, hexToRGBA($color-black, 0.4));
+    position: absolute;
+    z-index: 1;
+  }
+
+  h3 {
+    position: absolute;
+    top: 0;
+    padding: 10px;
+    z-index: 5;
+    left: 0;
+    right: 0;
+    padding-top: 20px;
+    font-size: 24px;
+    opacity: 0.7;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center center;
+  }
+
+  .overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    z-index: 5;
+  }
+
+  .label {
+    font-size: 16px;
+    font-weight: 600;
+    color: $color-light-blue-1;
+    padding: 10px 15px;
+    border-radius: 15px;
+    background: hexToRGBA($color-light-blue-1, 0.1);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    box-shadow: $box-shadow-small;
+  }
+
+  .level-progress {
+    width: 100%;
+    height: 32px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 15px;
+    overflow: hidden;
+
+    &:before {
+      content: '';
+      top: 0;
+      right: 1.5px;
+      bottom: 0;
+      left: 0;
+      position: absolute;
+      border-radius: 15px;
+      background: linear-gradient(to right, $color-super-blue, $color-super-green);
+    }
+
+    .progress-text {
+      position: relative;
+      z-index: 5;
+    }
+
+    .progress-bar {
+      border-top-right-radius: 15px;
+      border-bottom-right-radius: 15px;
+      background-color: $color-light-blue-3;
+      position: absolute;
+      top: 0;
+      right: -1.5px;
+      bottom: 0;
+      z-index: 2;
+      width: 10%;
+    }
+  }
+}

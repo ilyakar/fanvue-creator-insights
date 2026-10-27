@@ -1,0 +1,40 @@
+@import '../stylingImports/index';
+
+body {
+  font-family: var(--font-dm-sans), sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  font-family: var(--font-merriweather), serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $color-white;
+  line-height: 1.2;
+  display: inline-block;
+}
+
+// This makes sure that these elements will inherit the font family and other things from body.
+input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  color: inherit;
+}
+
+.text-gradient-pink {
+  background-image: linear-gradient(120deg, $color-super-blue, $color-super-pink);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+}

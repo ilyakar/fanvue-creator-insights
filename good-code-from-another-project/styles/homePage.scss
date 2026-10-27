@@ -1,0 +1,440 @@
+@import 'stylingImports/index';
+
+// Hero Section
+.hero-section {
+  height: 100vh;
+  // Fallback for older browsers
+  height: 100svh;
+  Fallbackforolderbrowsersheight // Using svh is a fix for iOS
+  background: linear-gradient(104deg, #000 17.17%, #0f1022 102.38%);
+  box-shadow: 0 20px 80px 0 rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin-bottom: 60px;
+
+  &:before {
+    content: '';
+    display: block;
+    width: 1700px;
+    height: 1700px;
+    background: url('/bg-glow-blue.png') no-repeat center / cover;
+    position: absolute;
+    z-index: -1;
+    bottom: -500px;
+    left: -500px;
+    pointer-events: none;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    width: 1700px;
+    height: 1700px;
+    background: url('/bg-glow-pink.png') no-repeat center / cover;
+    position: absolute;
+    z-index: -2;
+    bottom: -650px;
+    right: -500px;
+    pointer-events: none;
+  }
+
+  .spline-hero-bg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    overflow: hidden;
+    border-radius: inherit;
+
+    canvas,
+    iframe {
+      width: 100% !important;
+      height: 100% !important;
+      display: block;
+      object-fit: cover;
+    }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    text-align: center;
+    padding-top: 80px;
+    padding-bottom: 0px;
+
+    h1 {
+      font-size: 48px;
+      margin-bottom: 0px;
+      margin-left: 20px;
+      margin-right: 20px;
+
+      @include max-width(tablet) {
+        font-size: 38px;
+      }
+
+      @include max-width(phone) {
+        font-size: 32px;
+      }
+    }
+
+    .hero-subtitle {
+      font-size: 20px;
+      color: $color-light-blue-1;
+      text-align: center;
+      max-width: 600px;
+      line-height: 1.5;
+      margin-top: 0px;
+    }
+  }
+
+  .logo {
+    position: absolute;
+    top: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0 auto;
+    z-index: 5;
+  }
+
+  .login-button {
+    position: absolute;
+    top: 28px;
+    right: 24px;
+    color: $color-light-blue-2;
+    font-weight: bold;
+    transition: fast-transition(opacity);
+    font-size: 20px;
+    z-index: 5;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  // Remove old .image-container and .content styles if not needed
+  .image-container,
+  .content {
+    display: none !important;
+  }
+
+  .scroll-indicator {
+    position: absolute;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    z-index: 10;
+    animation: bounce-down 1.5s infinite;
+    opacity: 0.8;
+    pointer-events: none;
+
+    svg {
+      display: block;
+    }
+  }
+}
+
+@keyframes bounce-down {
+
+  0%,
+  100% {
+    transform: translateX(-50%) translateY(0);
+  }
+
+  50% {
+    transform: translateX(-50%) translateY(12px);
+  }
+}
+
+.home-content {
+  display: flex;
+  flex-direction: column;
+  gap: 140px;
+  margin-bottom: 140px;
+
+  @include max-width(tablet) {
+    gap: 90px;
+    margin-bottom: 90px;
+  }
+}
+
+// Social Proof Section
+.social-proof {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .heading {
+    font-size: 40px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: center;
+    line-height: 100%;
+  }
+
+  .subheading {
+    font-size: 20px;
+    text-align: center;
+    margin-bottom: 32px;
+  }
+
+  // The testimonial carousel
+  .testimonial-carousel {
+    overflow: hidden;
+    width: 100%;
+    padding: 40px 0;
+    border-left: solid 1px rgba(255, 255, 255, 0.1);
+    border-right: solid 1px rgba(255, 255, 255, 0.1);
+    --slide-spacing: 16px;
+    --slide-size: 30%;
+
+    // Show only two testimonials on tablets
+    @include max-width(tablet) {
+      --slide-size: 50%;
+    }
+
+    // Show only one testimonial on phones
+    @include max-width(phone) {
+      --slide-size: 80%;
+    }
+
+    .content {
+      display: flex;
+      margin-left: calc(var(--slide-spacing) * -1);
+
+      .slide {
+        flex: 0 0 var(--slide-size);
+        min-width: 0;
+        padding-left: var(--slide-spacing);
+
+        .slide-content {
+          background-color: $color-dark-blue-1;
+          border-radius: 32px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: flex-start;
+          height: 208px;
+          user-select: none;
+          padding: 56px 16px 16px;
+          box-shadow: 0 15px 45px 0 rgba(0, 0, 0, 0.5);
+
+          img.user-image {
+            width: 80px;
+            height: 80px;
+            border-radius: 80px;
+            position: absolute;
+            top: -40px;
+          }
+
+          .name {
+            font-size: 16px;
+            font-weight: bold;
+            margin-bottom: 5.6px;
+            display: block;
+          }
+
+          img.stars {
+            margin-bottom: 16px;
+          }
+
+          .text {
+            font-size: 14px;
+            line-height: 140%;
+            display: block;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+}
+
+.card-xl {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  @include max-width(tablet) {
+    flex-direction: column;
+  }
+
+  .image-container {
+    margin-right: 30px;
+
+    @include max-width(tablet) {
+      margin-right: 0;
+      margin-bottom: 30px;
+    }
+
+    img {
+      width: 320px;
+      height: 432px;
+      max-width: inherit;
+      object-fit: cover;
+      object-position: center;
+
+      @include max-width(tablet) {
+        height: 320px;
+      }
+    }
+  }
+
+  .content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+
+    @include max-width(tablet) {
+      max-width: 320px;
+    }
+
+    .mini-heading {
+      font-size: 18px;
+      letter-spacing: 4px;
+    }
+
+    .heading {
+      font-size: 48px;
+      font-weight: bold;
+
+      @include max-width(tablet) {
+        font-size: 38px;
+      }
+
+      &.large-heading {
+        font-size: 78px;
+
+        @include max-width(tablet-large) {
+          font-size: 64px;
+        }
+
+        @include max-width(tablet) {
+          font-size: 52px;
+        }
+      }
+    }
+
+    .description {
+      font-size: 18px;
+
+      @include max-width(tablet) {
+        font-size: 16px;
+      }
+    }
+
+    .button {
+      margin-top: 24px;
+    }
+  }
+}
+
+.six-mini-cards-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(3, auto);
+  gap: 140px 140px;
+
+  // Responsive logic
+  @include max-width(tablet) {
+    grid-template-columns: 1fr;
+    gap: 60px;
+  }
+}
+
+.footer {
+  border-top: solid 1px hexToRGBA($color-white, 0.1);
+
+  .container {
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0;
+
+    .left-section,
+    .right-section {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      opacity: 0.7;
+    }
+
+    .left-section {
+      justify-content: flex-start;
+
+      strong {
+        margin-right: 5px;
+      }
+
+      .slogan {
+
+        @include max-width(tablet) {
+          display: none;
+        }
+      }
+    }
+
+    .right-section {
+      justify-content: flex-end;
+    }
+  }
+}
+
+.how-it-works-flex {
+  display: flex;
+  align-items: center;
+  gap: 40px;
+
+  @include max-width(tablet) {
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
+  }
+}
+
+.how-it-works-video {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 16px;
+  margin-right: 40px;
+  box-shadow: $box-shadow-medium;
+
+  @include max-width(tablet) {
+    margin-right: 0;
+    margin-left: 0;
+    margin-bottom: 0;
+  }
+}
+
+.invest-future-row {
+  display: flex;
+  flex-direction: row;
+  gap: 64px;
+  justify-content: center;
+  margin-top: 40px;
+
+  .card-xl {
+    flex: 1 1 0;
+    max-width: 500px;
+  }
+
+  @include max-width(tablet) {
+    flex-direction: column;
+    gap: 24px;
+
+    .card-xl {
+      max-width: 100%;
+    }
+  }
+}

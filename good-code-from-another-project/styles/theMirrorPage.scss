@@ -1,0 +1,631 @@
+@import 'stylingImports/index';
+
+@import 'mirrorArchetypeCardOverlay.scss';
+
+.the-mirror-page {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  // Fallback for older browsers
+  height: 100svh;
+  Fallbackforolderbrowsersheight // Using svh is a fix for iOS
+
+  // Account for devices with notches and dynamic system UI elements
+  padding-top: constant(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top);
+
+  .the-mirror-header {
+    margin: 40px 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+
+    @include max-width(tablet-large) {
+      margin: 30px 15px 30px;
+    }
+
+    .header-left {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      align-items: center;
+      z-index: 2;
+
+      .header-progress-indicators {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        @include max-width(tablet-large) {
+          // position: absolute;
+          // top: 35px;top
+        }
+      }
+
+      @include max-width(tablet-large) {
+        // right: 0;
+        // justify-content: center;
+
+        img {
+          display: none;
+        }
+      }
+    }
+
+    .header-center {
+      display: inline-block;
+
+      @include max-width(tablet-large) {
+        position: absolute;
+        top: 60px;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    .header-right {
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
+      position: absolute;
+      right: 0;
+      top: 0;
+      top: 50%;
+      transform: translateY(-50%);
+
+      .memory-button {
+
+        @include max-width(tablet-large) {
+          display: none;
+        }
+      }
+    }
+
+    .header-level-progress {
+      height: 32px;
+      background-color: $color-light-blue-3;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 600;
+      width: 180px;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+
+      &:before {
+        content: '';
+        top: 0;
+        right: 1.5px;
+        bottom: 0;
+        left: 0;
+        position: absolute;
+        border-radius: 15px;
+        background: linear-gradient(to right, $color-super-blue, $color-super-green);
+      }
+
+      @include max-width(tablet-large) {
+        display: none;
+      }
+
+      .progress-text {
+        position: relative;
+        z-index: 5;
+      }
+
+      .progress-bar {
+        border-top-right-radius: 15px;
+        border-bottom-right-radius: 15px;
+        background-color: $color-light-blue-3;
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        width: 10%;
+      }
+    }
+
+    .alignment-progress {
+      display: none;
+
+      @include max-width(tablet-large) {
+        display: inherit;
+      }
+    }
+
+    .header-pill {
+      height: 32px;
+      padding: 0 10px 0 10px;
+      background-color: $color-light-blue-3;
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: default;
+      white-space: nowrap;
+
+      img {
+        margin-right: 7px;
+        height: 24px;
+        width: auto;
+      }
+
+      i {
+        font-size: 18px;
+        margin-right: 7px;
+      }
+
+      .streak-info-icon {
+        font-size: 14px;
+        margin-left: 5px;
+        margin-right: 0;
+        opacity: 0.7;
+      }
+
+      &.streak-warning {
+        border: 2px solid $color-alert-red;
+
+        i {
+          color: $color-alert-red;
+        }
+      }
+    }
+
+    button.header-pill {
+      transition: fast-transition(transform, background);
+      cursor: pointer;
+
+      &:hover {
+        background: $color-light-blue-2;
+      }
+
+      &.selected {
+        cursor: default;
+      }
+    }
+
+    .header-pill-toggle {
+      display: flex;
+      gap: 7.5px;
+      padding: 7.5px;
+      border-radius: 50px;
+      background-color: $color-light-blue-3;
+
+      .header-pill {
+        background-color: transparent;
+        font-size: 16px;
+        position: relative;
+
+        &.selected,
+        &:hover {
+          background: $color-light-blue-2;
+        }
+
+        .check-in-indicator {
+          position: absolute;
+          top: -15px;
+          right: -10px;
+          width: 25px;
+          height: 25px;
+          border-radius: 12.5px;
+          background-image: linear-gradient(120deg, mix($color-super-green, $color-super-blue, 15%), mix($color-super-green, $color-super-blue, 85%));
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: $color-white;
+
+          i {
+            font-size: 15px;
+            margin: 0;
+          }
+        }
+      }
+    }
+
+    // .menu-button {
+      //   background: none;
+
+      //   i {
+        //     font-size: 25px;font-size
+      //   }
+    // }
+  }
+
+  // Styles for the debug and clear buttons visible in development
+  .debug-buttons-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 12px;
+    z-index: 5;
+
+    .debug-button {
+      padding: 5px 15px;
+      border-radius: 10px;
+      font-weight: 400;
+      background-color: hexToRGBA($color-light-blue-3, 0.5);
+      border: none;
+      cursor: pointer;
+      transition: fast-transition(background-color);
+
+      &.warning {
+        color: $color-alert-orange;
+        background-color: hexToRGBA($color-alert-orange, 0.2);
+
+        &:hover {
+          background-color: hexToRGBA($color-alert-orange, 0.35);
+        }
+      }
+
+      &.danger {
+        color: $color-alert-red;
+        background-color: hexToRGBA($color-alert-red, 0.2);
+
+        &:hover {
+          background-color: hexToRGBA($color-alert-red, 0.35);
+        }
+      }
+    }
+
+    .debug-label {
+      text-align: center;
+      font-weight: 600;
+      color: $color-white;
+    }
+  }
+
+  @keyframes loading-bounce {
+
+    0%,
+    80%,
+    100% {
+      opacity: 0;
+      transform: scale(0);
+    }
+
+    40% {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes message-fade-in {
+
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .the-mirror-page-container {
+    flex: 1;
+
+    .the-mirror-page-content {
+      display: flex;
+      flex-direction: row;
+      height: calc(100vh - 127px - 45);
+      // Fallback for older browsers
+      height: calc(100svh - 127px - 45px);
+      Fallbackforolderbrowsersheight // 127px header, 45px margin-bottom
+      transform: translateX(-100px);
+      127pxheader,45pxmargin-bottomtransform // Pushes everything to the left, centering the conversation
+      @media (max-width: 1300px) {
+        transform: translateX(0);
+      }
+
+      @include max-width(tablet-large) {
+        height: calc(100vh - 80px);
+        // Fallback for older browsers
+        height: calc(100svh - 80px);Fallbackforolderbrowsersheight
+      }
+
+      .chat-section {
+        flex: 1;
+        margin-left: 30px;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        @include max-width(tablet-large) {
+          margin-left: 0;
+        }
+
+        .messages-section {
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          overflow-y: auto;
+          padding-top: 60px;
+          padding-bottom: 60px;
+          scrollbar-width: none;
+          mask-image: linear-gradient(to bottom, transparent, black 120px, black);
+          // The gradient mask effect at the top of the messages section
+          -webkit-mask-image:
+            linear-gradient(
+              to bottom,
+              transparent,
+              black 120px,
+              black
+            );
+          Thegradientmaskeffectatthetopofthemessagessection-webkit-mask-image // The gradient mask effect at the top of the messages section
+          // Flexible spacer ensures the conversation starts at the bottom
+          // without affecting scroll when there are many messages
+          &::before {
+            content: '';
+            flex-grow: 1;
+          }
+
+          &::-webkit-scrollbar {
+            display: none;
+          }
+
+          .message-container {
+            display: flex;
+            opacity: 0;
+            transform: translateY(10px);
+            animation: message-fade-in 0.3s ease forwards;
+
+            &.user-message {
+              justify-content: flex-end;
+
+              .message {
+                background-image: linear-gradient(120deg, $color-super-blue, mix($color-super-pink, $color-super-blue, 40%));
+              }
+            }
+
+            &.ai-message {
+              justify-content: flex-start;
+
+              .message {
+                border: 1px solid hexToRGBA($color-white, 0.1);
+                background: hexToRGBA($color-light-blue-2, 0.15);
+                -webkit-backdrop-filter: blur(50px);
+                backdrop-filter: blur(50px);
+              }
+            }
+
+            .message {
+              border-radius: 10px;
+              padding: 15px 20px;
+              line-height: 150%;
+              max-width: 80%;
+            }
+
+            .loading-dots {
+              display: flex;
+              gap: 4px;
+
+              span {
+                width: 6px;
+                height: 6px;
+                background: $color-white;
+                border-radius: 50%;
+                animation: loading-bounce 1.4s infinite both;
+              }
+
+              span:nth-child(2) {
+                animation-delay: 0.2s;
+              }
+
+              span:nth-child(3) {
+                animation-delay: 0.4s;
+              }
+            }
+          }
+
+          @include max-width(tablet) {
+            flex: 1 1 auto;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+          }
+        }
+
+        .user-input-section {
+          position: relative;
+          display: flex;
+          box-shadow: $box-shadow-large;
+
+          button.microphone {
+            width: 40px;
+            height: 40px;
+            border-radius: 20px;
+            position: absolute;
+            bottom: 10px;
+            right: 60px;
+            background: transparent;
+            transition: fast-transition(background-color), fast-transition(right);
+
+            @include max-width(tablet) {
+              bottom: 16px;
+            }
+
+            &.hidden {
+              opacity: 0;
+              pointer-events: none;
+            }
+
+            &.recording,
+            &.recording:hover {
+              background: $color-alert-red;
+              right: 10px;
+            }
+
+            &.processing {
+              cursor: default;
+            }
+
+            &:hover {
+              background: $color-light-blue-2;
+            }
+
+            i {
+              font-size: 16px;
+            }
+          }
+
+          button.send-message {
+            width: 40px;
+            height: 40px;
+            background: $color-light-blue-2;
+            border-radius: 20px;
+            position: absolute;
+            z-index: 5;
+            right: 10px;
+            bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: fast-transition(background-color), fast-transition(opacity);
+
+            @include max-width(tablet) {
+              bottom: 16px;
+            }
+
+            &.hidden {
+              opacity: 0;
+              pointer-events: none;
+            }
+
+            &:hover {
+              background: lighten($color-light-blue-2, 10%);
+            }
+
+            &.disabled {
+              opacity: 0.5;
+              cursor: not-allowed;
+              pointer-events: none;
+            }
+
+            i {
+              font-size: 16px;
+            }
+          }
+
+          textarea {
+            resize: none;
+            line-height: 1.5;
+            transition: fast-transition(height);
+            max-height: 150px;
+            height: auto;
+            box-shadow: none;
+            padding-right: 50px;
+          }
+
+          @include max-width(tablet) {
+            padding: 6px 0 6px 0;
+            margin-bottom: 0;
+          }
+        }
+
+        .daily-audit-section {
+          display: flex;
+          flex-direction: column;
+          gap: 40px;
+          padding-bottom: 60px;
+
+          @include max-width(tablet-large) {
+            margin-top: 60px;
+          }
+
+          h2 {
+            font-size: 30px;
+            text-align: center;
+          }
+
+          .alignment-and-experience-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+
+            .experience-gained {
+              font-size: 14px;
+              color: $color-light-blue-1;
+              margin-top: -10px;
+              font-weight: 600;
+            }
+          }
+
+          .summary {
+            color: $color-light-blue-1;
+            padding: 20px 30px;
+            border-radius: 10px;
+            background: hexToRGBA($color-light-blue-1, 0.1);
+          }
+
+          .audit-result {
+            font-size: 14px;
+            color: $color-light-blue-1;
+            margin-left: 30px;
+            margin-right: 30px;
+
+            h3 {
+              font-size: 16px;
+              margin-bottom: 10px;
+              background-image:
+                linear-gradient(
+                  120deg,
+                  mix($color-super-pink, $color-super-blue, 25%),
+                  mix($color-super-pink, $color-super-blue, 75%)
+                );
+              background-clip: text;
+              -webkit-background-clip: text;
+              color: transparent;
+              -webkit-text-fill-color: transparent;
+
+              i {
+                margin-right: 10px;
+              }
+            }
+          }
+
+          h2 {
+
+            @include max-width(tablet) {
+              margin-top: 24px;
+            }
+          }
+
+          .reflect-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 0px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.alignment-progress.size-s .progress-text {
+
+  @include max-width(tablet-large) {
+    padding-top: 4px;
+  }
+}
+
+.alignment-progress.size-s .progress-text .alignment-info-icon {
+  font-size: 14px;
+  margin-left: 5px;
+  margin-right: 0;
+  opacity: 0.7;
+}
