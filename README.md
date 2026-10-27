@@ -18,6 +18,16 @@ npm run dev
 
 The development preview is intentionally labelled **illustrative insights**. Its editorial themes are not model output, it creates no account, and it cannot mutate private data. All `/preview` routes are unavailable in production. There is no public Explore demo flow.
 
+## Live deployment
+
+- Site: https://fanvue-creator-insights.vercel.app
+- Private repository: https://github.com/ilyakar/fanvue-creator-insights
+- Pushes to `main` deploy to production through Vercel's GitHub integration. Other branches receive preview deployments.
+
+`vercel.json` selects the Next.js framework preset. Production uses `APP_URL=https://fanvue-creator-insights.vercel.app` in Vercel's environment settings. Local secrets and the copied reference directory are excluded from deployment uploads.
+
+The public site is available while the external connections are being configured. Fanvue login and saved analysis require the remaining server credentials, database migration and separately hosted analysis worker. The local design preview stays unavailable in production.
+
 ## Enable the real connection and AI analysis
 
 1. Copy `.env.example` to `.env.local` and fill its six required server-side values. Real credentials stay in the ignored local file.
@@ -60,7 +70,7 @@ npm start
 npm run worker
 ```
 
-Deploy the web process and worker to a Node-compatible platform, using the same Supabase project and environment. Set `APP_URL` to an HTTPS origin and register its callback in Fanvue. The worker needs a process host, not an unawaited serverless task. Multiple workers are supported through database job leases. This repository does not create hosting accounts, configure remote credentials or publish the application.
+The web app is hosted on Vercel. Run the analysis worker separately on a Node-compatible process host, using the same Supabase project and server credentials. Register the production callback URL in Fanvue. The worker must run as a persistent process; the Vercel web deployment does not start it. Multiple workers are supported through database job leases.
 
 Apply the migration before connecting an account. All private tables have RLS enabled and no browser policies; requests go through the authenticated backend using a server-only service role. Any future browser-side Supabase access requires deliberately designed policies.
 
