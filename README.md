@@ -20,12 +20,12 @@ The development preview is intentionally labelled **illustrative insights**. Its
 
 ## Enable the real connection and AI analysis
 
-1. Copy `.env.example` to `.env.local` and fill its server-side variables.
+1. Copy `.env.example` to `.env.local` and fill its six required server-side values. Real credentials stay in the ignored local file.
 2. Create a Supabase project and apply `supabase/migrations/001_initial.sql` in its SQL editor.
 3. Register your Fanvue app's exact callback URL: `http://127.0.0.1:3000/api/auth/callback` (or the chosen deployed origin). Enable `openid offline_access offline read:self`. The app reads the creator profile only; audience content is synthetic.
 4. Set `FANVUE_CLIENT_ID`, `FANVUE_CLIENT_SECRET`, `SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, and `OPENAI_API_KEY` locally. Never place credentials in chat or client-exposed environment variables.
 5. Generate a separate encryption key with `openssl rand -hex 32` and use it as `TOKEN_ENCRYPTION_KEY`. Keep it stable and separate from the database; losing it makes existing encrypted connections unreadable.
-6. Set `APP_URL` to the actual origin. `127.0.0.1` and `localhost` are different OAuth origins; use the same one throughout.
+6. The local origin defaults to `http://127.0.0.1:3000`, so no `APP_URL` entry is needed for the default local setup. Only add it when using another origin or deploying. `127.0.0.1` and `localhost` are different OAuth origins; use the same one throughout.
 7. Restart the web server, then run the durable worker in a second terminal:
 
 ```sh
@@ -34,7 +34,7 @@ npm run worker
 
 Now **Start free** uses real Fanvue OAuth. First sign-in queues the sample dataset for real OpenAI inference. The worker persists validated results independently of the browser. Returning users reuse the same run. Clearing analysis does not start another paid analysis until the creator chooses **Prepare my insights**.
 
-`OPENAI_MODEL` defaults to `gpt-4.1-mini` and can be changed to an available model supporting Responses structured outputs. Model availability depends on the API account. No live model invocation or real OAuth consent has been performed without credentials.
+The API version and model have defaults in code and are omitted from `.env.example`. `FANVUE_API_VERSION` and `OPENAI_MODEL` remain optional overrides. `OPENAI_MODEL` defaults to `gpt-4.1-mini` and can be changed to an available model supporting Responses structured outputs. Model availability depends on the API account. No live model invocation or real OAuth consent has been performed without credentials.
 
 ## Verification
 
