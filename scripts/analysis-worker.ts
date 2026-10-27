@@ -1,13 +1,8 @@
 /* ------------------------------------------------------------
-Processes persisted analysis jobs with renewable leases and graceful shutdown.
+Runs the durable analysis worker locally until a graceful shutdown is requested.
 ---------------------------------------------------------------*/
 
-import { randomUUID } from 'node:crypto'
-
-import { getDatabase, unwrapDatabase } from '@/lib/server/database'
-import { audienceDataProvider } from '@/lib/data/audience'
-import { analyseAudience } from '@/lib/analysis/service'
-import type { AnalysisJob } from '@/lib/types'
+import { processNextAnalysis } from '@/lib/server/analysis-worker'
 
 let isStopping = false
 
@@ -19,82 +14,16 @@ const requestStop = () => {
 process.on('SIGINT', requestStop)
 process.on('SIGTERM', requestStop)
 
-// Claims persisted jobs and saves results independently of a browser request.
+// Processes queued jobs without relying on a browser session.
 const runWorker = async () => {
-  const database = getDatabase()
   console.info('Audience analysis worker ready.')
 
   while (!isStopping) {
-    const leaseToken = randomUUID()
-    const jobs = unwrapDatabase(await database.rpc('claim_analysis_job', { worker_lease: leaseToken })) as AnalysisJob[]
-    const job = jobs?.[0]
+    const processed = await processNextAnalysis()
 
-    if (!job) {
+    if (!processed) {
       await new Promise(resolve => setTimeout(resolve, 2000))
-
-      continue
     }
-
-    // Renew ownership while the external model request is still processing.
-    const heartbeat = setInterval(() => {
-      void database
-        .from('analysis_jobs')
-        .update({ lease_until: new Date(Date.now() + 600000).toISOString() })
-        .eq('id', job.id)
-        .eq('lease_token', leaseToken)
-        .then(response => {
-          if (response.error) {
-            console.error('Analysis lease heartbeat failed.')
-          }
-        })
-    }, 30000)
-
-    // Persist only results completed by this lease holder, then release its heartbeat.
-    await audienceDataProvider
-      .getDataset(job.audience_creator_id)
-      .then(dataset =>
-        analyseAudience(dataset, async () => {
-          unwrapDatabase(
-            await database
-              .from('analysis_jobs')
-              .update({ status: 'validating' })
-              .eq('id', job.id)
-              .eq('lease_token', leaseToken)
-          )
-        })
-      )
-      .then(async result => {
-        unwrapDatabase(
-          await database
-            .from('analysis_jobs')
-            .update({
-              status: 'complete',
-              result,
-              completed_at: new Date().toISOString(),
-              lease_token: null,
-              lease_until: null
-            })
-            .eq('id', job.id)
-            .eq('lease_token', leaseToken)
-        )
-      })
-      .catch(async () => {
-        unwrapDatabase(
-          await database
-            .from('analysis_jobs')
-            .update({
-              status: 'failed',
-              error: 'We couldn’t finish your analysis. Please try again.',
-              lease_token: null,
-              lease_until: null
-            })
-            .eq('id', job.id)
-            .eq('lease_token', leaseToken)
-        )
-
-        console.error('An analysis run failed. No source comments or credentials were logged.')
-      })
-      .finally(() => clearInterval(heartbeat))
   }
 }
 

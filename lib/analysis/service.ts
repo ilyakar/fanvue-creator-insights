@@ -42,7 +42,7 @@ export const analyseAudience = async (dataset: Dataset, onValidating: () => Prom
   }
 
   const model = process.env.OPENAI_MODEL || 'gpt-4.1-mini'
-  const client = new OpenAI({ apiKey: requireSetting('OPENAI_API_KEY'), timeout: 240000, maxRetries: 1 })
+  const client = new OpenAI({ apiKey: requireSetting('OPENAI_API_KEY'), timeout: 240000, maxRetries: 0 })
 
   const response = await client.responses.parse({
     model,

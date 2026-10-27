@@ -26,7 +26,7 @@ The development preview is intentionally labelled **illustrative insights**. Its
 
 `vercel.json` selects the Next.js framework preset. Production uses `APP_URL=https://fanvue-creator-insights.vercel.app` in Vercel's environment settings. Local secrets and the copied reference directory are excluded from deployment uploads.
 
-The public site is available while the external connections are being configured. Fanvue login and saved analysis require the remaining server credentials and a separately hosted analysis worker. The local design preview stays unavailable in production.
+Production uses Fanvue OAuth, Supabase and OpenAI through server-only credentials. A Supabase schedule starts the production analysis worker when jobs are waiting. The local design preview stays unavailable in production.
 
 ## Enable the real connection and AI analysis
 
@@ -44,7 +44,7 @@ npm run worker
 
 Now **Start free** uses real Fanvue OAuth. First sign-in queues the sample dataset for real OpenAI inference. The worker persists validated results independently of the browser. Returning users reuse the same run. Clearing analysis does not start another paid analysis until the creator chooses **Prepare my insights**.
 
-The API version and model have defaults in code and are omitted from `.env.example`. `FANVUE_API_VERSION` and `OPENAI_MODEL` remain optional overrides. `OPENAI_MODEL` defaults to `gpt-4.1-mini` and can be changed to an available model supporting Responses structured outputs. Model availability depends on the API account. No live model invocation or real OAuth consent has been performed without credentials.
+The API version and model have defaults in code and are omitted from `.env.example`. `FANVUE_API_VERSION` and `OPENAI_MODEL` remain optional overrides. `OPENAI_MODEL` defaults to `gpt-4.1-mini` and can be changed to an available model supporting Responses structured outputs. Model availability depends on the API account. The model connection can be verified with the configured server credentials; a real Fanvue sign-in is still required to verify OAuth consent.
 
 ## Verification
 
@@ -70,7 +70,7 @@ npm start
 npm run worker
 ```
 
-The web app is hosted on Vercel. Run the analysis worker separately on a Node-compatible process host, using the same Supabase project and server credentials. Register the production callback URL in Fanvue. The worker must run as a persistent process; the Vercel web deployment does not start it. Multiple workers are supported through database job leases.
+The web app is hosted on Vercel. Supabase Cron checks for queued or abandoned work every minute and invokes a protected Vercel worker only when needed. A secret generated in Supabase Vault authenticates the scheduler, and database leases prevent duplicate workers from claiming the same job. The local `npm run worker` remains available for development. Register the production callback URL in Fanvue.
 
 Apply the migration before connecting an account. All private tables have RLS enabled and no browser policies; requests go through the authenticated backend using a server-only service role. Any future browser-side Supabase access requires deliberately designed policies.
 

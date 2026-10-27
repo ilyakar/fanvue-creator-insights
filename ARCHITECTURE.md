@@ -36,9 +36,9 @@ Each theme contains category, title, summary, optional opportunity, supporting c
 
 A unique owner-scoped cache key hashes the entire dataset, configured model and prompt version. First authentication queues or reuses that run. Read-only dashboard requests do not create work. A failed run can be explicitly retried; cleared analysis stays cleared until the user starts again.
 
-The separate Node worker claims one job atomically with `FOR UPDATE SKIP LOCKED`, records real stages, and renews its ten-minute lease. Browser polling reads saved state without simulated percentages. Results are committed only by the current lease holder. Interrupted runs can be recovered for up to three claims; exhausted jobs become a visible failure with retry. Completed results are reused until the input/configuration changes.
+The analysis worker claims one job atomically with `FOR UPDATE SKIP LOCKED`, records real stages, and renews its ten-minute lease. Supabase Cron invokes the protected Vercel worker when work is waiting, using a secret generated and kept in Supabase Vault. Browser polling reads saved state without simulated percentages. Results are committed only by the current lease holder. Interrupted runs can be recovered for up to three claims; exhausted jobs become a visible failure with retry. Completed results are reused until the input/configuration changes.
 
-The worker is a required long-lived process in deployment. There is no in-memory job queue or fire-and-forget work after an HTTP response. An intentionally queued job remains queued if no worker is running.
+The production worker runs within Vercel’s bounded background execution and the database schedule recovers interrupted leases. A local long-lived worker is also available for development. The queue and results remain in Supabase.
 
 ## Visual review and unavailable integrations
 
@@ -48,4 +48,4 @@ If credentials are absent, Start free leads to an honest connection setup state.
 
 ## Operational limits
 
-Real Fanvue OAuth, live OpenAI inference and hosted Supabase operation require configured credentials and a running worker. Automated checks use stubbed OAuth HTTP responses and in-memory Postgres. Expired OAuth-attempt records are cleaned when a new login starts; production should also schedule cleanup of expired app sessions and old operational records as retention needs are defined.
+Real Fanvue OAuth and live OpenAI inference require configured credentials and the production scheduler or a local worker. Automated checks use stubbed OAuth HTTP responses and in-memory Postgres. Expired OAuth-attempt records are cleaned when a new login starts; production should also schedule cleanup of expired app sessions and old operational records as retention needs are defined.
