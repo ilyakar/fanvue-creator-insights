@@ -17,6 +17,7 @@ import {
 
 import { getDatasetCounts, getInsightCounts } from '@/lib/insights'
 import type { Dataset, Insight } from '@/lib/types'
+import Brand from '@/app/Components/Brand/Brand'
 
 // Shows an explicitly illustrative product snapshot using the same sample evidence as the app.
 const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Insight[] }) => {
@@ -26,9 +27,9 @@ const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Ins
   return (
     <div className="product-preview" aria-label="Illustrative dashboard preview with sample data">
       <aside className="preview-sidebar">
-        <span className="preview-logo">
-          creator<span>✳</span>
-        </span>
+        <div className="preview-logo">
+          <Brand isStatic />
+        </div>
 
         <span className="preview-workspace">
           S <span>Sample creator</span>

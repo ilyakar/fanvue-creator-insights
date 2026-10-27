@@ -75,25 +75,25 @@ h4 {
   align-items: center;
   gap: 10px;
   white-space: nowrap;
-  .wordmark {
-    font-weight: 750;
-    font-size: 29px;
-    line-height: 1;
-    letter-spacing: -0.075em;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-  }
   .mark {
     color: $color-purple;
-    font-size: 33px;
-    font-weight: 400;
+    width: 25px;
+    height: 25px;
+    flex: 0 0 auto;
   }
-  .product {
-    font-size: $font-size-small;
-    padding-left: 10px;
-    border-left: 1px solid #d6d8e2;
-    color: #696e80;
+  .wordmark {
+    font-weight: 700;
+    font-size: 22px;
     line-height: 1.1;
+    letter-spacing: -0.04em;
+  }
+  @include max-width(phone) {
+    .mark {
+      width: 20px;
+      height: 20px;
+    }
+    .wordmark {
+      font-size: 18px;
+    }
   }
 }

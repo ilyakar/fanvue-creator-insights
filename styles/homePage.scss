@@ -38,11 +38,16 @@ Defines shared visual styles for the audience insights experience.
       > nav {
         display: none;
       }
-      .brand .product {
-        display: none;
-      }
       .button {
         padding: 10px 20px;
+      }
+    }
+    @include max-width(phone) {
+      gap: 10px;
+      padding: 20px;
+      .button {
+        gap: 10px;
+        padding: 10px;
       }
     }
   }
@@ -442,12 +447,6 @@ Defines shared visual styles for the audience insights experience.
         color: $color-purple;
       }
     }
-    .brand .wordmark {
-      font-size: 24px;
-    }
-    .brand .product {
-      font-size: $font-size-fine-print;
-    }
     @include max-width(tablet) {
       padding: 30px 25px;
       flex-wrap: wrap;
@@ -480,14 +479,16 @@ Defines shared visual styles for the audience insights experience.
     display: flex;
     flex-direction: column;
     .preview-logo {
-      font-size: 24px;
-      font-weight: 700;
-      letter-spacing: -0.075em;
-      margin: 0 10px 25px;
-      span {
-        font-size: 26px;
-        color: $color-purple;
-        padding-left: 5px;
+      margin-bottom: 25px;
+      .brand {
+        gap: 5px;
+        .mark {
+          width: 15px;
+          height: 15px;
+        }
+        .wordmark {
+          font-size: 16px;
+        }
       }
     }
     .preview-workspace {
@@ -726,10 +727,6 @@ Defines shared visual styles for the audience insights experience.
       display: none;
       flex-basis: 120px;
       padding: 20px 10px;
-      .preview-logo {
-        font-size: 20px;
-        margin: 0 0 20px;
-      }
       .preview-workspace {
         padding: 5px;
         font-size: $font-size-small;

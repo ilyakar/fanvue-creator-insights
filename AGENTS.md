@@ -604,7 +604,7 @@ className={['filter-button', isFilterApplied && 'is-active'].filter(Boolean).joi
 ### 3.11 Product identity
 
 - The application is named Creator Insights and is independent of Fanvue.
-- Keep the existing asterisk logo mark and visual treatment when displaying the Creator Insights name.
+- Display "Creator Insights" as one complete wordmark, with equal styling for both words. Place the solid purple asterisk before the name, never between the words. Keep the full name on mobile; only a collapsed navigation rail may show the mark alone, with the full accessible name. Reuse the shared Brand component in headers, footers and product previews.
 - Refer to Fanvue when describing the platform connection, authentication, accounts or source content. Do not use Fanvue as the application's brand name.
 
 ---

@@ -254,10 +254,7 @@ const AppShell = ({
 
         <footer className="app-footer">
           <span>Made for creators. Grounded in your audience.</span>
-
-          <span>
-            Creator Insights <span>✳</span>
-          </span>
+          <Brand href={basePath} />
         </footer>
       </div>
     </div>

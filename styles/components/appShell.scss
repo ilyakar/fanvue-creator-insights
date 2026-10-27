@@ -22,10 +22,10 @@ Defines shared visual styles for the audience insights experience.
       padding-left: 20px;
       padding-right: 20px;
       .brand-row .brand {
-        width: 45px;
-        overflow: hidden;
+        width: 35px;
+        justify-content: center;
         .wordmark {
-          font-size: 26px;
+          display: none;
         }
       }
       .workspace {
@@ -34,7 +34,6 @@ Defines shared visual styles for the audience insights experience.
       }
       .workspace-copy,
       .navigation-label,
-      .brand .product,
       .sidebar-note,
       .privacy-link,
       .account-copy,
@@ -76,11 +75,12 @@ Defines shared visual styles for the audience insights experience.
   }
   .brand {
     gap: 5px;
-    .wordmark {
-      font-size: 29px;
+    .mark {
+      width: 20px;
+      height: 20px;
     }
-    .product {
-      font-size: $font-size-small;
+    .wordmark {
+      font-size: 18px;
     }
   }
   .workspace {
@@ -261,9 +261,6 @@ Defines shared visual styles for the audience insights experience.
   @include max-width(tablet-large) {
     padding-left: 15px;
     padding-right: 15px;
-    .brand .product {
-      display: none;
-    }
     .nav-link {
       gap: 10px;
       padding-left: 10px;
@@ -281,9 +278,6 @@ Defines shared visual styles for the audience insights experience.
       .mobile-close {
         display: inline-flex;
       }
-    }
-    .brand .product {
-      display: inline;
     }
     .collapse-button {
       display: none;
@@ -416,15 +410,20 @@ Defines shared visual styles for the audience insights experience.
   display: flex;
   align-items: center;
   justify-content: space-between;
-  > span:last-child {
-    color: #858a9b;
-    span {
-      color: $color-purple;
-      margin-left: 5px;
+  .brand {
+    .mark {
+      width: 15px;
+      height: 15px;
+    }
+    .wordmark {
+      font-size: $font-size-small;
+      font-weight: 600;
     }
   }
   @include max-width(phone) {
     padding: 15px 20px;
+    flex-wrap: wrap;
+    gap: 15px;
     > span:first-child {
       max-width: 200px;
     }
