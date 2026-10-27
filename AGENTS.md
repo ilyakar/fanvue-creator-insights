@@ -155,6 +155,10 @@ This rule applies to
 React components must use PascalCase, following standard React conventions.
 Component file names must also use PascalCase to match the component.
 
+Exception
+
+Framework-reserved file names, such as Next.js `page.tsx`, `layout.tsx`, `loading.tsx`, `error.tsx`, `not-found.tsx`, and `route.ts`, must retain their required names. Components declared inside those files still use PascalCase.
+
 Examples
 
 - SearchBar
@@ -166,7 +170,7 @@ Examples
 
 ### 1.4 Component folder naming
 
-Folders that contain components must use PascalCase (capital first letter, camel case).
+Folders that contain components must use PascalCase (capital first letter, camel case). This applies to reusable component folders; framework route directories follow routing conventions instead.
 
 Examples
 
@@ -506,34 +510,33 @@ Prefer adding vertical spacing with `margin-bottom` (margin down) rather than `m
 
 ---
 
-### 3.8 Sizing must be a multiple of five pixels
+### 3.8 Spacing and sizing must be a multiple of five pixels
 
-When using custom SCSS sizes, only use values that are multiples of 5px (for example 5px, 10px, 15px, 20px) unless explicitly stated otherwise.
+For custom SCSS spacing and sizing values, use multiples of 5px (for example 5px, 10px, 15px, 20px) unless explicitly stated otherwise.
 
-Avoid values like 4px or 8px.
+Avoid values like 4px or 8px for these properties.
 
-Exception
+Exceptions
 
+- Borders, font sizes, and responsive breakpoints do not need to be multiples of 5px.
 - In very rare cases, 0.5 spacing (2.5px) is allowed when explicitly requested and visually necessary.
 
 ---
 
 ### 3.9 Prefer short-circuit conditionals for optional strings
 
-When conditionally appending strings (like class names), prefer short-circuit `&&` over ternaries that return empty strings.
+When conditionally appending strings (like class names), prefer short-circuit `&&` over ternaries that return empty strings. Collect the values in an array, remove falsy entries, and join them so `false` is never rendered as a class name.
 
-Bad
+Avoid
 
-```ts
-${canScrollPrevious ? '' : 'disabled'}
-${canScrollPrevious ? 'enabled' : ''}
+```tsx
+className={`filter-button ${isFilterApplied && 'is-active'}`}
 ```
 
-Good
+Preferred
 
-```ts
-${!canScrollPrevious && 'disabled'}
-${canScrollPrevious && 'enabled'}
+```tsx
+className={['filter-button', isFilterApplied && 'is-active'].filter(Boolean).join(' ')}
 ```
 
 ---
@@ -599,18 +602,18 @@ When making changes, agents must
 - add a brief comment above every function
 - when a file defines a primary page/component plus helpers, place the primary page/component first and keep helper components below it
 - always include a blank line before function-level comments
-- use PascalCase for folders that contain components
+- use PascalCase for reusable component folders; follow framework conventions for route directories and reserved file names
 - default-export files that contain a single component so imports do not use braces
 - maintain blank lines between sibling TSX elements
 - write all application styling in SCSS and follow the structure in `good-code-from-another-project/styles/`
 - reuse shared SCSS variables, functions, mixins, and foundational styles instead of duplicating them
-- use custom SCSS sizing values that are multiples of 5px
+- use custom SCSS spacing and sizing values that are multiples of 5px; borders, font sizes, and responsive breakpoints are exempt
 - prefer short-circuit `&&` for conditional strings instead of ternaries with empty strings
-- for conditional class names, use template literals with `&&`, e.g. `className={`filter-button ${isFilterApplied && 'is-active'}`}`
+- for conditional class names, use an array with `&&`, filter falsy entries, and join with spaces, e.g. `className={['filter-button', isFilterApplied && 'is-active'].filter(Boolean).join(' ')}`
 - prefer promise-based error handling (`.then/.catch`) over `try/catch` when possible
 - prefer default styling when possible; avoid adding explicit colors or extra styling if the defaults already match the desired appearance
-- do not set a Font Awesome icon `size` prop unless explicitly required
-- use Font Awesome icons throughout; if a different icon system is in use on a page you are editing (such as Lucide React), replace it with the closest Font Awesome icon and use `size="lg"` unless explicitly directed otherwise
+- avoid the Font Awesome icon `size` prop; use shared SCSS styling when icon sizing needs adjustment
+- use Font Awesome icons throughout; if a different icon system is in use on a page you are editing (such as Lucide React), replace it with the closest Font Awesome icon without adding a `size` prop
 - preserve existing patterns and formatting in the repository
 - before making architectural or structural decisions, inspect the closest equivalent in `good-code-from-another-project/` and follow its established approach unless the user explicitly requests a different pattern
 
