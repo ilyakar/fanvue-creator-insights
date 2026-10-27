@@ -13,6 +13,7 @@ export const categoryLabels: Record<Category, string> = {
 // Returns original evidence, scoped to one post when requested.
 export const getEvidence = (insight: Insight, dataset: Dataset, postId?: string) => {
   const commentIdentifiers = new Set(insight.commentIds)
+
   return dataset.comments.filter(
     (comment) => commentIdentifiers.has(comment.id) && (!postId || comment.postId === postId)
   )
@@ -21,6 +22,7 @@ export const getEvidence = (insight: Insight, dataset: Dataset, postId?: string)
 // Counts identities rather than treating repeat comments as distinct fans.
 export const getInsightCounts = (insight: Insight, dataset: Dataset, postId?: string) => {
   const comments = getEvidence(insight, dataset, postId)
+
   return { fans: new Set(comments.map((comment) => comment.fanId)).size, comments: comments.length }
 }
 

@@ -14,7 +14,11 @@ export const dynamic = 'force-dynamic'
 const AnalysisPage = async () => {
   const account = await requireAccount()
   const job = await getCurrentAnalysis(account.id)
-  if (job?.status === 'complete') redirect('/dashboard')
+
+  if (job?.status === 'complete') {
+    redirect('/dashboard')
+  }
+
   return (
     <div className="onboarding-page">
       <header>

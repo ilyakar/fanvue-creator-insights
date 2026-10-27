@@ -16,7 +16,11 @@ export const getMissingConfiguration = () =>
 // Reads a mandatory server setting without leaking its contents on failure.
 export const requireSetting = (variableName: string) => {
   const value = process.env[variableName]
-  if (!value) throw new Error(`Missing server configuration: ${variableName}`)
+
+  if (!value) {
+    throw new Error(`Missing server configuration: ${variableName}`)
+  }
+
   return value
 }
 

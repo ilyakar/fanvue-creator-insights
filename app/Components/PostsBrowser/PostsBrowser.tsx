@@ -15,7 +15,9 @@ import type { DashboardModel } from '@/lib/types'
 const PostsBrowser = ({ model }: { model: DashboardModel }) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedFormat, setSelectedFormat] = useState('all')
+
   const basePath = model.isPreview ? '/preview' : '/dashboard'
+
   const posts = model.dataset.posts
     .filter(
       (post) =>

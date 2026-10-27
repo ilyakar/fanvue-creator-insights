@@ -17,8 +17,9 @@ export class RequestError extends Error {
 
 // Rejects cross-origin mutations before reading or changing private records.
 export const requireSameOrigin = (request: Request) => {
-  if (request.headers.get('origin') !== getAppOrigin())
+  if (request.headers.get('origin') !== getAppOrigin()) {
     throw new RequestError('Please submit this action from the app.', 403)
+  }
 }
 
 // Returns controlled errors without leaking provider responses, prompts or secrets.

@@ -43,14 +43,16 @@ const AppShell = ({
   const pathname = usePathname()
   const dispatch = useDispatch()
   const isCollapsed = useSelector((state: RootState) => state.Preferences.isSidebarCollapsed)
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const showAlert = useAlert()
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isMobileViewport, setIsMobileViewport] = useState(false)
+
   const sidebarReference = useRef<HTMLElement>(null)
 
   // Closes the mobile navigation from modal keyboard controls.
-  const closeMenu = useCallback(() => setIsMenuOpen(false), [])
-  useFocusTrap(sidebarReference, isMenuOpen && isMobileViewport, closeMenu)
+  const _handleMenuClose = useCallback(() => setIsMenuOpen(false), [])
+  useFocusTrap(sidebarReference, isMenuOpen && isMobileViewport, _handleMenuClose)
 
   // Hides offscreen mobile controls from keyboard and assistive-technology navigation.
   useEffect(() => {
@@ -59,19 +61,27 @@ const AppShell = ({
     // Keeps the mobile navigation mode in sync with viewport changes.
     const updateViewport = () => {
       setIsMobileViewport(mediaQuery.matches)
-      if (!mediaQuery.matches) setIsMenuOpen(false)
+
+      if (!mediaQuery.matches) {
+        setIsMenuOpen(false)
+      }
     }
+
     updateViewport()
     mediaQuery.addEventListener('change', updateViewport)
+
     return () => mediaQuery.removeEventListener('change', updateViewport)
   }, [])
+
   const basePath = isPreview ? '/preview' : '/dashboard'
+
   const navigation = [
     { label: 'Overview', href: basePath, icon: faChartSimple },
     { label: 'Posts', href: `${basePath}/posts`, icon: faLayerGroup },
     { label: 'Messages', href: `${basePath}/messages`, icon: faCommentDots },
     { label: 'Settings', href: `${basePath}/settings`, icon: faGear }
   ]
+
   const activeItem =
     navigation.find((item) => item.href === pathname) ||
     navigation.find((item) => item.href !== basePath && pathname.startsWith(item.href)) ||
@@ -90,15 +100,20 @@ const AppShell = ({
   const _handleLogout = () => {
     if (isPreview) {
       showAlert('You’re in the design preview', 'There is no connected account to sign out of.')
+
       return
     }
+
     fetch('/api/account', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ action: 'logout' })
     })
       .then((response) => {
-        if (!response.ok) throw new Error()
+        if (!response.ok) {
+          throw new Error()
+        }
+
         window.location.assign('/')
       })
       .catch(() => showAlert('Couldn’t sign out', 'Please try again.'))

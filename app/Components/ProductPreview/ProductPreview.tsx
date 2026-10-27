@@ -21,6 +21,7 @@ import type { Dataset, Insight } from '@/lib/types'
 const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Insight[] }) => {
   const counts = getDatasetCounts(dataset)
   const featured = [insights[0], insights[1], insights[2]]
+
   return (
     <div className="product-preview" aria-label="Illustrative dashboard preview with sample data">
       <aside className="preview-sidebar">

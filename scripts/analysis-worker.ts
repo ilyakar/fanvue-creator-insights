@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Requests a graceful stop after the current leased run finishes.
+Processes persisted analysis jobs with renewable leases and graceful shutdown.
 ---------------------------------------------------------------*/
 
 import { randomUUID } from 'node:crypto'
@@ -14,6 +14,7 @@ let isStopping = false
 const requestStop = () => {
   isStopping = true
 }
+
 process.on('SIGINT', requestStop)
 process.on('SIGTERM', requestStop)
 
@@ -21,14 +22,19 @@ process.on('SIGTERM', requestStop)
 const runWorker = async () => {
   const database = getDatabase()
   console.info('Audience analysis worker ready.')
+
   while (!isStopping) {
     const leaseToken = randomUUID()
     const jobs = unwrapDatabase(await database.rpc('claim_analysis_job', { worker_lease: leaseToken })) as AnalysisJob[]
     const job = jobs?.[0]
+
     if (!job) {
       await new Promise((resolve) => setTimeout(resolve, 2000))
+
       continue
     }
+
+    // Renew ownership while the external model request is still processing.
     const heartbeat = setInterval(() => {
       void database
         .from('analysis_jobs')
@@ -36,9 +42,13 @@ const runWorker = async () => {
         .eq('id', job.id)
         .eq('lease_token', leaseToken)
         .then((response) => {
-          if (response.error) console.error('Analysis lease heartbeat failed.')
+          if (response.error) {
+            console.error('Analysis lease heartbeat failed.')
+          }
         })
     }, 30000)
+
+    // Persist only results completed by this lease holder, then release its heartbeat.
     await sampleDataProvider
       .getDataset()
       .then((dataset) =>
@@ -80,6 +90,7 @@ const runWorker = async () => {
             .eq('id', job.id)
             .eq('lease_token', leaseToken)
         )
+
         console.error('An analysis run failed. No source comments or credentials were logged.')
       })
       .finally(() => clearInterval(heartbeat))

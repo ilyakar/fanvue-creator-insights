@@ -10,7 +10,14 @@ import DashboardContent from '@/app/Components/DashboardContent/DashboardContent
 const PreviewPostPage = async ({ params }: { params: Promise<{ postId: string }> }) => {
   const { postId } = await params
   const model = await getPreviewModel()
-  if (!model.dataset.posts.some((post) => post.id === postId)) notFound()
+
+  const postExists = model.dataset.posts.some((post) => post.id === postId)
+
+  // Unknown source posts should resolve to the normal not-found experience.
+  if (!postExists) {
+    notFound()
+  }
+
   return <DashboardContent model={model} postId={postId} />
 }
 

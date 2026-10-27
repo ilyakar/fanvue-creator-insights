@@ -29,25 +29,36 @@ export const analysisSchema = z.object({
 
 // Validates AI evidence references and post scope before any result is stored.
 export const validateAnalysis = (input: unknown, dataset: Dataset): Insight[] => {
-  const parsed = analysisSchema.parse(input)
+  const parsedAnalysis = analysisSchema.parse(input)
   const commentLookup = new Map(dataset.comments.map((comment) => [comment.id, comment]))
-  return parsed.insights.map((insight) => {
+
+  return parsedAnalysis.insights.map((insight) => {
     const commentIds = [...new Set(insight.commentIds)]
-    if (commentIds.some((identifier) => !commentLookup.has(identifier)))
+
+    const hasUnknownComments = commentIds.some((identifier) => !commentLookup.has(identifier))
+
+    if (hasUnknownComments) {
       throw new Error('Analysis referenced an unknown comment.')
+    }
+
+    // Each post summary must have evidence in that exact source post.
     const supportedPosts = new Set(commentIds.map((identifier) => commentLookup.get(identifier)!.postId))
     const scopedPosts = new Set(insight.postSummaries.map((summary) => summary.postId))
-    if (
-      scopedPosts.size !== insight.postSummaries.length ||
-      scopedPosts.size !== supportedPosts.size ||
-      [...scopedPosts].some((postId) => !supportedPosts.has(postId))
-    ) {
+
+    const hasDuplicateSummaries = scopedPosts.size !== insight.postSummaries.length
+    const hasMissingSummaries = scopedPosts.size !== supportedPosts.size
+    const hasUnsupportedSummaries = [...scopedPosts].some((postId) => !supportedPosts.has(postId))
+
+    if (hasDuplicateSummaries || hasMissingSummaries || hasUnsupportedSummaries) {
       throw new Error('Analysis contained missing or unsupported post summaries.')
     }
+
+    // Stable identifiers keep a validated theme consistent across repeated reads.
     const identifier = createHash('sha256')
       .update(JSON.stringify([insight.category, insight.title, [...commentIds].sort()]))
       .digest('hex')
       .slice(0, 16)
+
     return { ...insight, id: identifier, commentIds }
   })
 }

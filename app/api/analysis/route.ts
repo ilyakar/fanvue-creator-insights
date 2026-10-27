@@ -14,7 +14,11 @@ export const GET = async () =>
   Promise.resolve()
     .then(async () => {
       const account = await getCurrentAccount()
-      if (!account) throw new RequestError('Please reconnect to continue.', 401)
+
+      if (!account) {
+        throw new RequestError('Please reconnect to continue.', 401)
+      }
+
       const job = unwrapDatabase(
         await getDatabase()
           .from('analysis_jobs')
@@ -24,6 +28,7 @@ export const GET = async () =>
           .limit(1)
           .maybeSingle()
       )
+
       return NextResponse.json({ job }, { headers: { 'Cache-Control': 'no-store' } })
     })
     .catch(errorResponse)
@@ -34,9 +39,14 @@ export const POST = async (request: Request) =>
     .then(async () => {
       requireSameOrigin(request)
       const account = await getCurrentAccount()
-      if (!account) throw new RequestError('Please reconnect to continue.', 401)
+
+      if (!account) {
+        throw new RequestError('Please reconnect to continue.', 401)
+      }
+
       await getFanvueAccessToken(account.id)
       const job = await enqueueAnalysis(account.id, true)
+
       return NextResponse.json(
         { job: { id: job.id, status: job.status } },
         { status: 202, headers: { 'Cache-Control': 'no-store' } }

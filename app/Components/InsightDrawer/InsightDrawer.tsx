@@ -34,8 +34,10 @@ const InsightDrawer = ({
   onClose: () => void
 }) => {
   const panelReference = useRef<HTMLDivElement>(null)
+
   const [visibleCount, setVisibleCount] = useState(12)
   const showAlert = useAlert()
+
   const comments = getEvidence(insight, dataset, postId)
   const counts = getInsightCounts(insight, dataset, postId)
   const scopedSummary = insight.postSummaries.find((entry) => entry.postId === postId)
@@ -50,18 +52,28 @@ const InsightDrawer = ({
     panelReference.current?.focus()
 
     // Keeps modal keyboard interactions inside the open evidence panel.
-    const handleKeyboard = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') onClose()
-      if (event.key !== 'Tab') return
+    const _handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+
+      if (event.key !== 'Tab') {
+        return
+      }
+
       const focusable = panelReference.current?.querySelectorAll<HTMLElement>(
         'button:not([disabled]), a[href], input, select, [tabindex="0"]'
       )
+
       if (!focusable?.length) {
         event.preventDefault()
+
         return
       }
+
       const firstElement = focusable[0]
       const lastElement = focusable[focusable.length - 1]
+
       if (
         event.shiftKey &&
         (document.activeElement === firstElement || document.activeElement === panelReference.current)
@@ -76,10 +88,12 @@ const InsightDrawer = ({
         firstElement.focus()
       }
     }
-    document.addEventListener('keydown', handleKeyboard)
+
+    document.addEventListener('keydown', _handleKeyDown)
+
     return () => {
       document.body.style.overflow = previousOverflow
-      document.removeEventListener('keydown', handleKeyboard)
+      document.removeEventListener('keydown', _handleKeyDown)
       previousFocus?.focus()
     }
   }, [onClose])
@@ -151,6 +165,7 @@ const InsightDrawer = ({
             {comments.slice(0, visibleCount).map((comment, position) => {
               const fan = dataset.fans.find((entry) => entry.id === comment.fanId)!
               const post = dataset.posts.find((entry) => entry.id === comment.postId)!
+
               return (
                 <article className="comment-row" key={comment.id}>
                   <span className={`fan-avatar tone-${position % 4}`}>{fan.displayName.slice(0, 1)}</span>

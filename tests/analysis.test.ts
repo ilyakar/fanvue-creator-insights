@@ -22,9 +22,11 @@ test('sample data has 18 posts, 360 comments and repeated identities', async () 
 test('theme counts deduplicate fans and comment references', async () => {
   const dataset = await sampleDataProvider.getDataset()
   const insights = validateAnalysis({ insights: previewInsights }, dataset)
+
   const insight = insights.find(
     (entry) => getInsightCounts(entry, dataset).fans < getInsightCounts(entry, dataset).comments
   )!
+
   const counts = getInsightCounts(insight, dataset)
   assert.equal(counts.comments, insight.commentIds.length)
   assert.ok(counts.fans < counts.comments)
@@ -35,6 +37,7 @@ test('theme counts deduplicate fans and comment references', async () => {
 // Stops invented references from being accepted as evidence.
 test('analysis rejects nonexistent comments', async () => {
   const dataset = await sampleDataProvider.getDataset()
+
   assert.throws(
     () => validateAnalysis({ insights: [{ ...previewInsights[0], commentIds: ['invented-comment'] }] }, dataset),
     /unknown comment/
@@ -44,10 +47,12 @@ test('analysis rejects nonexistent comments', async () => {
 // Prevents overview summaries from silently becoming unsupported post-specific claims.
 test('analysis rejects unsupported or missing post summaries', async () => {
   const dataset = await sampleDataProvider.getDataset()
+
   assert.throws(
     () => validateAnalysis({ insights: [{ ...previewInsights[0], postSummaries: [] }] }, dataset),
     /post summaries/
   )
+
   assert.throws(
     () =>
       validateAnalysis(
@@ -90,6 +95,7 @@ test('cache key includes owner, full content, model and prompt version', async (
 test('dataset validation rejects duplicate and orphaned records', async () => {
   const dataset = await sampleDataProvider.getDataset()
   assert.throws(() => validateDataset({ ...dataset, fans: [...dataset.fans, dataset.fans[0]] }), /duplicate/)
+
   assert.throws(
     () => validateDataset({ ...dataset, comments: [{ ...dataset.comments[0], fanId: 'unknown' }] }),
     /missing/

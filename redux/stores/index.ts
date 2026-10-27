@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Supplies inert storage during server rendering to avoid cross-request browser state.
+Creates isolated Redux stores and persists only the sidebar layout preference.
 ---------------------------------------------------------------*/
 
 import { configureStore } from '@reduxjs/toolkit'
@@ -9,13 +9,16 @@ import preferencesReducer from '../reducers/Preferences'
 
 // Supplies inert storage during server rendering to avoid cross-request browser state.
 const createStorage = () => {
-  if (typeof window !== 'undefined') return createWebStorage('local')
+  if (typeof window !== 'undefined') {
+    return createWebStorage('local')
+  }
+
   return {
     // Returns no persisted browser preference on the server.
     getItem: async () => null,
 
     // Leaves persistence to the browser after hydration.
-    setItem: async (_key: string, value: string) => value,
+    setItem: async (storageKey: string, value: string) => value,
 
     // Keeps server-side cleanup free of browser side effects.
     removeItem: async () => undefined

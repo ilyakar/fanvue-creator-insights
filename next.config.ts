@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Provides next.config functionality for audience insights.
+Configures the framework, SCSS compiler and shared response headers.
 ---------------------------------------------------------------*/
 
 import type { NextConfig } from 'next'

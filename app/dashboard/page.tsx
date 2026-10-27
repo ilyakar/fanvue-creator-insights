@@ -9,8 +9,13 @@ import DashboardContent from '../Components/DashboardContent/DashboardContent'
 
 // Presents completed aggregate insights or resumes genuine analysis progress.
 const OverviewPage = async () => {
-  const model = await getDashboardModel(await requireAccount())
-  if (!model.result) redirect('/analysis')
+  const account = await requireAccount()
+  const model = await getDashboardModel(account)
+
+  if (!model.result) {
+    redirect('/analysis')
+  }
+
   return <DashboardContent model={model} />
 }
 

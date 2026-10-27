@@ -32,11 +32,13 @@ test('session identifiers are random and stored as digests', () => {
 // Prevents another site from initiating account mutations with an ambient session cookie.
 test('account mutations require the configured origin', () => {
   process.env.APP_URL = 'http://127.0.0.1:3000'
+
   assert.doesNotThrow(() =>
     requireSameOrigin(
       new Request('http://127.0.0.1:3000/api/account', { headers: { Origin: 'http://127.0.0.1:3000' } })
     )
   )
+
   assert.throws(
     () =>
       requireSameOrigin(
@@ -44,6 +46,7 @@ test('account mutations require the configured origin', () => {
       ),
     /from the app/
   )
+
   assert.throws(() => requireSameOrigin(new Request('http://127.0.0.1:3000/api/account')), /from the app/)
 })
 
@@ -51,17 +54,21 @@ test('account mutations require the configured origin', () => {
 test('OAuth exchanges use Basic auth, PKCE and validated token lifetimes', async (context) => {
   process.env.FANVUE_CLIENT_ID = 'test-client'
   process.env.FANVUE_CLIENT_SECRET = 'test-secret'
+
   context.mock.method(globalThis, 'fetch', async (url: string, options: RequestInit) => {
     assert.equal(url, 'https://auth.fanvue.com/oauth2/token')
     const headers = options.headers as Record<string, string>
     assert.equal(headers.Authorization, `Basic ${Buffer.from('test-client:test-secret').toString('base64')}`)
     assert.equal((options.body as URLSearchParams).get('code_verifier'), 'test-verifier')
     assert.equal((options.body as URLSearchParams).get('client_secret'), null)
+
     return Response.json({ access_token: 'access', refresh_token: 'refresh', expires_in: '3600' })
   })
+
   const tokens = await exchangeFanvueTokens(
     new URLSearchParams({ grant_type: 'authorization_code', code: 'test-code', code_verifier: 'test-verifier' })
   )
+
   assert.equal(tokens.expires_in, 3600)
 })
 
@@ -76,6 +83,7 @@ test('profile parsing matches the official unwrapped v1 user response', async (c
       avatarUrl: null
     })
   )
+
   const profile = await getFanvueProfile('test-access')
   assert.equal(profile.handle, 'sample_creator')
   assert.equal(profile.isCreator, true)

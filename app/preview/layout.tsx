@@ -10,7 +10,10 @@ export const metadata = { robots: { index: false, follow: false } }
 
 // Makes editorial design fixtures available only to the local development server.
 const PreviewLayout = ({ children }: { children: React.ReactNode }) => {
-  if (process.env.NODE_ENV !== 'development') notFound()
+  if (process.env.NODE_ENV !== 'development') {
+    notFound()
+  }
+
   return (
     <AppShell account={null} isPreview>
       {children}

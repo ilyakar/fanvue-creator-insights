@@ -47,9 +47,14 @@ const AnalysisLoading = ({
   useEffect(() => {
     if (stage === 'complete') {
       router.replace('/dashboard')
+
       return
     }
-    if (stage === 'failed' || stage === 'idle') return
+
+    if (stage === 'failed' || stage === 'idle') {
+      return
+    }
+
     let isActive = true
     const waitingTimer = setTimeout(() => setIsWaiting(true), 30000)
 
@@ -59,9 +64,14 @@ const AnalysisLoading = ({
         .then(async (response) => {
           if (response.status === 401) {
             router.replace('/connect?reason=session')
+
             return null
           }
-          if (!response.ok) throw new Error()
+
+          if (!response.ok) {
+            throw new Error()
+          }
+
           return response.json()
         })
         .then((body) => {
@@ -71,10 +81,14 @@ const AnalysisLoading = ({
           }
         })
         .catch(() => {
-          if (isActive) setErrorMessage('We’re having trouble checking progress. We’ll keep trying.')
+          if (isActive) {
+            setErrorMessage('We’re having trouble checking progress. We’ll keep trying.')
+          }
         })
+
     const interval = setInterval(checkProgress, 2000)
     void checkProgress()
+
     return () => {
       isActive = false
       clearInterval(interval)
@@ -85,14 +99,21 @@ const AnalysisLoading = ({
   // Requeues a failed run after verifying the account connection on the server.
   const _handleRetry = () => {
     setIsRetrying(true)
+
     fetch('/api/analysis', { method: 'POST' })
       .then(async (response) => {
         const body = await response.json()
+
         if (response.status === 401) {
           window.location.assign('/connect?reason=session')
+
           return
         }
-        if (!response.ok) throw new Error(body.error)
+
+        if (!response.ok) {
+          throw new Error(body.error)
+        }
+
         setStage(body.job.status)
         setErrorMessage(null)
         setIsWaiting(false)
@@ -130,6 +151,7 @@ const AnalysisLoading = ({
         ].map((entry) => {
           const isDone = stageOrder.indexOf(stage as JobStage) > stageOrder.indexOf(entry.stage)
           const isCurrent = stage === entry.stage
+
           return (
             <li className={[isDone && 'done', isCurrent && 'current'].filter(Boolean).join(' ')} key={entry.stage}>
               <span>{isDone ? <FontAwesomeIcon icon={faCheck} /> : <span />}</span>

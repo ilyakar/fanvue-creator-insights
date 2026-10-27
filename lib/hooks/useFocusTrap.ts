@@ -13,31 +13,48 @@ export const useFocusTrap = (
   onClose: () => void
 ) => {
   useEffect(() => {
-    if (!isActive) return
+    if (!isActive) {
+      return
+    }
+
     const previousFocus = document.activeElement as HTMLElement | null
     const previousOverflow = document.body.style.overflow
+
+    // Freeze the page only while this focus container owns the interaction.
     document.body.style.overflow = 'hidden'
+
     const container = containerReference.current
     const firstControl = container?.querySelector<HTMLElement>('button:not([disabled]), a[href]')
-    ;(firstControl || container)?.focus()
+    const focusTarget = firstControl || container
+
+    focusTarget?.focus()
 
     // Traps Tab navigation and makes Escape consistently dismiss the active modal.
-    const handleKeyboard = (event: KeyboardEvent) => {
+    const _handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         event.preventDefault()
         onClose()
+
         return
       }
-      if (event.key !== 'Tab') return
+
+      if (event.key !== 'Tab') {
+        return
+      }
+
       const focusable = container?.querySelectorAll<HTMLElement>(
         'button:not([disabled]), a[href], input, select, [tabindex="0"]'
       )
+
       if (!focusable?.length) {
         event.preventDefault()
+
         return
       }
+
       const firstElement = focusable[0]
       const lastElement = focusable[focusable.length - 1]
+
       if (event.shiftKey && document.activeElement === firstElement) {
         event.preventDefault()
         lastElement.focus()
@@ -46,10 +63,12 @@ export const useFocusTrap = (
         firstElement.focus()
       }
     }
-    document.addEventListener('keydown', handleKeyboard)
+
+    document.addEventListener('keydown', _handleKeyDown)
+
     return () => {
       document.body.style.overflow = previousOverflow
-      document.removeEventListener('keydown', handleKeyboard)
+      document.removeEventListener('keydown', _handleKeyDown)
       previousFocus?.focus()
     }
   }, [containerReference, isActive, onClose])

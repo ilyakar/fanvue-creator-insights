@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Provides types functionality for audience insights.
+Defines shared source records, account identities and validated analysis results.
 ---------------------------------------------------------------*/
 
 export type Category = 'love' | 'requests' | 'improve'
@@ -9,6 +9,7 @@ export interface Fan {
   username: string
   displayName: string
 }
+
 export interface Post {
   id: string
   title: string
@@ -17,6 +18,7 @@ export interface Post {
   thumbnail: string
   format: 'Photo' | 'Video' | 'Live'
 }
+
 export interface Comment {
   id: string
   postId: string
@@ -24,17 +26,20 @@ export interface Comment {
   text: string
   createdAt: string
 }
+
 export interface Dataset {
   version: string
   posts: Post[]
   comments: Comment[]
   fans: Fan[]
 }
+
 export interface PostSummary {
   postId: string
   summary: string
   opportunity: string | null
 }
+
 export interface Insight {
   id: string
   title: string
@@ -44,6 +49,7 @@ export interface Insight {
   commentIds: string[]
   postSummaries: PostSummary[]
 }
+
 export interface AnalysisResult {
   insights: Insight[]
   analysedAt: string
@@ -51,6 +57,7 @@ export interface AnalysisResult {
   model: string
   promptVersion: string
 }
+
 export interface Account {
   id: string
   fanvue_id: string
@@ -58,13 +65,16 @@ export interface Account {
   display_name: string
   avatar_url: string | null
 }
+
 export interface DashboardModel {
   dataset: Dataset
   result: AnalysisResult | null
   account: Account | null
   isPreview: boolean
 }
+
 export type JobStage = 'queued' | 'analysing' | 'validating' | 'complete' | 'failed'
+
 export interface AnalysisJob {
   id: string
   user_id: string

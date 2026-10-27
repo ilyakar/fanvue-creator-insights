@@ -8,7 +8,9 @@
     "start": "next start --hostname 127.0.0.1",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "worker": "node --env-file-if-exists=.env.local --import tsx scripts/analysis-worker.ts"
+    "worker": "node --env-file-if-exists=.env.local --import tsx scripts/analysis-worker.ts",
+    "check:style": "node scripts/check-code-style.mjs",
+    "format": "node scripts/check-code-style.mjs --fix"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "7.3.1",

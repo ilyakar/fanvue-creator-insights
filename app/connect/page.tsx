@@ -14,6 +14,7 @@ export const dynamic = 'force-dynamic'
 const ConnectPage = async ({ searchParams }: { searchParams: Promise<{ reason?: string }> }) => {
   const { reason } = await searchParams
   const isReady = getMissingConfiguration().length === 0
+
   return (
     <div className="onboarding-page">
       <header>

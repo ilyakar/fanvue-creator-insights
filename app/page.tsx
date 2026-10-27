@@ -22,6 +22,7 @@ import '@styles/homePage.scss'
 // Introduces the product through a concise promise, a real interface preview and the core creator journey.
 const HomePage = async () => {
   const model = await getPreviewModel()
+
   return (
     <div className="landing-page">
       <header className="landing-header">

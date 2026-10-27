@@ -16,6 +16,7 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   // Restores whitelisted preferences only after the browser is ready.
   useEffect(() => {
     const persistor = persistStore(store)
+
     return () => {
       persistor.pause()
     }

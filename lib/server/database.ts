@@ -13,6 +13,9 @@ export const getDatabase = () =>
 
 // Fails closed when a database operation reports an error.
 export const unwrapDatabase = <Result>(response: { data: Result; error: { message: string } | null }): Result => {
-  if (response.error) throw new Error('The saved information could not be accessed. Please try again.')
+  if (response.error) {
+    throw new Error('The saved information could not be accessed. Please try again.')
+  }
+
   return response.data
 }

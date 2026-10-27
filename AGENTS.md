@@ -299,6 +299,50 @@ Rules
 
 ---
 
+### 2.1.1 Always use braces for control flow
+
+Use curly braces for every `if`, `else if`, and `else` body, including one-line guards, `return`, `throw`, `redirect()`, and `notFound()` calls. Apply the same rule to `for`, `for...of`, `for...in`, `while`, and `do...while` loops.
+
+Each branch body must appear on its own indented lines. Never compress a condition and its action onto one line.
+
+Avoid
+
+```ts
+const account = await getCurrentAccount()
+if (!account) throw new RequestError('Please reconnect to continue.', 401)
+const database = getDatabase()
+```
+
+Preferred
+
+```ts
+const account = await getCurrentAccount()
+
+// Stop before accessing private records when the session has expired.
+if (!account) {
+  throw new RequestError('Please reconnect to continue.', 401)
+}
+
+const database = getDatabase()
+```
+
+### 2.1.2 Separate control flow and logical steps
+
+- Leave a blank line before and after standalone conditionals, loops, and `try` blocks when another statement surrounds them in the same block.
+- Leave a blank line before `return`, `throw`, `break`, and `continue` when another statement precedes them in the same block.
+- Keep an `else` or `else if` connected to its matching `if`; do not insert unrelated statements between branches. When a branch needs a comment, use the placement described in section 2.1.
+- Separate preparation, validation, external calls, state changes, and the final response into readable groups. Related declarations may stay together; do not put a blank line after every variable automatically.
+- Leave a blank line between a multiline declaration and the next logical step, and between separate interface or type declarations.
+- Extract a named value when a long inline predicate hides what a condition means.
+- Explain non-obvious intent with a short comment above the relevant step or branch. Avoid comments that merely repeat an obvious statement.
+- Formatting tools are a baseline. Review the control flow and declaration groups manually before considering a file finished.
+
+These rules apply equally to `.ts`, `.tsx`, `.js`, `.mjs`, configuration files, scripts, tests, and callbacks inside React components. Framework-generated files and the untouched reference directory are excluded.
+
+Run `npm run check:style` after changes. `npm run format` applies the project's formatting, braces, control-flow spacing, and JSX sibling spacing rules; review the result for meaningful grouping and comments.
+
+---
+
 ## 2.2 Grouped Declarations and Whitespace
 
 When declaring variables, hooks, and derived values, separate different categories with a blank line for readability.
@@ -342,10 +386,12 @@ let matchedSearchPath = null
 if (matchedCategoryKey) {
   matchedSearchPath = `/cars/category:${matchedCategoryKey}`
 }
+
 // Use brand match when category is missing.
 else if (matchedBrandKey) {
   matchedSearchPath = `/cars/brand:${matchedBrandKey}`
 }
+
 // Use body type match when both category and brand are missing.
 else if (matchedBodyTypeKey) {
   matchedSearchPath = `/cars/body-type:${matchedBodyTypeKey}`
@@ -602,6 +648,9 @@ When making changes, agents must
 - add a brief comment above every function
 - when a file defines a primary page/component plus helpers, place the primary page/component first and keep helper components below it
 - always include a blank line before function-level comments
+- use braces and multiline bodies for every conditional branch and loop, including early returns, throws, redirects, and not-found guards
+- separate control flow, validation, external calls, state changes, and return values with blank lines and meaningful logical groups
+- run `npm run check:style` and manually review readability after formatting
 - use PascalCase for reusable component folders; follow framework conventions for route directories and reserved file names
 - default-export files that contain a single component so imports do not use braces
 - maintain blank lines between sibling TSX elements

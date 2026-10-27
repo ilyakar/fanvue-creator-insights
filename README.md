@@ -39,10 +39,13 @@ Now **Start free** uses real Fanvue OAuth. First sign-in queues the sample datas
 ## Verification
 
 ```sh
+npm run check:style
 npm run typecheck
 npm test
 npm run build
 ```
+
+`npm run check:style` checks all authored TypeScript, TSX, JavaScript and configuration sources for explicit braces, control-flow spacing and multiline JSX sibling spacing. Use `npm run format` to apply these rules, then manually review logical groups and comments. The reference directory and generated declarations are excluded.
 
 Tests cover dataset integrity, distinct fan counts, post-scoped evidence, invalid model references, cache isolation, authenticated encryption, OAuth request shape, CSRF checks, and the SQL migration, worker claims, job recovery, refresh locking, database privileges and cascaded deletion. Database tests run real Postgres in memory through PGlite; no production database is contacted.
 

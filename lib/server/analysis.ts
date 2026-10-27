@@ -13,9 +13,12 @@ export const enqueueAnalysis = async (userId: string, retryFailed = false): Prom
   const database = getDatabase()
   const dataset = await sampleDataProvider.getDataset()
   const cacheKey = getAnalysisCacheKey(userId, dataset, process.env.OPENAI_MODEL || 'gpt-4.1-mini', promptVersion)
+
   const existing = unwrapDatabase(
     await database.from('analysis_jobs').select('*').eq('user_id', userId).eq('cache_key', cacheKey).maybeSingle()
   ) as AnalysisJob | null
+
+  // Reuse saved work unless the creator explicitly retries a failed run.
   if (existing) {
     if (retryFailed && existing.status === 'failed') {
       return unwrapDatabase(
@@ -28,18 +31,24 @@ export const enqueueAnalysis = async (userId: string, retryFailed = false): Prom
           .single()
       ) as AnalysisJob
     }
+
     return existing
   }
+
+  // The database enforces one run for this owner and analysis input.
   const inserted = await database
     .from('analysis_jobs')
     .insert({ user_id: userId, cache_key: cacheKey, dataset_version: dataset.version })
     .select()
     .single()
+
   // Concurrent onboarding requests converge on the same unique cache key.
-  if (inserted.error?.code === '23505')
+  if (inserted.error?.code === '23505') {
     return unwrapDatabase(
       await database.from('analysis_jobs').select('*').eq('user_id', userId).eq('cache_key', cacheKey).single()
     ) as AnalysisJob
+  }
+
   return unwrapDatabase(inserted) as AnalysisJob
 }
 
@@ -47,6 +56,7 @@ export const enqueueAnalysis = async (userId: string, retryFailed = false): Prom
 export const getCurrentAnalysis = async (userId: string): Promise<AnalysisJob | null> => {
   const dataset = await sampleDataProvider.getDataset()
   const cacheKey = getAnalysisCacheKey(userId, dataset, process.env.OPENAI_MODEL || 'gpt-4.1-mini', promptVersion)
+
   return unwrapDatabase(
     await getDatabase().from('analysis_jobs').select('*').eq('user_id', userId).eq('cache_key', cacheKey).maybeSingle()
   ) as AnalysisJob | null
@@ -56,5 +66,6 @@ export const getCurrentAnalysis = async (userId: string): Promise<AnalysisJob | 
 export const getDashboardModel = async (account: Account): Promise<DashboardModel> => {
   const dataset = await sampleDataProvider.getDataset()
   const job = await getCurrentAnalysis(account.id)
+
   return { dataset, result: job?.status === 'complete' ? job.result : null, account, isPreview: false }
 }

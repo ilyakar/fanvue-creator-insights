@@ -25,20 +25,24 @@ const SettingsContent = ({
 }) => {
   const [pendingAction, setPendingAction] = useState<string | null>(null)
   const [isPending, setIsPending] = useState(false)
+
   const router = useRouter()
   const showAlert = useAlert()
+
   const confirmationReference = useRef<HTMLDivElement>(null)
 
   // Dismisses the confirmation without changing any saved information.
-  const closeConfirmation = useCallback(() => setPendingAction(null), [])
-  useFocusTrap(confirmationReference, Boolean(pendingAction), closeConfirmation)
+  const _handleConfirmationClose = useCallback(() => setPendingAction(null), [])
+  useFocusTrap(confirmationReference, Boolean(pendingAction), _handleConfirmationClose)
 
   // Opens an explicit confirmation before removing saved analysis or account access.
   const _handleRequestAction = (action: string) => {
     if (isPreview) {
       showAlert('You’re in the design preview', 'Data controls become available after connecting your Fanvue account.')
+
       return
     }
+
     setPendingAction(action)
   }
 
@@ -48,6 +52,7 @@ const SettingsContent = ({
   // Applies the confirmed data action and refreshes the authenticated view.
   const _handleConfirm = () => {
     setIsPending(true)
+
     fetch('/api/account', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -55,14 +60,20 @@ const SettingsContent = ({
     })
       .then(async (response) => {
         const body = await response.json()
-        if (!response.ok) throw new Error(body.error)
+
+        if (!response.ok) {
+          throw new Error(body.error)
+        }
+
         return body
       })
       .then(() => {
         if (pendingAction === 'disconnect') {
           window.location.assign('/')
+
           return
         }
+
         setPendingAction(null)
         showAlert('Saved analysis cleared', 'You can prepare your insights again whenever you’re ready.')
         router.refresh()

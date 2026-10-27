@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Provides Preferences functionality for audience insights.
+Stores the creator workspace layout preference.
 ---------------------------------------------------------------*/
 
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'

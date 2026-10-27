@@ -13,6 +13,7 @@ const tokenSchema = z.object({
   expires_in: z.coerce.number().positive(),
   scope: z.string().optional()
 })
+
 export const profileSchema = z.object({
   uuid: z.string().uuid(),
   handle: z.string(),
@@ -28,6 +29,8 @@ export const exchangeFanvueTokens = async (parameters: URLSearchParams) => {
   const authorization = Buffer.from(
     `${requireSetting('FANVUE_CLIENT_ID')}:${requireSetting('FANVUE_CLIENT_SECRET')}`
   ).toString('base64')
+
+  // Fanvue requires confidential client credentials in the HTTP authorization header.
   const response = await fetch('https://auth.fanvue.com/oauth2/token', {
     method: 'POST',
     headers: { Authorization: `Basic ${authorization}`, 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -35,11 +38,17 @@ export const exchangeFanvueTokens = async (parameters: URLSearchParams) => {
     cache: 'no-store',
     signal: AbortSignal.timeout(20000)
   })
+
   if (!response.ok) {
     const failure = await response.json().catch(() => ({}))
-    if (failure.error === 'invalid_grant') throw new ReconnectRequired('Please reconnect your Fanvue account.')
+
+    if (failure.error === 'invalid_grant') {
+      throw new ReconnectRequired('Please reconnect your Fanvue account.')
+    }
+
     throw new Error('Fanvue could not complete the connection.')
   }
+
   return tokenSchema.parse(await response.json())
 }
 
@@ -53,7 +62,11 @@ export const getFanvueProfile = async (accessToken: string) => {
     cache: 'no-store',
     signal: AbortSignal.timeout(20000)
   })
-  if (!response.ok) throw new Error('Your Fanvue profile could not be read.')
+
+  if (!response.ok) {
+    throw new Error('Your Fanvue profile could not be read.')
+  }
+
   return profileSchema.parse(await response.json())
 }
 
@@ -78,20 +91,36 @@ export const saveFanvueConnection = async (userId: string, tokens: z.infer<typeo
 // Serialises refreshes across server instances using a database lease.
 export const getFanvueAccessToken = async (userId: string): Promise<string> => {
   const database = getDatabase()
+
   for (let attemptNumber = 0; attemptNumber < 20; attemptNumber += 1) {
     const connection = unwrapDatabase(
       await database.from('fanvue_connections').select('*').eq('user_id', userId).single()
     )
-    if (!connection || connection.needs_reconnect) throw new ReconnectRequired('Please reconnect your Fanvue account.')
-    if (new Date(connection.expires_at).getTime() > Date.now() + 60000) return decryptSecret(connection.access_token)
+
+    if (!connection || connection.needs_reconnect) {
+      throw new ReconnectRequired('Please reconnect your Fanvue account.')
+    }
+
+    const isAccessTokenFresh = new Date(connection.expires_at).getTime() > Date.now() + 60000
+
+    if (isAccessTokenFresh) {
+      return decryptSecret(connection.access_token)
+    }
+
+    // Only the lease holder may rotate this account's single-use refresh token.
     const lease = createSecret()
+
     const claimed = unwrapDatabase(
       await database.rpc('claim_fanvue_refresh', { account_identifier: userId, lease_identifier: lease })
     )
+
+    // Another request is refreshing the connection; wait for its stored token pair.
     if (!claimed) {
       await new Promise((resolve) => setTimeout(resolve, 500))
+
       continue
     }
+
     return exchangeFanvueTokens(
       new URLSearchParams({ grant_type: 'refresh_token', refresh_token: decryptSecret(connection.refresh_token) })
     )
@@ -110,7 +139,11 @@ export const getFanvueAccessToken = async (userId: string): Promise<string> => {
             .eq('refresh_lease', lease)
             .select('user_id')
         )
-        if (!updated?.length) throw new ReconnectRequired('Please reconnect your Fanvue account.')
+
+        if (!updated?.length) {
+          throw new ReconnectRequired('Please reconnect your Fanvue account.')
+        }
+
         return tokens.access_token
       })
       .catch(async (error) => {
@@ -122,8 +155,10 @@ export const getFanvueAccessToken = async (userId: string): Promise<string> => {
             .eq('user_id', userId)
             .eq('refresh_lease', lease)
         )
+
         throw error
       })
   }
+
   throw new Error('Your connection is being refreshed. Please try again.')
 }

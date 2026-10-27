@@ -30,15 +30,19 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
   const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all')
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null)
   const showAlert = useAlert()
+
   const { dataset, result, isPreview } = model
   const basePath = isPreview ? '/preview' : '/dashboard'
   const post = dataset.posts.find((entry) => entry.id === postId)
   const scopedComments = dataset.comments.filter((comment) => !postId || comment.postId === postId)
   const counts = getDatasetCounts({ ...dataset, comments: scopedComments, posts: post ? [post] : dataset.posts })
+
   const insights = (result?.insights || []).filter(
     (insight) => !postId || getInsightCounts(insight, dataset, postId).comments > 0
   )
+
   const categories: Category[] = ['love', 'requests', 'improve']
+
   const featuredInsight = insights
     .filter((insight) => insight.category === 'requests')
     .sort(
@@ -50,7 +54,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
   const featuredFan = dataset.fans.find((fan) => fan.id === featuredComment?.fanId)
 
   // Closes the evidence panel while preserving the current filters and scroll position.
-  const closeInsight = useCallback(() => setSelectedInsight(null), [])
+  const _handleInsightClose = useCallback(() => setSelectedInsight(null), [])
 
   // Changes the visible insight categories from the filter control.
   const _handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
@@ -58,7 +62,9 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
 
   // Opens the most-supported content request as an actionable starting point.
   const _handleFeaturedOpen = () => {
-    if (featuredInsight) setSelectedInsight(featuredInsight)
+    if (featuredInsight) {
+      setSelectedInsight(featuredInsight)
+    }
   }
 
   // Replaces unavailable synthetic source URLs with a consistent explanation.
@@ -210,6 +216,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
                     getInsightCounts(secondInsight, dataset, postId).fans -
                     getInsightCounts(firstInsight, dataset, postId).fans
                 )
+
               return (
                 <section className="insight-column" key={category}>
                   <div className="column-heading">
@@ -261,7 +268,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
           dataset={dataset}
           postId={postId}
           basePath={basePath}
-          onClose={closeInsight}
+          onClose={_handleInsightClose}
         />
       )}
     </div>
