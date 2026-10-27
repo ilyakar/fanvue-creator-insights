@@ -1,0 +1,99 @@
+/* ------------------------------------------------------------
+Defines shared visual styles for the audience insights experience.
+---------------------------------------------------------------*/
+
+@use '../stylingImports/index' as *;
+
+h1,
+h2,
+h3,
+h4,
+p {
+  margin: 0;
+}
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  line-height: 1.2;
+}
+.eyebrow {
+  display: block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  line-height: 1.5;
+}
+.page-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 25px;
+  margin-bottom: 30px;
+  .eyebrow {
+    color: $color-muted;
+    margin-bottom: 10px;
+  }
+  h1 {
+    font-size: clamp(27px, 2.6vw, 37px);
+    letter-spacing: -0.045em;
+    margin-bottom: 10px;
+  }
+  p {
+    color: $color-muted;
+    font-size: 14px;
+  }
+  @include max-width(tablet) {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+  }
+}
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 25px;
+  h2 {
+    font-size: 21px;
+    letter-spacing: -0.025em;
+    margin-bottom: 5px;
+  }
+  p {
+    color: $color-muted;
+    font-size: 13px;
+  }
+  @include max-width(phone) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  white-space: nowrap;
+  .wordmark {
+    font-weight: 750;
+    font-size: 29px;
+    line-height: 1;
+    letter-spacing: -0.075em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .mark {
+    color: $color-purple;
+    font-size: 33px;
+    font-weight: 400;
+  }
+  .product {
+    font-size: 12px;
+    padding-left: 10px;
+    border-left: 1px solid #d6d8e2;
+    color: #696e80;
+    line-height: 1.1;
+  }
+}
