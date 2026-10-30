@@ -8,7 +8,7 @@ import { useCallback, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faAsterisk, faStar, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons'
 
-import type { Dataset, Insight } from '@/lib/types'
+import type { Dataset, Insight, PostTheme } from '@/lib/types'
 import { getEvidence, getInsightCounts } from '@/lib/insights'
 import InsightDrawer from '@/app/Components/InsightDrawer/InsightDrawer'
 
@@ -16,10 +16,12 @@ import InsightDrawer from '@/app/Components/InsightDrawer/InsightDrawer'
 const FeaturedRequest = ({
   audienceFeedback,
   insights,
+  postThemes,
   basePath
 }: {
   audienceFeedback: Dataset
   insights: Insight[]
+  postThemes?: PostTheme[]
   basePath: string
 }) => {
   const [isEvidenceOpen, setIsEvidenceOpen] = useState(false)
@@ -85,6 +87,7 @@ const FeaturedRequest = ({
           insight={featuredInsight}
           audienceFeedback={audienceFeedback}
           basePath={basePath}
+          postThemes={postThemes}
           onClose={_handleClose}
         />
       )}

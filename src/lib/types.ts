@@ -48,10 +48,16 @@ export interface Insight {
   opportunity: string | null
   commentIds: string[]
   postSummaries: PostSummary[]
+  postThemeIds?: string[]
+}
+
+export interface PostTheme extends Insight {
+  postId: string
 }
 
 export interface AnalysisResult {
   insights: Insight[]
+  postThemes?: PostTheme[]
   analysedAt: string
   datasetVersion: string
   model: string

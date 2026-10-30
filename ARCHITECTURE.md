@@ -61,9 +61,13 @@ Audience snapshots are stable for a given dataset version. The result stores com
 
 ## Analysis contract
 
-The server sends post context and comment identifiers/text to OpenAI Responses with a Zod-derived structured output schema, `store: false`, bounded output and request timeout. It excludes Fanvue credentials and fan identity details. Comments are untrusted source text, not instructions.
+The server gives each post an isolated OpenAI Responses request containing only its title, caption, format and original comment identifiers, pseudonymous fan IDs and text. Up to four requests run concurrently, and every post result is validated against that post alone. A specific useful comment can support a post theme without a recurrence quota. Generic reactions and unsupported requests are excluded. Neither stage has a fixed theme count.
 
-Each theme contains category, title, summary, optional opportunity, supporting comment IDs and evidence-scoped summaries for every referenced post. Runtime validation rejects unknown IDs and missing/unsupported post scope, and deduplicates repeated references. Application code counts original comments and distinct fan IDs. Structural validation cannot prove semantic correctness; the evaluation checklist covers that limitation.
+The overview groups each feedback category separately, using only validated post themes with the same specific meaning. A schema-required assignment for each source theme prevents duplicate or missing source membership. Its output references post-theme IDs. Application code derives overview comment evidence and source links from those IDs, rejecting invented references, category changes and reuse across groups. Themes omitted from grouping remain standalone, so synthesis cannot silently discard post feedback. Distinct fan and comment counts come from original records.
+
+Results store independent `postThemes` alongside overview `insights`. Post detail pages select their own themes, including their own titles, rather than filtering overview themes. Overview drawers link to contributing post themes and original comments. Older editorial preview records retain their explicitly illustrative rendering through a compatibility fallback. The prompt version separates new results from the old global-first cache.
+
+Both model stages use Zod-derived structured output, `store: false`, bounded output and request timeouts. Post and comment text remain untrusted evidence. Runtime checks enforce references and scope but cannot prove semantic accuracy; `docs/AI-EVALUATION.md` describes that review.
 
 ## Immediate processing and caching
 

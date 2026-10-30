@@ -15,7 +15,7 @@ import {
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
 
-import { categoryLabels, formatDate, getDatasetCounts, getInsightCounts } from '@/lib/insights'
+import { categoryLabels, formatDate, getDatasetCounts, getDisplayInsights, getInsightCounts } from '@/lib/insights'
 import type { AnalysisResult, Category, Dataset, Insight } from '@/lib/types'
 import CategoryIcon from '@/app/Components/CategoryIcon/CategoryIcon'
 import InsightCard from '@/app/Components/InsightCard/InsightCard'
@@ -47,9 +47,7 @@ const AudienceInsights = ({
     posts: scopedPost ? [scopedPost] : audienceFeedback.posts
   })
 
-  const insights = savedAnalysis.insights.filter(
-    insight => !scopedPostId || getInsightCounts(insight, audienceFeedback, scopedPostId).comments > 0
-  )
+  const insights = getDisplayInsights(savedAnalysis, audienceFeedback, scopedPostId)
   const categories: Category[] = ['love', 'requests', 'improve']
 
   // Closes the evidence panel while preserving the current filters and scroll position.
@@ -113,7 +111,7 @@ const AudienceInsights = ({
           <div className="empty-state">
             <FontAwesomeIcon icon={faCommentDots} />
             <h3>A little more conversation will help.</h3>
-            <p>These comments don’t contain enough recurring feedback to identify useful themes yet.</p>
+            <p>These comments don’t contain specific feedback to identify useful themes yet.</p>
           </div>
         )}
 
@@ -149,7 +147,7 @@ const AudienceInsights = ({
                     ))}
 
                     {categoryInsights.length === 0 && insights.length > 0 && (
-                      <div className="category-empty">No recurring feedback in this category yet.</div>
+                      <div className="category-empty">No specific feedback in this category yet.</div>
                     )}
                   </div>
                 </section>
@@ -178,6 +176,7 @@ const AudienceInsights = ({
           audienceFeedback={audienceFeedback}
           postId={scopedPostId}
           basePath={basePath}
+          postThemes={savedAnalysis.postThemes}
           onClose={_handleInsightClose}
         />
       )}

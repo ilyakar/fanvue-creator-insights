@@ -6,6 +6,11 @@ Runtime schema and relationship checks are automated. They do not prove that a t
 
 For the first configured real inference, inspect each generated theme and the original supporting comments. Check:
 
+- Each post has independent titles and evidence, including useful single-comment feedback.
+- Post requests never cite comments from another post.
+- Overview camera-angle praise can merge across different subjects, while subject-specific kitten or car requests stay distinct.
+- Each overview theme links to the exact contributing post themes; every post theme remains represented.
+- A post with no themes stays empty even when overview themes cover other posts.
 - Behind-the-scenes praise appears as positive feedback; it is not automatically treated as an explicit request.
 - Requests for live Q&As, polls and travel diaries remain distinguishable.
 - Short video duration, insufficient live notice and unclear audio appear only when supporting comments express them.

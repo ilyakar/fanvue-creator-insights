@@ -2,7 +2,7 @@
 Returns original evidence, scoped to one post when requested.
 ---------------------------------------------------------------*/
 
-import type { Category, Dataset, Insight } from './types'
+import type { AnalysisResult, Category, Dataset, Insight } from './types'
 
 export const categoryLabels: Record<Category, string> = {
   love: 'What fans love',
@@ -41,3 +41,26 @@ export const formatDate = (value: string, includeYear = false) =>
     ...(includeYear ? { year: 'numeric' as const } : {}),
     timeZone: 'UTC'
   }).format(new Date(value))
+
+// Uses independent post themes when available and preserves explicitly editorial legacy previews.
+export const getDisplayInsights = (analysis: AnalysisResult, dataset: Dataset, postId?: string): Insight[] => {
+  if (!postId) {
+    return analysis.insights
+  }
+
+  if (analysis.postThemes) {
+    return analysis.postThemes.filter(theme => theme.postId === postId)
+  }
+
+  return analysis.insights
+    .filter(insight => getEvidence(insight, dataset, postId).length > 0)
+    .map(insight => {
+      const scopedSummary = insight.postSummaries.find(summary => summary.postId === postId)
+
+      return {
+        ...insight,
+        summary: scopedSummary?.summary || insight.summary,
+        opportunity: scopedSummary?.opportunity ?? null
+      }
+    })
+}

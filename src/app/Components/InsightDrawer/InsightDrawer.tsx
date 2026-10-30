@@ -15,7 +15,7 @@ import {
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
 
-import type { Dataset, Insight } from '@/lib/types'
+import type { Dataset, Insight, PostTheme } from '@/lib/types'
 import { categoryLabels, formatDate, getEvidence, getInsightCounts } from '@/lib/insights'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 import { useAlert } from '@/app/AlertProvider'
@@ -27,12 +27,14 @@ const InsightDrawer = ({
   audienceFeedback,
   postId,
   basePath,
+  postThemes,
   onClose
 }: {
   insight: Insight
   audienceFeedback: Dataset
   postId?: string
   basePath: string
+  postThemes?: PostTheme[]
   onClose: () => void
 }) => {
   const panelReference = useRef<HTMLDivElement>(null)
@@ -42,9 +44,9 @@ const InsightDrawer = ({
 
   const comments = getEvidence(insight, audienceFeedback, postId)
   const counts = getInsightCounts(insight, audienceFeedback, postId)
-  const scopedSummary = insight.postSummaries.find(postSummary => postSummary.postId === postId)
-  const summary = postId ? scopedSummary?.summary : insight.summary
-  const opportunity = postId ? scopedSummary?.opportunity : insight.opportunity
+  const summary = insight.summary
+  const opportunity = insight.opportunity
+  const sourceThemes = postThemes?.filter(theme => insight.postThemeIds?.includes(theme.id)) || []
 
   useFocusTrap(panelReference, true, onClose, 'container')
 
@@ -98,6 +100,28 @@ const InsightDrawer = ({
 
               <p>{opportunity}</p>
             </div>
+          )}
+
+          {!postId && sourceThemes.length > 0 && (
+            <details className="source-themes">
+              <summary>From {sourceThemes.length} post themes</summary>
+
+              <ul>
+                {sourceThemes.map(theme => {
+                  const sourcePost = audienceFeedback.posts.find(post => post.id === theme.postId)!
+
+                  return (
+                    <li key={theme.id}>
+                      <Link href={`${basePath}/posts/${theme.postId}`} onClick={onClose}>
+                        {theme.title}
+                      </Link>
+
+                      <p>{sourcePost.title}</p>
+                    </li>
+                  )
+                })}
+              </ul>
+            </details>
           )}
 
           <div className="comments-heading">

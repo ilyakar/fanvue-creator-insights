@@ -173,7 +173,7 @@ const AnalysisProgress = ({
         </li>
 
         {[
-          { stage: 'analysing' as const, label: 'Analysing comments and discovering themes' },
+          { stage: 'analysing' as const, label: 'Analysing each post and grouping related themes' },
           { stage: 'validating' as const, label: 'Checking the comments behind each insight' },
           { stage: 'complete' as const, label: 'Preparing your insights' }
         ].map(progressStep => {

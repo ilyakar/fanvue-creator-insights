@@ -5,6 +5,8 @@ Verifies immediate inference, saved results, concurrent request reuse and failur
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
+import { validatePostAnalysis } from '@/lib/analysis/validation'
+import type { Post, PostTheme } from '@/lib/types'
 import { runAnalysis } from '@/lib/server/run-analysis'
 import type { AnalysisJob } from '@/lib/types'
 import posts from '@/mock-data/posts.json'
@@ -34,6 +36,7 @@ test('analysis starts in the request, deduplicates active work and saves complet
   })
 
   let savedJob: AnalysisJob | null = null
+  const extractedThemes: PostTheme[] = []
   let inferenceCalls = 0
   let failInference = false
   let releaseInference: () => void = () => {}
@@ -62,6 +65,54 @@ test('analysis starts in the request, deduplicates active work and saves complet
         return new Response(JSON.stringify({ error: { message: 'Provider unavailable' } }), { status: 503 })
       }
 
+      const modelRequest = JSON.parse(options.body as string)
+      const sourceInput = JSON.parse(modelRequest.input[1].content)
+      let modelOutput: unknown
+
+      if (sourceInput.post) {
+        const scopedInsights = previewInsights
+          .map(insight => ({
+            ...insight,
+            commentIds: insight.commentIds.filter(identifier =>
+              comments.some(comment => comment.id === identifier && comment.postId === sourceInput.post.id)
+            )
+          }))
+          .filter(insight => insight.commentIds.length > 0)
+
+        assert.ok(
+          sourceInput.comments.every((comment: { id: string }) =>
+            comments.some(source => source.id === comment.id && source.postId === sourceInput.post.id)
+          )
+        )
+        extractedThemes.push(
+          ...validatePostAnalysis(
+            { insights: scopedInsights },
+            { version: 'sample', posts: posts as Post[], comments, fans },
+            sourceInput.post.id
+          )
+        )
+        modelOutput = { insights: scopedInsights }
+      } else {
+        modelOutput = {
+          groups: previewInsights
+            .filter(insight => insight.category === sourceInput.category)
+            .map((insight, index) => ({
+              groupId: `group-${index}`,
+              title: insight.title,
+              category: insight.category,
+              summary: insight.summary,
+              opportunity: insight.opportunity
+            })),
+          assignments: Object.fromEntries(
+            sourceInput.postThemes.map((theme: { title: string; postThemeId: string }) => [
+              theme.postThemeId,
+              `group-${previewInsights.filter(insight => insight.category === sourceInput.category).findIndex(insight => insight.title === theme.title)}`
+            ])
+          )
+        }
+        extractedThemes.length = 0
+      }
+
       return jsonResponse({
         id: 'response-test',
         object: 'response',
@@ -72,7 +123,7 @@ test('analysis starts in the request, deduplicates active work and saves complet
             type: 'message',
             role: 'assistant',
             status: 'completed',
-            content: [{ type: 'output_text', text: JSON.stringify({ insights: previewInsights }), annotations: [] }]
+            content: [{ type: 'output_text', text: JSON.stringify(modelOutput), annotations: [] }]
           }
         ]
       })
@@ -117,15 +168,18 @@ test('analysis starts in the request, deduplicates active work and saves complet
   await inferenceStarted
   const activeJob = await runAnalysis('owner-one')
   assert.equal(activeJob.status, 'analysing')
-  assert.equal(inferenceCalls, 1)
+  assert.ok(inferenceCalls >= 1 && inferenceCalls <= 4)
 
   releaseInference()
   const completedJob = await pendingAnalysis
   assert.equal(completedJob.status, 'complete')
   assert.equal(completedJob.result?.insights.length, previewInsights.length)
   assert.equal(completedJob.lease_token, null)
+  const completedCalls = inferenceCalls
+  assert.equal(completedCalls, posts.length + 3)
+  assert.ok(completedJob.result?.postThemes?.length)
   assert.equal((await runAnalysis('owner-one')).status, 'complete')
-  assert.equal(inferenceCalls, 1)
+  assert.equal(inferenceCalls, completedCalls)
 
   // An interrupted request is reclaimed immediately when a creator retries after its expiry.
   savedJob = { ...completedJob, status: 'analysing', lease_token: 'expired-request', lease_until: '2020-01-01' }
@@ -134,9 +188,10 @@ test('analysis starts in the request, deduplicates active work and saves complet
   assert.equal(failedJob.status, 'failed')
   assert.ok(failedJob.error)
   assert.equal(failedJob.lease_token, null)
-  assert.equal(inferenceCalls, 2)
+  assert.ok(inferenceCalls > completedCalls)
+  const callsAfterFailure = inferenceCalls
 
   failInference = false
   assert.equal((await runAnalysis('owner-one')).status, 'complete')
-  assert.equal(inferenceCalls, 3)
+  assert.equal(inferenceCalls, callsAfterFailure + posts.length + 3)
 })

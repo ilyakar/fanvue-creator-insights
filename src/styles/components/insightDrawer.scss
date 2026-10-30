@@ -90,6 +90,33 @@ Styles the evidence drawer, original comments and supporting source links.
       }
     }
 
+    .source-themes {
+      margin-bottom: 30px;
+      font-size: $font-size-small;
+
+      summary {
+        cursor: pointer;
+        margin-bottom: 15px;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+
+        li {
+          margin-bottom: 15px;
+
+          a {
+            text-decoration: underline;
+          }
+
+          p {
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+
     .drawer-summary {
       font-size: $font-size-small;
       line-height: 1.85;
