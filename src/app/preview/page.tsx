@@ -43,9 +43,7 @@ const PreviewInsights = async ({
       audienceFeedback={audienceFeedback}
       savedAnalysis={savedAnalysis}
       isPreview
-      featuredRequest={
-        <FeaturedRequest audienceFeedback={audienceFeedback} insights={savedAnalysis.insights} basePath="/preview" />
-      }
+      featuredRequest={<FeaturedRequest audienceFeedback={audienceFeedback} insights={savedAnalysis.insights} />}
     />
   )
 }

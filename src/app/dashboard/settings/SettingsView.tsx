@@ -5,7 +5,7 @@ Shares settings headings, connection panel and disclosures across ready and pend
 import type { ReactNode } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faDatabase, faLink, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
+import { faArrowUpRightFromSquare, faDatabase, faLink, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
 
 import AccountAction from '@/app/Components/AccountAction/AccountAction'
 
@@ -79,8 +79,8 @@ const SettingsView = ({ isPreview, connectionDetails }: { isPreview: boolean; co
         content. We never present it as feedback from your actual audience.
       </p>
 
-      <Link className="text-button" href="/privacy">
-        How we handle your information <FontAwesomeIcon icon={faArrowRight} />
+      <Link className="text-button" href="/privacy" target="_blank" rel="noopener noreferrer">
+        How we handle your information <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
       </Link>
     </section>
 

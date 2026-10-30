@@ -235,11 +235,6 @@ const AppShell = ({
           </div>
 
           <div className="topbar-context">
-            <span className="sample-pill">
-              <span />
-              Sample data
-            </span>
-
             <ThemeToggle />
           </div>
         </header>

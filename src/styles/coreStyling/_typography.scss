@@ -37,7 +37,17 @@ h4 {
 
   .eyebrow {
     color: $color-text-secondary;
+  }
+
+  .eyebrow-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 10px;
+
+    @include max-width(phone) {
+      flex-wrap: wrap;
+    }
   }
 
   h1 {
