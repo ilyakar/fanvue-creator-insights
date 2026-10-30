@@ -557,7 +557,7 @@ Example
 
 ### 3.6 Use the shared SCSS foundation
 
-Write all application styling in `.scss` files. Follow the organization and import patterns in `good-code-from-another-project/styles/`, and reuse shared variables, functions, mixins, and foundational styles instead of duplicating them in page or component files.
+Write all application styling in `.scss` files. Follow the organization and import patterns in `good-code-from-another-project/src/styles/`, and reuse shared variables, functions, mixins, and foundational styles instead of duplicating them in page or component files.
 
 ---
 
@@ -685,7 +685,7 @@ When making changes, agents must
 - use PascalCase for reusable component folders; follow framework conventions for route directories and reserved file names
 - default-export files that contain a single component so imports do not use braces
 - maintain blank lines between sibling TSX elements
-- write all application styling in SCSS and follow the structure in `good-code-from-another-project/styles/`
+- write all application styling in SCSS and follow the structure in `good-code-from-another-project/src/styles/`
 - reuse shared SCSS variables, functions, mixins, and foundational styles instead of duplicating them
 - use custom SCSS spacing and sizing values that are multiples of 5px; borders, font sizes, and responsive breakpoints are exempt
 - prefer short-circuit `&&` for conditional strings instead of ternaries with empty strings
@@ -705,6 +705,8 @@ Agents should prefer clarity and explicitness over clever or compact code.
 
 ## 6. Canonical Architecture and Style Reference 🧭
 
+Application source belongs in `src/`: routes and components in `src/app/`, shared logic in `src/lib/`, state in `src/redux/`, styles in `src/styles/`, fixtures in `src/mock-data/`, and the request proxy in `src/proxy.ts`. Import aliases resolve from `src/`. Keep `public/`, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup at the repository root. The copied reference follows the same source grouping in `good-code-from-another-project/src/`.
+
 The copied code in `good-code-from-another-project/` is the canonical reference for architectural, structural, and styling decisions in this project.
 
 Before creating or reorganizing code, agents must inspect the closest relevant example in that directory and follow its approach. This applies to
@@ -719,13 +721,13 @@ Before creating or reorganizing code, agents must inspect the closest relevant e
 
 Use these locations as the primary references by concern:
 
-- app shell, layouts, and providers: `good-code-from-another-project/app/layout.tsx`, `good-code-from-another-project/app/Providers.tsx`, and `good-code-from-another-project/app/AlertProvider.tsx`
-- pages and route organization: `good-code-from-another-project/app/page.tsx`, `good-code-from-another-project/app/home/`, `good-code-from-another-project/app/onboarding/`, and `good-code-from-another-project/app/the-mirror/`
-- reusable components: `good-code-from-another-project/app/Components/`
-- API routes: `good-code-from-another-project/app/api/`
-- shared data and service helpers: `good-code-from-another-project/data/` and `good-code-from-another-project/lib/`
-- application state: `good-code-from-another-project/redux/reducers/` and `good-code-from-another-project/redux/stores/`
-- styling architecture: `good-code-from-another-project/styles/coreStyling/`, `good-code-from-another-project/styles/components/`, `good-code-from-another-project/styles/stylingImports/`, and the page-level SCSS files in `good-code-from-another-project/styles/`
+- app shell, layouts, and providers: `good-code-from-another-project/src/app/layout.tsx`, `good-code-from-another-project/src/app/Providers.tsx`, and `good-code-from-another-project/src/app/AlertProvider.tsx`
+- pages and route organization: `good-code-from-another-project/src/app/page.tsx`, `good-code-from-another-project/src/app/home/`, `good-code-from-another-project/src/app/onboarding/`, and `good-code-from-another-project/src/app/the-mirror/`
+- reusable components: `good-code-from-another-project/src/app/Components/`
+- API routes: `good-code-from-another-project/src/app/api/`
+- shared data and service helpers: `good-code-from-another-project/src/data/` and `good-code-from-another-project/src/lib/`
+- application state: `good-code-from-another-project/src/redux/reducers/` and `good-code-from-another-project/src/redux/stores/`
+- styling architecture: `good-code-from-another-project/src/styles/coreStyling/`, `good-code-from-another-project/src/styles/components/`, `good-code-from-another-project/src/styles/stylingImports/`, and the page-level SCSS files in `good-code-from-another-project/src/styles/`
 
 The reference directory is source material, not application code. Do not import runtime code directly from it or modify it unless the user explicitly asks. Recreate the relevant pattern within the active project and adapt names, content, and dependencies to the current feature.
 

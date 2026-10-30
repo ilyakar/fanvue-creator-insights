@@ -6,6 +6,8 @@
 
 One Next.js App Router application uses TypeScript, React client components for interaction, server components for private reads, and route handlers for OAuth and mutations. SCSS follows the reference project's shared foundations and component hierarchy. `AGENTS.md` remains the source of code style rules.
 
+Application source lives under `src/`, including `src/app/`, `src/lib/`, `src/redux/`, `src/styles/`, `src/mock-data/`, and `src/proxy.ts`. Aliases such as `@/lib` resolve from `src/`. Public assets, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup remain at the repository root. Copied reference source uses `good-code-from-another-project/src/`.
+
 ## Identity and credentials
 
 Fanvue is the sole sign-in provider. Authorization uses PKCE S256, a random browser-bound state and a ten-minute database OAuth attempt containing an encrypted verifier. The callback atomically consumes the attempt, exchanges the code with `client_secret_basic`, validates the documented unwrapped v1 profile and accepts creator accounts.

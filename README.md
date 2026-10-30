@@ -76,13 +76,14 @@ Apply the migration before connecting an account. All private tables have RLS en
 
 ## Source map
 
-- `app/`: routes, providers and reusable `Components/`
-- `styles/`: shared SCSS tokens, mixins, foundations and component styles
-- `redux/`: an isolated store persisting only the sidebar preference
-- `mock-data/`: source fixtures retained for seeding and offline tests; the running app reads Supabase
-- `lib/data/`: replaceable provider and dataset validation
-- `lib/analysis/`: model inference, schema and evidence validation
-- `lib/server/`: database, OAuth, encrypted credentials and sessions
+- `src/app/`: routes, providers and reusable `Components/`
+- `src/styles/`: shared SCSS tokens, mixins, foundations and component styles
+- `src/redux/`: an isolated store persisting only the sidebar preference
+- `src/mock-data/`: source fixtures retained for seeding and offline tests; the running app reads Supabase
+- `src/lib/data/`: replaceable provider and dataset validation
+- `src/lib/analysis/`: model inference, schema and evidence validation
+- `src/lib/server/`: database, OAuth, encrypted credentials and sessions
+- `src/proxy.ts`: request guards for authenticated routes and local-only design previews
 - `scripts/analysis-worker.ts`: durable background processing
 - `supabase/migrations/`: versioned database foundation
 - `supabase/seed.sql`: repeatable import of the fictional creator dataset and editorial preview
@@ -94,4 +95,4 @@ See `ARCHITECTURE.md` for ownership, job lifecycle and integration decisions, an
 
 The interface follows the supplied Brex-inspired composition and Stripe-inspired palette, adapted to a creator product. Typography is Inter, hosted locally. Regular interface text is at least 14px, with a sparse 12px fine print variant for secondary supporting notes and footer details. Sample post photography is from Unsplash; source URLs are listed in `public/ASSETS.md`. All creator, fan and comment records are fictional.
 
-The copied `good-code-from-another-project/` directory is reference material only and remains unchanged.
+The copied `good-code-from-another-project/src/` directory contains reference application source, grouped like the active project. Its source files are preserved as examples and are excluded from application builds and style checks.
