@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Applies OneRent's shared ESLint rules to Creator Insights.
+Applies shared TypeScript, React and formatting rules to Creator Insights.
 ---------------------------------------------------------------*/
 
 import tseslint from 'typescript-eslint'
@@ -9,16 +9,7 @@ import eslintPluginPrettierRecommended from 'eslint-plugin-prettier/recommended'
 
 export default [
   {
-    ignores: [
-      '**/node_modules/**',
-      '.next/**',
-      'out/**',
-      'build/**',
-      'dist/**',
-      'coverage/**',
-      'good-code-from-another-project/**',
-      'next-env.d.ts'
-    ]
+    ignores: ['**/node_modules/**', '.next/**', 'out/**', 'build/**', 'dist/**', 'coverage/**', 'next-env.d.ts']
   },
   { files: ['**/*.{js,jsx,ts,tsx,mjs,cjs}'] },
   ...tseslint.configs.recommended,

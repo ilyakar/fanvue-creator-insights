@@ -1,8 +1,7 @@
-# Keep local secrets, generated output and reference sources out of deployments.
+# Keep local secrets and generated output out of deployments.
 .env*
 !.env.example
 .vercel/
 .git/
 node_modules/
 .next/
-good-code-from-another-project/

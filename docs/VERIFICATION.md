@@ -1,4 +1,6 @@
-<!-- Records completed checks and the live integration limits of the initial build. -->
+<!-- ------------------------------------------------------------
+Records completed checks and the live integration limits of the initial build.
+--------------------------------------------------------------- -->
 
 # Verification — 27 October 2026
 
@@ -14,7 +16,6 @@
 - Keyboard review: Escape dismisses the evidence panel and mobile navigation, with focus restored to the triggering control.
 - Preview actions: account and data controls display an explanation without changing records.
 - Browser console: no errors in the final inspected preview.
-- The copied reference folder and the user's AGENTS.md remain unchanged.
 
 ## Integration limits
 

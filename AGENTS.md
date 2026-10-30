@@ -337,11 +337,11 @@ const database = getDatabase()
 - Explain non-obvious intent with a short comment above the relevant step or branch. Avoid comments that merely repeat an obvious statement.
 - Formatting tools are a baseline. Review the control flow and declaration groups manually before considering a file finished.
 
-These rules apply equally to `.ts`, `.tsx`, `.js`, `.mjs`, configuration files, scripts, tests, and callbacks inside React components. Framework-generated files and the untouched reference directory are excluded.
+These rules apply equally to `.ts`, `.tsx`, `.js`, `.mjs`, configuration files, scripts, tests, and callbacks inside React components. Framework-generated files are excluded.
 
 Run `npm run check:style` after changes. This uses standard ESLint and Prettier commands. `npm run format` runs Prettier followed by ESLint fixes for imports and JSX sibling spacing. `npm run lint` and `npm run format:check` check each tool separately; `npm run lint:fix` applies ESLint fixes. Review the result for meaningful grouping and comments.
 
-The root `eslint.config.mjs` uses OneRent's shared ESLint rule set, with only file scope and ignored paths adapted for this application. JSX spacing uses `eslint-plugin-react` and its `react/jsx-newline` rule. `.prettierrc.json` uses OneRent's formatting options without its Tailwind plugin because this application uses SCSS. Keep this setup simple: do not add project-specific lint rules or reintroduce a custom style checker. Braces, control flow spacing, logical groups and comments remain code review requirements from this document and the project references.
+The root `eslint.config.mjs` defines the shared ESLint rules for this application. JSX spacing uses `eslint-plugin-react` and its `react/jsx-newline` rule. `.prettierrc.json` defines formatting options for this SCSS-based application. Keep this setup simple: do not add project-specific lint rules or reintroduce a custom style checker. Braces, control flow spacing, logical groups and comments remain code review requirements from this document and the existing application code.
 
 ---
 
@@ -557,7 +557,7 @@ Example
 
 ### 3.6 Use the shared SCSS foundation
 
-Write all application styling in `.scss` files. Follow the organization and import patterns in `good-code-from-another-project/src/styles/`, and reuse shared variables, functions, mixins, and foundational styles instead of duplicating them in page or component files.
+Write all application styling in `.scss` files. Follow the organization and import patterns in `src/styles/`, and reuse shared variables, functions, mixins, and foundational styles instead of duplicating them in page or component files.
 
 ---
 
@@ -685,7 +685,7 @@ When making changes, agents must
 - use PascalCase for reusable component folders; follow framework conventions for route directories and reserved file names
 - default-export files that contain a single component so imports do not use braces
 - maintain blank lines between sibling TSX elements
-- write all application styling in SCSS and follow the structure in `good-code-from-another-project/src/styles/`
+- write all application styling in SCSS and follow the structure in `src/styles/`
 - reuse shared SCSS variables, functions, mixins, and foundational styles instead of duplicating them
 - use custom SCSS spacing and sizing values that are multiples of 5px; borders, font sizes, and responsive breakpoints are exempt
 - prefer short-circuit `&&` for conditional strings instead of ternaries with empty strings
@@ -697,49 +697,32 @@ When making changes, agents must
 - avoid the Font Awesome icon `size` prop; use shared SCSS styling when icon sizing needs adjustment
 - use Font Awesome icons throughout; if a different icon system is in use on a page you are editing (such as Lucide React), replace it with the closest Font Awesome icon without adding a `size` prop
 - preserve existing patterns and formatting in the repository
-- before making architectural or structural decisions, inspect the closest equivalent in `good-code-from-another-project/` and follow its established approach unless the user explicitly requests a different pattern
+- before making architectural or structural decisions, inspect the closest equivalent in the active `src/` code and follow its established approach unless the user explicitly requests a different pattern
 
 Agents should prefer clarity and explicitness over clever or compact code.
 
 ---
 
-## 6. Canonical Architecture and Style Reference 🧭
+## 6. Project Architecture and Code Examples 🧭
 
-Application source belongs in `src/`: routes and components in `src/app/`, shared logic in `src/lib/`, state in `src/redux/`, styles in `src/styles/`, fixtures in `src/mock-data/`, and the request proxy in `src/proxy.ts`. Import aliases resolve from `src/`. Keep `public/`, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup at the repository root. The copied reference follows the same source grouping in `good-code-from-another-project/src/`.
+Application source belongs in `src/`: routes and components in `src/app/`, shared logic in `src/lib/`, styles in `src/styles/`, fixtures in `src/mock-data/`, and request guards in `src/proxy.ts`. Import aliases resolve from `src/`. Keep `public/`, configuration and environment files, documentation, tests, tooling scripts, and Supabase setup at the repository root.
 
-The copied code in `good-code-from-another-project/` is the canonical reference for architectural, structural, and styling decisions in this project.
+Before creating or reorganizing code, inspect the closest relevant implementation in this project. Use `ARCHITECTURE.md` for ownership and data flow, and these files for concrete examples:
 
-Before creating or reorganizing code, agents must inspect the closest relevant example in that directory and follow its approach. This applies to
+- App shell and providers: `src/app/layout.tsx`, `src/app/Providers.tsx`, `src/app/AlertProvider.tsx`, and `src/app/Components/AppShell/AppShell.tsx`.
+- Routes and streaming: `src/app/dashboard/posts/page.tsx` starts one shared model promise and places Suspense boundaries around dependent sections. `src/app/dashboard/posts/PostsView.tsx` defines static headings and controls once, with explicit slots for streamed content.
+- Component boundaries: `src/app/dashboard/settings/SettingsView.tsx` owns page composition, while `src/app/Components/AccountAction/AccountAction.tsx` owns interactive account actions and confirmations. Reusable audience rendering lives in `src/app/Components/AudienceInsights/AudienceInsights.tsx`.
+- API routes and security: `src/app/api/account/route.ts` checks origin and session before mutations. `src/lib/server/session.ts`, `src/lib/server/http.ts`, and `src/lib/server/config.ts` centralize identity, request errors, and server configuration.
+- Shared logic and services: `src/lib/posts.ts` contains pure post helpers; `src/lib/data/audience.ts` reads audience snapshots; `src/lib/server/saved-analysis.ts` reads saved analysis; `src/lib/server/run-analysis.ts` owns analysis execution. Keep model generation and evidence validation in `src/lib/analysis/`.
+- State: use local React state for component interactions and focused context providers for shared UI state. Follow `src/app/Components/PostsBrowser/PostsFilterProvider.tsx` for transient filters and `src/app/Components/Theme/ThemeProvider.tsx` for browser-persisted theme preferences. Durable account and analysis records belong on the server. Do not introduce Redux or another state library without a clear requirement.
+- Styling: `src/styles/coreStyling/index.scss` loads foundations and component styles. Reuse tokens and responsive mixins from `src/styles/stylingImports/`. Follow `src/styles/components/settings.scss` for nested selectors and responsive rules, and `src/styles/homePage.scss` for page styling.
+- Tests: `tests/posts.test.ts` demonstrates pure helper checks, `tests/streaming.test.ts` checks streamed composition, and `tests/run-analysis.test.ts` checks request orchestration. Add meaningful tests for changed behavior, using the closest existing test as a guide.
 
-- application and route organization
-- layouts, pages, providers, and component composition
-- component boundaries, naming, imports, and data flow
-- API route structure and external-service integration
-- shared data and library modules
-- Redux reducers, store configuration, persistence, and migrations
-- global styles, page styles, component styles, variables, mixins, and responsive behavior
+Keep responsibilities explicit: routes orchestrate, server helpers own credentials and persistence, pure helpers transform values, and interactive components own user actions. Keep private reads on the server, derive ownership from the authenticated session, and validate external input at its boundary. Never expose server credentials in client components.
 
-Use these locations as the primary references by concern:
+Preserve the lifetime of shared state and reuse resolved values or promises instead of fetching the same model separately for sibling sections. Keep static page copy outside data-dependent loading boundaries and use shared skeletons for pending content.
 
-- app shell, layouts, and providers: `good-code-from-another-project/src/app/layout.tsx`, `good-code-from-another-project/src/app/Providers.tsx`, and `good-code-from-another-project/src/app/AlertProvider.tsx`
-- pages and route organization: `good-code-from-another-project/src/app/page.tsx`, `good-code-from-another-project/src/app/home/`, `good-code-from-another-project/src/app/onboarding/`, and `good-code-from-another-project/src/app/the-mirror/`
-- reusable components: `good-code-from-another-project/src/app/Components/`
-- API routes: `good-code-from-another-project/src/app/api/`
-- shared data and service helpers: `good-code-from-another-project/src/data/` and `good-code-from-another-project/src/lib/`
-- application state: `good-code-from-another-project/src/redux/reducers/` and `good-code-from-another-project/src/redux/stores/`
-- styling architecture: `good-code-from-another-project/src/styles/coreStyling/`, `good-code-from-another-project/src/styles/components/`, `good-code-from-another-project/src/styles/stylingImports/`, and the page-level SCSS files in `good-code-from-another-project/src/styles/`
-
-The reference directory is source material, not application code. Do not import runtime code directly from it or modify it unless the user explicitly asks. Recreate the relevant pattern within the active project and adapt names, content, and dependencies to the current feature.
-
-The explicit rules in this `AGENTS.md` and direct user instructions take precedence if the copied code differs from them. Otherwise, treat the closest example in `good-code-from-another-project/` as the default decision. Do not introduce a competing architecture, folder convention, state-management approach, or styling system without a clear requirement.
-
-When adding or refactoring functionality, agents should
-
-- inspect the relevant reference files before deciding on an implementation
-- preserve the reference project's separation of responsibilities and level of component granularity
-- keep changes local and incremental unless the requested feature requires a broader foundation
-- adapt reference patterns to the current project rather than copying feature-specific names or business logic
-- ask for clarification when multiple reference patterns apply and the choice would materially affect the architecture
+These examples guide structure, not feature-specific business logic. Direct user instructions and the explicit rules in this file take precedence over existing code. Keep changes local and incremental, preserve focused component boundaries, and avoid new abstractions or competing styling systems without a concrete need. If multiple patterns fit and the choice materially changes the architecture, ask for clarification.
 
 ---
 

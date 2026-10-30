@@ -1,12 +1,14 @@
-<!-- Records the implementation decisions and boundaries of the Creator Insights prototype. -->
+<!-- ------------------------------------------------------------
+Records the implementation decisions and boundaries of the Creator Insights prototype.
+--------------------------------------------------------------- -->
 
 # Architecture
 
 ## Application boundary
 
-One Next.js App Router application uses TypeScript, React client components for interaction, server components for private reads, and route handlers for OAuth and mutations. SCSS follows the reference project's shared foundations and component hierarchy. `AGENTS.md` remains the source of code style rules.
+One Next.js App Router application uses TypeScript, React client components for interaction, server components for private reads, and route handlers for OAuth and mutations. SCSS uses shared foundations and a component hierarchy under `src/styles/`. `AGENTS.md` remains the source of code style rules.
 
-Application source lives under `src/`, including `src/app/`, `src/lib/`, `src/styles/`, `src/mock-data/`, and `src/proxy.ts`. Aliases such as `@/lib` resolve from `src/`. Public assets, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup remain at the repository root. Copied reference source uses `good-code-from-another-project/src/`.
+Application source lives under `src/`, including `src/app/`, `src/lib/`, `src/styles/`, `src/mock-data/`, and `src/proxy.ts`. Aliases such as `@/lib` resolve from `src/`. Public assets, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup remain at the repository root.
 
 ## Reading a screen
 
@@ -17,7 +19,7 @@ Routes orchestrate account lookup, audience reads, saved-analysis prerequisites 
 - `src/app/dashboard/posts/[postId]/page.tsx` validates post existence before applying the saved-analysis redirect. Adjacent `PostContext.tsx` owns the heading, image, caption and sample-link interaction. The route passes an explicit `scopedPostId` to shared insights.
 - `src/app/dashboard/settings/page.tsx` streams the server connection check through `src/lib/server/connection-status.ts`. `SettingsView.tsx` owns static settings copy and panels. `AccountAction` owns each typed action, confirmation, request state and focus restoration. Its dialog uses a portal to avoid inheriting compact action-row styles.
 
-Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView` compositions share static copy and navigation with `loading.tsx` and local preview routes. They accept explicit pending or ready JSX slots, never optional data promises that implicitly select loading mode. Data-dependent sections remain inside Suspense so headings and controls can render first.
+Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView` compositions share static copy and navigation across pending sections and local preview routes. They accept explicit pending or ready JSX slots, never optional data promises that implicitly select loading mode. Data-dependent sections remain inside Suspense so headings and controls can render first.
 
 `AudienceInsights` shares metrics, category filtering, cards and the evidence drawer across overview and post screens. It receives audience feedback, saved analysis and optional explicit post scope, with no account or redirect concerns. `useFocusTrap` supports both first-control focus for account confirmations and panel-first focus for the evidence drawer.
 
@@ -31,13 +33,11 @@ Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView`
 
 `src/styles/coreStyling/` loads shared foundations and component styles. Settings and confirmations, messages, onboarding/progress, information pages, alerts and empty/error states have recognizable stylesheets under `src/styles/components/`. `homePage.scss` owns marketing sections and imports `components/productPreview.scss` for the illustrative snapshot. Responsive rules stay with the selectors they modify where possible, preserving existing selectors, specificity and typography.
 
-## Alignment with the copied reference
+## Project conventions
 
-The closest reference examples are `src/app/home/page.tsx` for visible page composition, `src/app/Components/MyFutureSelfCard.tsx` for focused component props, `src/app/AlertProvider.tsx` for shared notices, and `src/styles/components/myFutureSelfCard.scss` for nested styles with local responsive rules, all inside `good-code-from-another-project/`.
+`AGENTS.md` defines code conventions and points to working examples within this application. Use `src/app/dashboard/posts/page.tsx` and `PostsView.tsx` for streamed page composition, `src/app/Components/AccountAction/AccountAction.tsx` for focused interactions, `src/app/AlertProvider.tsx` for shared notices, and `src/styles/components/settings.scss` for nested styles with local responsive rules.
 
-The active application follows that source grouping, component composition, promise-based request handling and SCSS foundation. Explicit `AGENTS.md` rules take precedence over older reference examples, including arrow functions, descriptive names, underscore-prefixed interaction handlers, headers, comments, braces and whitespace.
-
-Two deliberate adaptations remain: authenticated reads run on the server, and small route-adjacent views share copy with streamed loading states. These boundaries support the current app's privacy and loading requirements without adding generic loaders or another state-management layer.
+Authenticated reads run on the server, and small route-adjacent views share static copy with pending sections and local previews. Local state and focused context providers handle UI interactions; server storage owns durable account and analysis records.
 
 ## Identity and credentials
 
