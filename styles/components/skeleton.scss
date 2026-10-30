@@ -1,0 +1,110 @@
+/* ------------------------------------------------------------
+Styles reusable loading shapes without defining page copy or route behavior.
+---------------------------------------------------------------*/
+
+@use '../stylingImports/index' as *;
+
+.skeleton {
+  display: block;
+  background: #eeedf4;
+  border-radius: 5px;
+  animation: content-pulse 1.5s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
+  &.date-placeholder {
+    width: 195px;
+    height: 40px;
+    border-radius: 10px;
+  }
+}
+.content-skeleton {
+  > div {
+    .post-placeholder {
+      margin-bottom: 25px;
+      .title {
+        width: 60%;
+        height: 35px;
+        margin-bottom: 15px;
+      }
+      .image {
+        height: 130px;
+        border-radius: 15px;
+      }
+    }
+    .line {
+      height: 15px;
+      margin-bottom: 15px;
+      &.short {
+        width: 60%;
+      }
+      &.heading {
+        width: 75%;
+        height: 20px;
+        margin-bottom: 25px;
+      }
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+    .metrics {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      border: 1px solid $color-border;
+      border-radius: 15px;
+      background: white;
+      margin-bottom: 30px;
+
+      @include max-width(phone) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .metric-placeholder {
+        padding: 25px;
+        .value {
+          width: 70px;
+          height: 35px;
+          margin-bottom: 15px;
+        }
+      }
+    }
+    .panels {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 25px;
+
+      @include max-width(tablet-large) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      @include max-width(phone) {
+        grid-template-columns: 1fr;
+      }
+
+      .panel {
+        border: 1px solid $color-border;
+        border-radius: 15px;
+        background: white;
+        overflow: hidden;
+        .thumbnail {
+          height: 180px;
+          border-radius: 0;
+        }
+        .copy {
+          padding: 25px;
+        }
+      }
+    }
+  }
+}
+
+@keyframes content-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}

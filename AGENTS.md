@@ -442,6 +442,15 @@ If multiple elements belong together conceptually, wrap them in a parent contain
 
 ---
 
+### 3.2.1 Keep page content and loading states DRY
+
+- Define page headings, descriptions, and static controls once in JSX, shared by the ready page and any navigation fallback.
+- Place Suspense boundaries around data-dependent sections so static page content can render immediately.
+- Use reusable skeleton components for pending data. Skeleton components must not duplicate page copy or maintain a route-to-text configuration object.
+- Share the same model promise across sections that need the same data rather than fetching it separately for each section.
+
+---
+
 ### 3.3 Nested elements must be nested in SCSS
 
 When an element is nested inside a parent in the markup, its styles must be nested under the parent selector in SCSS so the structure matches one-to-one.

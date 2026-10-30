@@ -1,25 +1,13 @@
 /* ------------------------------------------------------------
-Previews post-specific evidence while rejecting unknown source identifiers.
+Streams the requested post's source context and evidence inside its shared page structure.
 ---------------------------------------------------------------*/
 
-import { notFound } from 'next/navigation'
-
 import { getPreviewModel } from '@/lib/data/preview'
-import DashboardContent from '@/app/Components/DashboardContent/DashboardContent'
+import PostDetails from '@/app/Components/DashboardContent/PostDetails'
 
-// Previews post-specific evidence while rejecting unknown source identifiers.
-const PreviewPostPage = async ({ params }: { params: Promise<{ postId: string }> }) => {
-  const { postId } = await params
-  const model = await getPreviewModel()
+// Keeps post navigation visible while resolving the requested post and its insights.
+const PostPage = ({ params }: { params: Promise<{ postId: string }> }) => (
+  <PostDetails model={getPreviewModel()} params={params} basePath="/preview" />
+)
 
-  const postExists = model.dataset.posts.some(post => post.id === postId)
-
-  // Unknown source posts should resolve to the normal not-found experience.
-  if (!postExists) {
-    notFound()
-  }
-
-  return <DashboardContent model={model} postId={postId} />
-}
-
-export default PreviewPostPage
+export default PostPage

@@ -158,7 +158,7 @@ Defines shared visual styles for the audience insights experience.
     }
     small {
       margin-left: auto;
-      font-size: $font-size-small;
+      font-size: $font-size-fine-print;
       font-weight: 500;
       color: #9396a3;
       background: #f0f1f5;
@@ -206,12 +206,14 @@ Defines shared visual styles for the audience insights experience.
     align-items: center;
     gap: 10px;
     color: #73788a;
-    font-size: $font-size-small;
+    font-size: $font-size-fine-print;
     margin-bottom: 25px;
     padding-left: 5px;
-    svg:last-child {
-      margin-left: auto;
-      font-size: $font-size-small;
+    svg {
+      font-size: $font-size-fine-print;
+      &:last-child {
+        margin-left: auto;
+      }
     }
     &:hover {
       color: $color-purple;
@@ -246,17 +248,25 @@ Defines shared visual styles for the audience insights experience.
   }
   .collapse-button {
     position: absolute;
-    right: -15px;
+    right: 0;
     top: 100px;
+    transform: translateX(50%);
     border-radius: 50%;
     width: 25px;
     height: 25px;
+    padding: 0;
     border: 1px solid $color-border;
     background: white;
     color: #9698a6;
     font-size: $font-size-small;
+    line-height: 1;
     display: grid;
     place-items: center;
+    > svg {
+      display: block;
+      width: 10px;
+      height: 10px;
+    }
   }
   @include max-width(tablet-large) {
     padding-left: 15px;
@@ -335,12 +345,8 @@ Defines shared visual styles for the audience insights experience.
     display: flex;
     align-items: center;
     gap: 25px;
-    .private-label {
-      color: #73788a;
-      font-size: $font-size-small;
-      display: flex;
-      align-items: center;
-      gap: 5px;
+    .sample-pill {
+      font-size: $font-size-fine-print;
     }
   }
   .mobile-toggle {
@@ -353,9 +359,6 @@ Defines shared visual styles for the audience insights experience.
       display: inline-flex;
     }
     .workspace-breadcrumb {
-      display: none;
-    }
-    .topbar-context .private-label {
       display: none;
     }
   }

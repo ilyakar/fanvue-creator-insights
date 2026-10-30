@@ -4,26 +4,19 @@
 Keeps connection management and data controls focused on the working MVP.
 ---------------------------------------------------------------*/
 
-import { useCallback, useRef, useState } from 'react'
+import { useCallback, useRef, useState, type ReactNode } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faCircleCheck, faDatabase, faLink, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faDatabase, faLink, faShieldHalved } from '@fortawesome/free-solid-svg-icons'
 
-import type { Account } from '@/lib/types'
 import { useAlert } from '@/app/AlertProvider'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 
+import SettingsConnectionDetails from './SettingsConnectionDetails'
+
 // Keeps connection management and data controls focused on the working MVP.
-const SettingsContent = ({
-  account,
-  isPreview,
-  needsReconnect
-}: {
-  account: Account | null
-  isPreview: boolean
-  needsReconnect: boolean
-}) => {
+const SettingsContent = ({ isPreview, connectionDetails }: { isPreview: boolean; connectionDetails?: ReactNode }) => {
   const [pendingAction, setPendingAction] = useState<string | null>(null)
   const [isPending, setIsPending] = useState(false)
 
@@ -31,18 +24,6 @@ const SettingsContent = ({
   const showAlert = useAlert()
 
   const confirmationReference = useRef<HTMLDivElement>(null)
-
-  let connectionStatus = 'Connected'
-
-  // Preview mode has no connected account to report.
-  if (isPreview) {
-    connectionStatus = 'Preview only'
-  }
-
-  // An expired connection takes precedence over the normal connected state.
-  else if (needsReconnect) {
-    connectionStatus = 'Reconnect needed'
-  }
 
   // Dismisses the confirmation without changing any saved information.
   const _handleConfirmationClose = useCallback(() => setPendingAction(null), [])
@@ -117,27 +98,7 @@ const SettingsContent = ({
           </div>
         </div>
 
-        <div className="connection-row">
-          <div className="connected-identity">
-            <span className="account-avatar">{account?.display_name?.slice(0, 1) || 'S'}</span>
-
-            <div>
-              <strong>{account?.display_name || 'Sample creator'}</strong>
-              <span>{isPreview ? 'No account connected in design preview' : `@${account?.username}`}</span>
-            </div>
-          </div>
-
-          <span className={['connection-status', needsReconnect && 'warning'].filter(Boolean).join(' ')}>
-            <FontAwesomeIcon icon={faCircleCheck} />
-            {connectionStatus}
-          </span>
-        </div>
-
-        {needsReconnect && !isPreview && (
-          <a className="button primary" href="/api/auth/fanvue">
-            Reconnect Fanvue <FontAwesomeIcon icon={faArrowRight} />
-          </a>
-        )}
+        {connectionDetails || <SettingsConnectionDetails status={isPreview ? 'preview' : 'checking'} />}
 
         <div className="settings-action">
           <p>

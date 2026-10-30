@@ -5,14 +5,11 @@ Reuses one insight presentation for the cross-post overview and single-post feed
 ---------------------------------------------------------------*/
 
 import { useCallback, useState } from 'react'
-import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faArrowLeft,
   faArrowRight,
   faArrowUpRightFromSquare,
   faAsterisk,
-  faCalendarDays,
   faChevronDown,
   faCommentDots,
   faLayerGroup,
@@ -76,33 +73,16 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
     showAlert('You’re viewing sample data', 'Links to Fanvue aren’t available in this prototype.')
 
   return (
-    <div className="dashboard-content">
+    <>
       {post && (
-        <Link className="back-link" href={`${basePath}/posts`}>
-          <FontAwesomeIcon icon={faArrowLeft} /> All posts
-        </Link>
-      )}
-
-      <div className="page-heading">
-        <div>
-          <span className="eyebrow">{post ? 'A CLOSER LOOK' : 'YOUR AUDIENCE, A LITTLE CLEARER'}</span>
-          <h1>{post ? post.title : 'Good things start with listening.'}</h1>
-
-          <p>
-            {post
-              ? 'Here’s what your fans are saying about this post.'
-              : 'The little things they love. The ideas they’re hoping for. All in one place.'}
-          </p>
+        <div className="page-heading">
+          <div>
+            <span className="eyebrow">A CLOSER LOOK</span>
+            <h1>{post.title}</h1>
+            <p>Here’s what your fans are saying about this post.</p>
+          </div>
         </div>
-
-        {!post && (
-          <span className="date-range">
-            <FontAwesomeIcon icon={faCalendarDays} />
-            {formatDate(dataset.posts[0].publishedAt)} to{' '}
-            {formatDate(dataset.posts[dataset.posts.length - 1].publishedAt, true)}
-          </span>
-        )}
-      </div>
+      )}
 
       {post && (
         <div className="post-context">
@@ -281,7 +261,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
           onClose={_handleInsightClose}
         />
       )}
-    </div>
+    </>
   )
 }
 

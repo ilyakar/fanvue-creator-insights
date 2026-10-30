@@ -29,6 +29,7 @@ import type { RootState } from '@redux/stores'
 import type { Account } from '@/lib/types'
 import { useAlert } from '@/app/AlertProvider'
 import Brand from '@/app/Components/Brand/Brand'
+import PostsFilterProvider from '@/app/Components/PostsBrowser/PostsFilterProvider'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 
 // Gives every authenticated screen a shared, responsive navigation and sample-data context.
@@ -233,10 +234,6 @@ const AppShell = ({
               <span />
               Sample data
             </span>
-
-            <span className="private-label">
-              <FontAwesomeIcon icon={faShieldHalved} /> Just for you
-            </span>
           </div>
         </header>
 
@@ -248,9 +245,11 @@ const AppShell = ({
           </div>
         )}
 
-        <main id="main-content" className="app-main">
-          {children}
-        </main>
+        <PostsFilterProvider>
+          <main id="main-content" className="app-main">
+            {children}
+          </main>
+        </PostsFilterProvider>
 
         <footer className="app-footer">
           <span>Made for creators. Grounded in your audience.</span>

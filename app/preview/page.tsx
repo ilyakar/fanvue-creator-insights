@@ -1,11 +1,11 @@
 /* ------------------------------------------------------------
-Shows clearly labelled editorial themes for local interface review.
+Uses the shared overview view with clearly labelled local preview insights.
 ---------------------------------------------------------------*/
 
 import { getPreviewModel } from '@/lib/data/preview'
-import DashboardContent from '@/app/Components/DashboardContent/DashboardContent'
+import Overview from '@/app/Components/Overview/Overview'
 
-// Shows clearly labelled editorial themes for local interface review.
-const PreviewPage = async () => <DashboardContent model={await getPreviewModel()} />
+// Renders the shared page structure before waiting for its data sections.
+const Page = () => <Overview model={getPreviewModel()} />
 
-export default PreviewPage
+export default Page

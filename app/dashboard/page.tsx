@@ -1,23 +1,11 @@
 /* ------------------------------------------------------------
-Presents completed aggregate insights or resumes genuine analysis progress.
+Shows the overview immediately and streams its authenticated insight sections.
 ---------------------------------------------------------------*/
 
-import { redirect } from 'next/navigation'
+import { getWorkspaceModel } from '@/lib/server/workspace'
+import Overview from '@/app/Components/Overview/Overview'
 
-import { requireAccount } from '@/lib/server/session'
-import { getDashboardModel } from '@/lib/server/analysis'
-import DashboardContent from '@/app/Components/DashboardContent/DashboardContent'
+// Renders the shared page structure before waiting for its data sections.
+const Page = () => <Overview model={getWorkspaceModel({ requiresAnalysis: true })} />
 
-// Presents completed aggregate insights or resumes genuine analysis progress.
-const OverviewPage = async () => {
-  const account = await requireAccount()
-  const model = await getDashboardModel(account)
-
-  if (!model.result) {
-    redirect('/analysis')
-  }
-
-  return <DashboardContent model={model} />
-}
-
-export default OverviewPage
+export default Page

@@ -1,17 +1,11 @@
 /* ------------------------------------------------------------
-Lists the source posts available to the authenticated creator.
+Shows post search controls immediately and streams the source post results.
 ---------------------------------------------------------------*/
 
-import { requireAccount } from '@/lib/server/session'
-import { getDashboardModel } from '@/lib/server/analysis'
-import PostsBrowser from '@/app/Components/PostsBrowser/PostsBrowser'
+import { getWorkspaceModel } from '@/lib/server/workspace'
+import PostsWorkspace from '@/app/Components/PostsBrowser/PostsWorkspace'
 
-// Lists the source posts available to the authenticated creator.
-const PostsPage = async () => {
-  const account = await requireAccount()
-  const model = await getDashboardModel(account)
+// Renders the shared page structure before waiting for its data sections.
+const Page = () => <PostsWorkspace model={getWorkspaceModel()} />
 
-  return <PostsBrowser model={model} />
-}
-
-export default PostsPage
+export default Page

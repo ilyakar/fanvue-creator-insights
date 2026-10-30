@@ -1,32 +1,13 @@
 /* ------------------------------------------------------------
-Scopes reusable insights and source evidence to one existing post.
+Streams the requested post's source context and evidence inside its shared page structure.
 ---------------------------------------------------------------*/
 
-import { notFound, redirect } from 'next/navigation'
+import { getWorkspaceModel } from '@/lib/server/workspace'
+import PostDetails from '@/app/Components/DashboardContent/PostDetails'
 
-import { requireAccount } from '@/lib/server/session'
-import { getDashboardModel } from '@/lib/server/analysis'
-import DashboardContent from '@/app/Components/DashboardContent/DashboardContent'
-
-// Scopes reusable insights and source evidence to one existing post.
-const PostPage = async ({ params }: { params: Promise<{ postId: string }> }) => {
-  const { postId } = await params
-  const account = await requireAccount()
-  const model = await getDashboardModel(account)
-
-  const postExists = model.dataset.posts.some(post => post.id === postId)
-
-  // Unknown source posts should resolve to the normal not-found experience.
-  if (!postExists) {
-    notFound()
-  }
-
-  // The post cannot display insights until its analysis has finished.
-  if (!model.result) {
-    redirect('/analysis')
-  }
-
-  return <DashboardContent model={model} postId={postId} />
-}
+// Keeps post navigation visible while resolving the requested post and its insights.
+const PostPage = ({ params }: { params: Promise<{ postId: string }> }) => (
+  <PostDetails model={getWorkspaceModel()} params={params} basePath="/dashboard" />
+)
 
 export default PostPage

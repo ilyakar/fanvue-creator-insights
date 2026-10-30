@@ -1,11 +1,11 @@
 /* ------------------------------------------------------------
-Previews the complete posts browser using fictional source records.
+Uses the shared posts view with fictional source records in local development.
 ---------------------------------------------------------------*/
 
 import { getPreviewModel } from '@/lib/data/preview'
-import PostsBrowser from '@/app/Components/PostsBrowser/PostsBrowser'
+import PostsWorkspace from '@/app/Components/PostsBrowser/PostsWorkspace'
 
-// Previews the complete posts browser using fictional source records.
-const PreviewPostsPage = async () => <PostsBrowser model={await getPreviewModel()} />
+// Renders the shared page structure before waiting for its data sections.
+const Page = () => <PostsWorkspace model={getPreviewModel()} />
 
-export default PreviewPostsPage
+export default Page

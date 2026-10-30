@@ -4,34 +4,20 @@
 Lets creators find a source post and explore feedback scoped to that post.
 ---------------------------------------------------------------*/
 
-import { useState } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faChevronDown, faComment, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faComment, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 import { formatDate } from '@/lib/insights'
 import type { DashboardModel } from '@/lib/types'
 
+import { useFilteredPosts, usePostsFilters } from './PostsFilterProvider'
+
 // Lets creators find a source post and explore feedback scoped to that post.
 const PostsBrowser = ({ model }: { model: DashboardModel }) => {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [selectedFormat, setSelectedFormat] = useState('all')
-
+  const { setSearchQuery, setSelectedFormat } = usePostsFilters()
+  const posts = useFilteredPosts(model.dataset.posts)
   const basePath = model.isPreview ? '/preview' : '/dashboard'
-
-  const posts = model.dataset.posts
-    .filter(
-      post =>
-        `${post.title} ${post.caption}`.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (selectedFormat === 'all' || post.format === selectedFormat)
-    )
-    .sort((firstPost, secondPost) => secondPost.publishedAt.localeCompare(firstPost.publishedAt))
-
-  // Filters source posts as the creator types.
-  const _handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(event.target.value)
-
-  // Narrows the browser to a chosen content format.
-  const _handleFormat = (event: React.ChangeEvent<HTMLSelectElement>) => setSelectedFormat(event.target.value)
 
   // Restores the complete posts list after an empty search.
   const _handleReset = () => {
@@ -40,42 +26,7 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
   }
 
   return (
-    <div className="posts-page">
-      <div className="page-heading">
-        <div>
-          <span className="eyebrow">ONE POST. MANY PERSPECTIVES.</span>
-          <h1>Every post starts a conversation.</h1>
-          <p>Take a closer look at the moments your fans are responding to.</p>
-        </div>
-      </div>
-
-      <div className="browser-toolbar">
-        <label className="search-field">
-          <FontAwesomeIcon icon={faMagnifyingGlass} />
-          <span className="sr-only">Search posts</span>
-          <input value={searchQuery} onChange={_handleSearch} placeholder="Find a post…" type="search" />
-        </label>
-
-        <div>
-          <span className="post-count">
-            {posts.length} {posts.length === 1 ? 'post' : 'posts'}
-          </span>
-
-          <label className="select-field">
-            <span className="sr-only">Filter post format</span>
-
-            <select value={selectedFormat} onChange={_handleFormat}>
-              <option value="all">All formats</option>
-              <option>Photo</option>
-              <option>Video</option>
-              <option>Live</option>
-            </select>
-
-            <FontAwesomeIcon icon={faChevronDown} />
-          </label>
-        </div>
-      </div>
-
+    <>
       <div className="posts-grid">
         {posts.map(post => (
           <Link className="post-card" href={`${basePath}/posts/${post.id}`} key={post.id}>
@@ -119,7 +70,18 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
           </button>
         </div>
       )}
-    </div>
+    </>
+  )
+}
+
+// Uses the same filtered posts as the cards when displaying the loaded result count.
+export const PostsCount = ({ model }: { model: DashboardModel }) => {
+  const posts = useFilteredPosts(model.dataset.posts)
+
+  return (
+    <span className="post-count">
+      {posts.length} {posts.length === 1 ? 'post' : 'posts'}
+    </span>
   )
 }
 
