@@ -177,11 +177,13 @@ Styles connection setup and durable analysis progress.
         > span {
           border-color: #bcabe1;
 
-          > span {
-            background: #aa96cf;
-            width: 5px;
-            height: 5px;
+          .loading-indicator {
+            width: 15px;
+            height: 15px;
+            border: 2px solid #d9d1eb;
+            border-top-color: #8a79b6;
             border-radius: 50%;
+            animation: analysis-loading-spin 800ms linear infinite;
           }
         }
       }
@@ -203,6 +205,18 @@ Styles connection setup and durable analysis progress.
     justify-content: center;
     gap: 20px;
     margin-bottom: 25px;
+  }
+}
+
+@keyframes analysis-loading-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .analysis-card .analysis-stages li.current > span .loading-indicator {
+    animation: none;
   }
 }
 

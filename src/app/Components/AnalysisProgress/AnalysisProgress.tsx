@@ -184,7 +184,11 @@ const AnalysisProgress = ({
             <li
               className={[isDone && 'done', isCurrent && 'current'].filter(Boolean).join(' ')}
               key={progressStep.stage}>
-              <span>{isDone ? <FontAwesomeIcon icon={faCheck} /> : <span />}</span>
+              <span>
+                {isDone && <FontAwesomeIcon icon={faCheck} />}
+                {isCurrent && <span className="loading-indicator" />}
+              </span>
+
               {progressStep.label}
             </li>
           )
