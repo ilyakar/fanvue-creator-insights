@@ -1,8 +1,14 @@
-<!-- Describes how to run, configure and review the Creator Insights prototype. -->
+<!-- ------------------------------------------------------------
+Introduces Creator Insights and explains local setup and essential checks.
+--------------------------------------------------------------- -->
 
 # ✳ Creator Insights
 
-A responsive creator app that turns sample Fanvue comments into evidence-backed audience insights.
+A Next.js app that turns sample comments into audience insights, with post-level themes and supporting evidence.
+
+Creator Insights is independent of Fanvue. Sign-in uses real Fanvue OAuth and analysis uses OpenAI, but all posts, fans and comments are fictional. The app does not import your Fanvue content or access private messages.
+
+[Live site](https://fanvue-creator-insights.vercel.app)
 
 ## Run locally
 
@@ -13,36 +19,22 @@ npm ci
 npm run dev
 ```
 
-- Landing page: http://localhost:3000
-- **Local design preview:** http://localhost:3000/preview
+Open [localhost:3000](http://localhost:3000). The landing page works without credentials.
 
-The development preview is intentionally labelled **illustrative insights**. Its editorial themes are not model output, it creates no account, and it cannot mutate private data. All `/preview` routes are unavailable in production. There is no public Explore demo flow.
+## Configure sign-in and analysis
 
-## Live deployment
+1. Copy `.env.example` to `.env.local` and fill in its six server-only values. Generate `TOKEN_ENCRYPTION_KEY` with `openssl rand -hex 32` and keep it stable across deployments.
+2. Apply all SQL files in `supabase/migrations/` in filename order, then run `supabase/seed.sql`. Historical migrations require Supabase Cron, `pg_net` and Vault; the final migration retires the analysis worker.
+3. Register `http://localhost:3000/api/auth/callback` in your Fanvue app with scopes `openid offline_access offline read:self`.
+4. Restart the development server and select **Start free**.
 
-- Site: https://fanvue-creator-insights.vercel.app
-- Private repository: https://github.com/ilyakar/fanvue-creator-insights
-- Pushes to `main` deploy to production through Vercel's GitHub integration. Other branches receive preview deployments.
+Use `localhost` consistently. For another origin or deployment, set `APP_URL` and register the matching callback URL. Keep credentials in server-side environment variables.
 
-`vercel.json` selects the Next.js framework preset. Production uses `APP_URL=https://fanvue-creator-insights.vercel.app` in Vercel's environment settings. Local secrets and the copied reference directory are excluded from deployment uploads.
+Analysis runs within the web request, with no separate worker. Keep the analysis page open until it finishes. Completed results are reused; clearing them requires an explicit new analysis. `OPENAI_MODEL` optionally overrides the default `gpt-4.1-mini`.
 
-Production uses Fanvue OAuth, Supabase and OpenAI through server-only credentials. Analysis calls OpenAI immediately inside the authenticated request. The local design preview stays unavailable in production.
+For an editorial design preview, open [/preview](http://localhost:3000/preview). It needs the seeded database and Supabase credentials, but no sign-in or OpenAI call. Preview routes are available only during development.
 
-## Enable the real connection and AI analysis
-
-1. Copy `.env.example` to `.env.local` and fill its six required server-side values. Real credentials stay in the ignored local file.
-2. Create a Supabase project, apply the migrations in `supabase/migrations/` in order, and run `supabase/seed.sql` to populate the fictional creator dataset.
-3. Register your Fanvue app's exact callback URL: `http://localhost:3000/api/auth/callback` (or the chosen deployed origin). Enable `openid offline_access offline read:self`. The app reads the creator profile only; audience content is synthetic.
-4. Set `FANVUE_CLIENT_ID`, `FANVUE_CLIENT_SECRET`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `OPENAI_API_KEY` locally. Never place credentials in chat or client-exposed environment variables.
-5. `TOKEN_ENCRYPTION_KEY` protects saved Fanvue access tokens, refresh tokens and temporary OAuth verifiers before they enter the database. It is an app-generated secret, not a provider credential. Generate it once with `openssl rand -hex 32` if it is missing. Keep it stable across deployments; losing it makes existing encrypted connections unreadable.
-6. The local origin defaults to `http://localhost:3000`, so no `APP_URL` entry is needed for the default local setup. Only add it when using another origin or deploying. `localhost` and `127.0.0.1` are different OAuth origins; use `localhost` consistently for local development.
-7. Restart the web server. No separate worker process is needed.
-
-Now **Start free** uses real Fanvue OAuth. After sign-in, the analysis page immediately sends an authenticated request that calls OpenAI and saves the result before responding. Returning users reuse completed results. Clearing analysis does not start another paid analysis until the creator chooses **Prepare my insights**. Keep the analysis page open while a request is running.
-
-The API version and model have defaults in code and are omitted from `.env.example`. `FANVUE_API_VERSION` and `OPENAI_MODEL` remain optional overrides. `OPENAI_MODEL` defaults to `gpt-4.1-mini` and can be changed to an available model supporting Responses structured outputs. Each post is analysed independently using only its own comments. The overview then groups those validated post themes, carrying their original evidence forward. There is no target theme count. Posts with clear feedback can produce themes from a single specific comment; generic reactions are ignored. The prompt version invalidates results from the older global-first pipeline. Model availability depends on the API account. The model connection can be verified with the configured server credentials; a real Fanvue sign-in is still required to verify OAuth consent.
-
-## Verification
+## Checks
 
 ```sh
 npm run check:style
@@ -51,40 +43,17 @@ npm test
 npm run build
 ```
 
-`npm run check:style` runs ESLint and Prettier checks. `npm run format` runs Prettier followed by ESLint fixes; manually review logical groups and comments afterwards. Use `npm run lint`, `npm run lint:fix` and `npm run format:check` to run the tools separately. The reference directory and generated files are excluded.
+Use `npm run format` to apply formatting fixes. Tests use stubs and in-memory Postgres, so live integrations need separate verification.
 
-The root `eslint.config.mjs` uses OneRent's shared TypeScript, React, import and Prettier rules without additional project-specific rules. `react/jsx-newline` controls JSX sibling spacing. Readability conventions such as braces and control flow spacing are documented in `AGENTS.md` and reviewed manually. The Prettier options match OneRent, excluding its Tailwind plugin because this project uses SCSS. TypeScript is pinned to 6.0.3, which the ESLint parser supports. There is no custom style checking script.
+## Deploy
 
-Tests cover dataset integrity, distinct fan counts, post-scoped evidence, invalid model references, cache isolation, authenticated encryption, OAuth request shape, CSRF checks, and the SQL migration, worker claims, job recovery, refresh locking, database privileges and cascaded deletion. Database tests run real Postgres in memory through PGlite; no production database is contacted.
+The app deploys through Vercel. Configure the same server-side environment variables plus `APP_URL`, apply all database migrations and seed data, and register the deployed Fanvue callback URL. Hosting must support the analysis route's five-minute maximum duration.
 
-## Production operation
+For a local production build, run `npm run build` followed by `npm start`.
 
-```sh
-npm run build
-npm start
-```
+## Further reading
 
-The web app is hosted on Vercel. The analysis API allows up to five minutes for immediate inference and persistence. There is no scheduled analysis worker. A database request token prevents duplicate inference from simultaneous starts, and interrupted requests can be retried after their six-minute expiry. Apply the latest migration to retire the old Cron schedule. Register the production callback URL in Fanvue.
-
-Apply the migration before connecting an account. All private tables have RLS enabled and no browser policies; requests go through the authenticated backend using a server-only service role. Any future browser-side Supabase access requires deliberately designed policies.
-
-## Source map
-
-- `src/app/`: routes, providers and reusable `Components/`
-- `src/styles/`: shared SCSS tokens, mixins, foundations and component styles
-- `src/mock-data/`: source fixtures retained for seeding and offline tests; the running app reads Supabase
-- `src/lib/data/`: direct audience snapshot reads, schema validation and editorial previews
-- `src/lib/analysis/`: AI generation, evidence validation and analysis cache keys
-- `src/lib/server/`: saved-analysis reads, immediate analysis requests, database, OAuth and sessions
-- `src/proxy.ts`: request guards for authenticated routes and local-only design previews
-- `supabase/migrations/`: versioned database foundation
-- `supabase/seed.sql`: repeatable import of the fictional creator dataset and editorial preview
-- `tests/`: meaningful data, security and database checks
-
-See `ARCHITECTURE.md` for ownership, job lifecycle and integration decisions, and `docs/AI-EVALUATION.md` for semantic evaluation before accepting live results.
-
-## Design and source references
-
-The interface follows the supplied Brex-inspired composition and Stripe-inspired palette, adapted to a creator product. Typography is Inter, hosted locally. Regular interface text is at least 14px, with a sparse 12px fine print variant for secondary supporting notes and footer details. Sample post photography is from Unsplash; source URLs are listed in `public/ASSETS.md`. All creator, fan and comment records are fictional.
-
-The copied `good-code-from-another-project/src/` directory contains reference application source, grouped like the active project. Its source files are preserved as examples and are excluded from application builds and style checks.
+- [Architecture](ARCHITECTURE.md)
+- [AI evaluation](docs/AI-EVALUATION.md)
+- [Code conventions](AGENTS.md)
+- [Image credits](public/ASSETS.md)
