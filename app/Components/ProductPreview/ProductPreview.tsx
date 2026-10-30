@@ -5,6 +5,7 @@ Shows an explicitly illustrative product snapshot using the same sample evidence
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
+  faAsterisk,
   faChartSimple,
   faCommentDots,
   faGear,
@@ -103,7 +104,9 @@ const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Ins
               <p>A little more connection could go a long way.</p>
             </div>
 
-            <span>✳</span>
+            <span aria-hidden="true">
+              <FontAwesomeIcon icon={faAsterisk} />
+            </span>
           </div>
 
           <div className="preview-theme-heading">

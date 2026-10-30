@@ -7,7 +7,7 @@ Lets creators find a source post and explore feedback scoped to that post.
 import { useState } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faComment, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faChevronDown, faComment, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 import { formatDate } from '@/lib/insights'
 import type { DashboardModel } from '@/lib/types'
@@ -61,7 +61,7 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
             {posts.length} {posts.length === 1 ? 'post' : 'posts'}
           </span>
 
-          <label>
+          <label className="select-field">
             <span className="sr-only">Filter post format</span>
 
             <select value={selectedFormat} onChange={_handleFormat}>
@@ -70,6 +70,8 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
               <option>Video</option>
               <option>Live</option>
             </select>
+
+            <FontAwesomeIcon icon={faChevronDown} />
           </label>
         </div>
       </div>

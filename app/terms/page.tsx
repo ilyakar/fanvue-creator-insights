@@ -3,6 +3,8 @@ Clearly identifies the assignment as a prototype rather than a generally availab
 ---------------------------------------------------------------*/
 
 import Link from 'next/link'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 import Brand from '@/app/Components/Brand/Brand'
 
@@ -44,7 +46,7 @@ const AboutPrototypePage = () => (
       </p>
 
       <Link className="text-button" href="/privacy">
-        Read about data use →
+        Read about data use <FontAwesomeIcon icon={faArrowRight} />
       </Link>
     </main>
   </div>

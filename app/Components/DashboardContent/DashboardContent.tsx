@@ -11,10 +11,13 @@ import {
   faArrowLeft,
   faArrowRight,
   faArrowUpRightFromSquare,
+  faAsterisk,
   faCalendarDays,
+  faChevronDown,
   faCommentDots,
   faLayerGroup,
   faShieldHalved,
+  faStar,
   faUserGroup,
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
@@ -165,10 +168,14 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
                 <small>From the original comments.</small>
               </span>
 
-              <span className="spark">✦</span>
+              <span className="spark">
+                <FontAwesomeIcon icon={faStar} />
+              </span>
             </div>
 
-            <span className="decorative-star">✳</span>
+            <span className="decorative-star">
+              <FontAwesomeIcon icon={faAsterisk} />
+            </span>
           </div>
         </section>
       )}
@@ -183,7 +190,7 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
             <p>Every insight starts with something a fan actually said.</p>
           </div>
 
-          <label className="category-filter">
+          <label className="select-field">
             <span className="sr-only">Filter insight category</span>
 
             <select value={selectedCategory} onChange={_handleCategoryChange}>
@@ -195,6 +202,8 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
                 </option>
               ))}
             </select>
+
+            <FontAwesomeIcon icon={faChevronDown} />
           </label>
         </div>
 

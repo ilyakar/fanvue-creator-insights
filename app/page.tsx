@@ -6,6 +6,8 @@ import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
+  faAsterisk,
+  faStar,
   faCheck,
   faHeart,
   faLightbulb,
@@ -45,7 +47,10 @@ const HomePage = async () => {
       <main id="main-content">
         <section className="landing-hero">
           <div className="hero-kicker">
-            <span>✳</span> LESS GUESSING. MORE CONNECTION.
+            <span aria-hidden="true">
+              <FontAwesomeIcon icon={faAsterisk} />
+            </span>{' '}
+            LESS GUESSING. MORE CONNECTION.
           </div>
 
           <h1>
@@ -73,7 +78,9 @@ const HomePage = async () => {
             <ProductPreview dataset={model.dataset} insights={model.result!.insights} />
 
             <div className="floating-note">
-              <span>✦</span>
+              <span aria-hidden="true">
+                <FontAwesomeIcon icon={faStar} />
+              </span>
 
               <div>
                 Less scrolling.<strong>More “oh, that’s a good idea.”</strong>
@@ -188,7 +195,10 @@ const HomePage = async () => {
         </section>
 
         <section className="final-cta">
-          <span className="cta-star">✳</span>
+          <span className="cta-star" aria-hidden="true">
+            <FontAwesomeIcon icon={faAsterisk} />
+          </span>
+
           <span className="eyebrow">YOUR AUDIENCE HAS SOMETHING TO SAY</span>
 
           <h2>
