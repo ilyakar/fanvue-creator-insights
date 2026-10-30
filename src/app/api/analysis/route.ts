@@ -1,16 +1,19 @@
 /* ------------------------------------------------------------
-Returns only the signed-in owner's latest run status for genuine progress reporting.
+Starts analysis immediately and returns progress for the signed-in owner's current input.
 ---------------------------------------------------------------*/
 
 import { NextResponse } from 'next/server'
 
 import { getCurrentAccount } from '@/lib/server/session'
-import { enqueueAnalysis } from '@/lib/server/analysis-queue'
-import { getDatabase, unwrapDatabase } from '@/lib/server/database'
+import { runAnalysis } from '@/lib/server/run-analysis'
+import { getAudienceFeedback } from '@/lib/data/audience'
+import { getCurrentAnalysis } from '@/lib/server/saved-analysis'
 import { getFanvueAccessToken, ReconnectRequired } from '@/lib/server/fanvue'
 import { requireSameOrigin, errorResponse, RequestError } from '@/lib/server/http'
 
-// Returns only the signed-in owner's latest run status for genuine progress reporting.
+export const maxDuration = 300
+
+// Starts analysis immediately and returns progress for the signed-in owner's current input.
 export const GET = async () =>
   Promise.resolve()
     .then(async () => {
@@ -20,21 +23,19 @@ export const GET = async () =>
         throw new RequestError('Please reconnect to continue.', 401)
       }
 
-      const job = unwrapDatabase(
-        await getDatabase()
-          .from('analysis_jobs')
-          .select('id,status,error,created_at,completed_at')
-          .eq('user_id', account.id)
-          .order('created_at', { ascending: false })
-          .limit(1)
-          .maybeSingle()
-      )
+      const job = await getCurrentAnalysis(account.id, await getAudienceFeedback(account.audience_creator_id))
 
-      return NextResponse.json({ job }, { headers: { 'Cache-Control': 'no-store' } })
+      const isRunning = job && ['analysing', 'validating'].includes(job.status)
+      const isInterrupted = isRunning && (!job.lease_until || Date.parse(job.lease_until) <= Date.now())
+      const currentJob = isInterrupted
+        ? { ...job, status: 'failed', error: 'Analysis was interrupted. Please try again.' }
+        : job
+
+      return NextResponse.json({ job: currentJob }, { headers: { 'Cache-Control': 'no-store' } })
     })
     .catch(errorResponse)
 
-// Queues validated sample content for a real model without running work after a response.
+// Runs analysis immediately inside the authenticated request and returns its saved outcome.
 export const POST = async (request: Request) =>
   Promise.resolve()
     .then(async () => {
@@ -46,11 +47,14 @@ export const POST = async (request: Request) =>
       }
 
       await getFanvueAccessToken(account.id)
-      const job = await enqueueAnalysis(account.id, true)
+      const job = await runAnalysis(account.id)
 
       return NextResponse.json(
-        { job: { id: job.id, status: job.status } },
-        { status: 202, headers: { 'Cache-Control': 'no-store' } }
+        { job: { id: job.id, status: job.status, error: job.error } },
+        {
+          status: job.status === 'complete' || job.status === 'failed' ? 200 : 202,
+          headers: { 'Cache-Control': 'no-store' }
+        }
       )
     })
     .catch(error =>

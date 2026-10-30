@@ -8,7 +8,6 @@
     "start": "next start --hostname localhost",
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
-    "worker": "node --env-file-if-exists=.env.local --import tsx scripts/analysis-worker.ts",
     "check:style": "npm run lint && npm run format:check",
     "format": "prettier --write . && npm run lint:fix",
     "lint": "eslint . --max-warnings 0",

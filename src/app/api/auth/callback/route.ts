@@ -9,7 +9,6 @@ import { timingSafeEqual } from 'node:crypto'
 import { decryptSecret, hashSecret } from '@/lib/server/crypto'
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
 import { getAppOrigin } from '@/lib/server/config'
-import { enqueueAnalysis } from '@/lib/server/analysis-queue'
 import { createSession } from '@/lib/server/session'
 import { exchangeFanvueTokens, getFanvueProfile, saveFanvueConnection } from '@/lib/server/fanvue'
 
@@ -83,12 +82,11 @@ export const GET = async (request: NextRequest) => {
           .single()
       )
 
-      // Save credentials before creating the session and preparing the first analysis.
+      // Save credentials before creating the session and opening immediate analysis.
       await saveFanvueConnection(account.id, tokens)
       await createSession(account.id)
-      await enqueueAnalysis(account.id)
 
-      return NextResponse.redirect(`${getAppOrigin()}/analysis`)
+      return NextResponse.redirect(`${getAppOrigin()}/analysis?start=1`)
     })
     .catch(() => NextResponse.redirect(`${getAppOrigin()}/connect?reason=connection`))
 }

@@ -151,3 +151,44 @@ test('creator datasets stay isolated while logins share the demo source', async 
   assert.equal((await database.query('select * from app_users')).rows.length, 1)
   await database.close()
 })
+
+// Removes only the retired analysis schedule and preserves saved results and unrelated schedules.
+test('immediate analysis migration retires the worker without deleting saved analysis', async () => {
+  const database = new PGlite()
+  await database.exec('create role anon; create role authenticated; create role service_role;')
+  await database.exec(await readFile(new URL('../supabase/migrations/001_initial.sql', import.meta.url), 'utf8'))
+  await database.exec(`
+    create schema cron;
+    create table cron.job (jobid integer, jobname text);
+    create function cron.unschedule(identifier integer) returns boolean language sql as $$
+      with removed as (delete from cron.job where jobid = identifier returning *)
+      select exists(select 1 from removed);
+    $$;
+    insert into cron.job values (1, 'creator-insights-analysis'), (2, 'unrelated-maintenance');
+    insert into app_users(id, fanvue_id, username, display_name)
+    values ('11111111-1111-4111-8111-111111111111', 'creator', 'creator', 'Creator');
+    insert into analysis_jobs(user_id, cache_key, dataset_version, status, result)
+    values ('11111111-1111-4111-8111-111111111111', 'saved', 'sample', 'complete', '{"insights": []}');
+  `)
+
+  const migration = await readFile(
+    new URL('../supabase/migrations/20261030125942_immediate_analysis.sql', import.meta.url),
+    'utf8'
+  )
+  await database.exec(migration)
+  await database.exec(migration)
+  assert.deepEqual((await database.query('select jobname from cron.job')).rows, [{ jobname: 'unrelated-maintenance' }])
+  assert.equal((await database.query('select result from analysis_jobs')).rows.length, 1)
+  assert.equal(
+    (
+      await database.query<{ worker: string | null }>(
+        "select to_regprocedure('public.claim_analysis_job(uuid)') as worker"
+      )
+    ).rows[0].worker,
+    null
+  )
+
+  await database.exec('drop schema cron cascade')
+  await database.exec(migration)
+  await database.close()
+})

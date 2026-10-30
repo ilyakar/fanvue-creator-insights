@@ -4,7 +4,7 @@
 Displays saved analysis progress and supports explicit starts and retries.
 ---------------------------------------------------------------*/
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -17,14 +17,18 @@ const stageOrder: JobStage[] = ['queued', 'analysing', 'validating', 'complete']
 // Displays saved analysis progress and supports explicit starts and retries.
 const AnalysisProgress = ({
   initialStage,
-  initialError
+  initialError,
+  shouldStart
 }: {
   initialStage: JobStage | 'idle'
   initialError: string | null
+  shouldStart: boolean
 }) => {
   const router = useRouter()
 
-  const [analysisStage, setAnalysisStage] = useState(initialStage)
+  const hasStarted = useRef(false)
+
+  const [analysisStage, setAnalysisStage] = useState(shouldStart ? 'analysing' : initialStage)
   const [errorMessage, setErrorMessage] = useState(initialError)
   const [isRequestingAnalysis, setIsRequestingAnalysis] = useState(false)
   const [isWaiting, setIsWaiting] = useState(false)
@@ -78,7 +82,12 @@ const AnalysisProgress = ({
           return response.json()
         })
         .then(analysisResponse => {
-          if (isActive && analysisResponse?.job) {
+          if (
+            isActive &&
+            analysisResponse?.job &&
+            analysisResponse.job.status !== 'queued' &&
+            !(isRequestingAnalysis && analysisResponse.job.status === 'failed')
+          ) {
             setAnalysisStage(analysisResponse.job.status)
             setErrorMessage(analysisResponse.job.error)
           }
@@ -97,11 +106,14 @@ const AnalysisProgress = ({
       clearInterval(interval)
       clearTimeout(waitingTimer)
     }
-  }, [analysisStage, router])
+  }, [analysisStage, isRequestingAnalysis, router])
 
-  // Starts or retries analysis after the server verifies the account connection.
-  const _handlePrepareAnalysis = () => {
+  // Holds the analysis request open until inference finishes or returns an existing run.
+  const startAnalysis = useCallback(() => {
     setIsRequestingAnalysis(true)
+    setAnalysisStage('analysing')
+    setErrorMessage(null)
+    setIsWaiting(false)
 
     fetch('/api/analysis', { method: 'POST' })
       .then(async response => {
@@ -118,12 +130,26 @@ const AnalysisProgress = ({
         }
 
         setAnalysisStage(analysisResponse.job.status)
-        setErrorMessage(null)
+        setErrorMessage(analysisResponse.job.error || null)
         setIsWaiting(false)
       })
-      .catch(error => setErrorMessage(error.message || 'Please try again in a moment.'))
+      .catch(error => {
+        setAnalysisStage('failed')
+        setErrorMessage(error.message || 'Please try again in a moment.')
+      })
       .finally(() => setIsRequestingAnalysis(false))
-  }
+  }, [])
+
+  // Starts immediately after sign-in, with a ref preventing duplicate requests during effect replay.
+  useEffect(() => {
+    if (shouldStart && !hasStarted.current) {
+      hasStarted.current = true
+      startAnalysis()
+    }
+  }, [shouldStart, startAnalysis])
+
+  // Retries analysis when the creator presses the action button.
+  const _handlePrepareAnalysis = () => startAnalysis()
 
   return (
     <div className="analysis-card">
@@ -165,11 +191,9 @@ const AnalysisProgress = ({
         })}
       </ol>
 
-      {analysisStage === 'queued' && <p className="analysis-notice">Your analysis is queued and waiting to begin.</p>}
-
       {isWaiting && analysisStage !== 'failed' && (
         <p className="analysis-notice">
-          This is taking a little longer. You can return later. Your analysis doesn’t depend on this page staying open.
+          We’re still analysing your comments. Keep this page open until your insights are ready.
         </p>
       )}
 

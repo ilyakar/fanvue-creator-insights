@@ -80,5 +80,6 @@ export interface AnalysisJob {
   created_at: string
   completed_at: string | null
   lease_token: string | null
+  lease_until: string | null
   attempts: number
 }

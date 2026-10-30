@@ -26,7 +26,7 @@ The development preview is intentionally labelled **illustrative insights**. Its
 
 `vercel.json` selects the Next.js framework preset. Production uses `APP_URL=https://fanvue-creator-insights.vercel.app` in Vercel's environment settings. Local secrets and the copied reference directory are excluded from deployment uploads.
 
-Production uses Fanvue OAuth, Supabase and OpenAI through server-only credentials. A Supabase schedule starts the production analysis worker when jobs are waiting. The local design preview stays unavailable in production.
+Production uses Fanvue OAuth, Supabase and OpenAI through server-only credentials. Analysis calls OpenAI immediately inside the authenticated request. The local design preview stays unavailable in production.
 
 ## Enable the real connection and AI analysis
 
@@ -34,15 +34,11 @@ Production uses Fanvue OAuth, Supabase and OpenAI through server-only credential
 2. Create a Supabase project, apply the migrations in `supabase/migrations/` in order, and run `supabase/seed.sql` to populate the fictional creator dataset.
 3. Register your Fanvue app's exact callback URL: `http://localhost:3000/api/auth/callback` (or the chosen deployed origin). Enable `openid offline_access offline read:self`. The app reads the creator profile only; audience content is synthetic.
 4. Set `FANVUE_CLIENT_ID`, `FANVUE_CLIENT_SECRET`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `OPENAI_API_KEY` locally. Never place credentials in chat or client-exposed environment variables.
-5. `TOKEN_ENCRYPTION_KEY` protects saved Fanvue access tokens, refresh tokens and temporary OAuth verifiers before they enter the database. It is an app-generated secret, not a provider credential. Generate it once with `openssl rand -hex 32` if it is missing. Keep it stable and use the same value for the web app and worker; losing it makes existing encrypted connections unreadable.
+5. `TOKEN_ENCRYPTION_KEY` protects saved Fanvue access tokens, refresh tokens and temporary OAuth verifiers before they enter the database. It is an app-generated secret, not a provider credential. Generate it once with `openssl rand -hex 32` if it is missing. Keep it stable across deployments; losing it makes existing encrypted connections unreadable.
 6. The local origin defaults to `http://localhost:3000`, so no `APP_URL` entry is needed for the default local setup. Only add it when using another origin or deploying. `localhost` and `127.0.0.1` are different OAuth origins; use `localhost` consistently for local development.
-7. Restart the web server, then run the durable worker in a second terminal:
+7. Restart the web server. No separate worker process is needed.
 
-```sh
-npm run worker
-```
-
-Now **Start free** uses real Fanvue OAuth. First sign-in queues the sample dataset for real OpenAI inference. The worker persists validated results independently of the browser. Returning users reuse the same run. Clearing analysis does not start another paid analysis until the creator chooses **Prepare my insights**.
+Now **Start free** uses real Fanvue OAuth. After sign-in, the analysis page immediately sends an authenticated request that calls OpenAI and saves the result before responding. Returning users reuse completed results. Clearing analysis does not start another paid analysis until the creator chooses **Prepare my insights**. Keep the analysis page open while a request is running.
 
 The API version and model have defaults in code and are omitted from `.env.example`. `FANVUE_API_VERSION` and `OPENAI_MODEL` remain optional overrides. `OPENAI_MODEL` defaults to `gpt-4.1-mini` and can be changed to an available model supporting Responses structured outputs. Model availability depends on the API account. The model connection can be verified with the configured server credentials; a real Fanvue sign-in is still required to verify OAuth consent.
 
@@ -66,11 +62,9 @@ Tests cover dataset integrity, distinct fan counts, post-scoped evidence, invali
 ```sh
 npm run build
 npm start
-# Run this separately as a long-lived process:
-npm run worker
 ```
 
-The web app is hosted on Vercel. Supabase Cron checks for queued or abandoned work every minute and invokes a protected Vercel worker only when needed. A secret generated in Supabase Vault authenticates the scheduler, and database leases prevent duplicate workers from claiming the same job. The local `npm run worker` remains available for development. Register the production callback URL in Fanvue.
+The web app is hosted on Vercel. The analysis API allows up to five minutes for immediate inference and persistence. There is no scheduled analysis worker. A database request token prevents duplicate inference from simultaneous starts, and interrupted requests can be retried after their six-minute expiry. Apply the latest migration to retire the old Cron schedule. Register the production callback URL in Fanvue.
 
 Apply the migration before connecting an account. All private tables have RLS enabled and no browser policies; requests go through the authenticated backend using a server-only service role. Any future browser-side Supabase access requires deliberately designed policies.
 
@@ -82,9 +76,8 @@ Apply the migration before connecting an account. All private tables have RLS en
 - `src/mock-data/`: source fixtures retained for seeding and offline tests; the running app reads Supabase
 - `src/lib/data/`: direct audience snapshot reads, schema validation and editorial previews
 - `src/lib/analysis/`: AI generation, evidence validation and analysis cache keys
-- `src/lib/server/`: saved-analysis reads, explicit queue mutations, worker, database, OAuth and sessions
+- `src/lib/server/`: saved-analysis reads, immediate analysis requests, database, OAuth and sessions
 - `src/proxy.ts`: request guards for authenticated routes and local-only design previews
-- `scripts/analysis-worker.ts`: durable background processing
 - `supabase/migrations/`: versioned database foundation
 - `supabase/seed.sql`: repeatable import of the fictional creator dataset and editorial preview
 - `tests/`: meaningful data, security and database checks

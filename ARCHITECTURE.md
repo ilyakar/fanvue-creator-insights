@@ -25,7 +25,7 @@ Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView`
 
 ## Analysis code ownership
 
-`src/lib/server/saved-analysis.ts` only reads saved jobs, accepting already-resolved audience feedback instead of loading the account or snapshot again. `src/lib/server/analysis-queue.ts` explicitly creates or retries jobs. `src/lib/server/analysis-worker.ts` claims durable work and persists its outcome. `src/lib/analysis/service.ts` generates AI output; `validation.ts` validates evidence and post scope; `cache.ts` hashes ownership, full source content, AI model and prompt version. The queue, worker and read paths keep the existing cache and lease semantics.
+`src/lib/server/saved-analysis.ts` only reads saved jobs, accepting already-resolved audience feedback. `src/lib/server/run-analysis.ts` calls OpenAI immediately inside the analysis POST request and saves its outcome. `src/lib/analysis/service.ts` generates AI output; `validation.ts` validates evidence and post scope; `cache.ts` hashes ownership, full source content, AI model and prompt version.
 
 ## Style ownership
 
@@ -65,13 +65,11 @@ The server sends post context and comment identifiers/text to OpenAI Responses w
 
 Each theme contains category, title, summary, optional opportunity, supporting comment IDs and evidence-scoped summaries for every referenced post. Runtime validation rejects unknown IDs and missing/unsupported post scope, and deduplicates repeated references. Application code counts original comments and distinct fan IDs. Structural validation cannot prove semantic correctness; the evaluation checklist covers that limitation.
 
-## Durable processing and caching
+## Immediate processing and caching
 
-A unique owner-scoped cache key hashes the entire dataset, configured model and prompt version. First authentication queues or reuses that run. Read-only dashboard requests do not create work. A failed run can be explicitly retried; cleared analysis stays cleared until the user starts again.
+A unique owner-scoped cache key hashes the entire dataset, configured model and prompt version. Authentication redirects to the analysis page with an explicit start flag. The page starts an authenticated POST immediately; the route awaits OpenAI inference and persistence before responding. Read-only dashboard requests do not create work. Failed or interrupted requests can be retried, and cleared analysis stays cleared until the user starts again.
 
-The analysis worker claims one job atomically with `FOR UPDATE SKIP LOCKED`, records real stages, and renews its ten-minute lease. Supabase Cron invokes the protected Vercel worker when work is waiting, using a secret generated and kept in Supabase Vault. Browser polling reads saved state without simulated percentages. Results are committed only by the current lease holder. Interrupted runs can be recovered for up to three claims; exhausted jobs become a visible failure with retry. Completed results are reused until the input/configuration changes.
-
-The production worker runs within Vercel’s bounded background execution and the database schedule recovers interrupted leases. A local long-lived worker is also available for development. The queue and results remain in Supabase.
+There is no background worker or scheduled analysis. Progress polling reads the matching saved run. A six-minute request token, longer than the route's five-minute execution limit, prevents simultaneous requests from duplicating inference. Writes compare that token, and expired requests become retryable. Completed results are reused until the input/configuration changes. The latest migration disables the old Cron schedule while preserving existing saved results and historical schema.
 
 ## Visual review and unavailable integrations
 
@@ -81,4 +79,4 @@ If credentials are absent, Start free leads to an honest connection setup state.
 
 ## Operational limits
 
-Real Fanvue OAuth and live OpenAI inference require configured credentials and the production scheduler or a local worker. Automated checks use stubbed OAuth HTTP responses and in-memory Postgres. Expired OAuth-attempt records are cleaned when a new login starts; production should also schedule cleanup of expired app sessions and old operational records as retention needs are defined.
+Real Fanvue OAuth and live OpenAI inference require configured credentials and an active analysis request. Automated checks use stubbed OAuth HTTP responses and in-memory Postgres. Expired OAuth-attempt records are cleaned when a new login starts; production should also schedule cleanup of expired app sessions and old operational records as retention needs are defined.

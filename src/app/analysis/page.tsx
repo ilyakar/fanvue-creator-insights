@@ -13,7 +13,8 @@ import AnalysisProgress from '@/app/Components/AnalysisProgress/AnalysisProgress
 export const dynamic = 'force-dynamic'
 
 // Reads existing analysis progress and offers explicit start or retry controls.
-const AnalysisPage = async () => {
+const AnalysisPage = async ({ searchParams }: { searchParams: Promise<{ start?: string }> }) => {
+  const requestedStart = (await searchParams).start === '1'
   const account = await requireAccount()
   const job = await getCurrentAnalysis(account.id, await getAudienceFeedback(account.audience_creator_id))
 
@@ -28,7 +29,11 @@ const AnalysisPage = async () => {
       </header>
 
       <main id="main-content">
-        <AnalysisProgress initialStage={job?.status || 'idle'} initialError={job?.error || null} />
+        <AnalysisProgress
+          initialStage={job?.status || 'idle'}
+          initialError={job?.error || null}
+          shouldStart={requestedStart || job?.status === 'queued'}
+        />
       </main>
     </div>
   )
