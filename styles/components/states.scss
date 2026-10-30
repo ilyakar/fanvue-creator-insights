@@ -528,19 +528,3 @@ Defines shared visual styles for the audience insights experience.
     }
   }
 }
-.route-loading {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-  justify-content: center;
-  min-height: 60vh;
-  color: #a09bab;
-  font-size: $font-size-small;
-  .loading-dot {
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #c3b5e0;
-    animation: breathe 1.5s ease infinite;
-  }
-}
