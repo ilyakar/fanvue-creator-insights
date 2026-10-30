@@ -39,14 +39,23 @@ h4 {
     color: $color-text-secondary;
   }
 
-  .eyebrow-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+  .heading-content {
+    min-width: 0;
 
-    @include max-width(phone) {
-      flex-wrap: wrap;
+    .title-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 10px;
+
+      h1 {
+        min-width: 0;
+        margin-bottom: 0;
+      }
+
+      .sample-pill {
+        flex-shrink: 0;
+      }
     }
   }
 

@@ -12,15 +12,16 @@ import type { Dataset } from '@/lib/types'
 const DashboardView = ({ dateRange, children }: { dateRange: React.ReactNode; children: React.ReactNode }) => (
   <div className="dashboard-content">
     <div className="page-heading">
-      <div>
-        <div className="eyebrow-row">
+      <div className="heading-content">
+        <div className="title-row">
+          <h1>Audience overview</h1>
+
           <span className="sample-pill">
             <span />
             Sample data
           </span>
         </div>
 
-        <h1>Audience overview</h1>
         <p>See what fans love, request and want improved across your posts.</p>
       </div>
 

@@ -8,15 +8,16 @@ import PostsToolbar from '@/app/Components/PostsBrowser/PostsToolbar'
 const PostsView = ({ postCount, children }: { postCount: React.ReactNode; children: React.ReactNode }) => (
   <div className="posts-page">
     <div className="page-heading">
-      <div>
-        <div className="eyebrow-row">
+      <div className="heading-content">
+        <div className="title-row">
+          <h1>Posts</h1>
+
           <span className="sample-pill">
             <span />
             Sample data
           </span>
         </div>
 
-        <h1>Posts</h1>
         <p>Choose a post to view its insights and audience feedback.</p>
       </div>
     </div>
