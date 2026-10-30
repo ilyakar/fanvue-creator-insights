@@ -189,39 +189,63 @@ Styles the public landing page and its responsive marketing sections.
 
       .floating-note {
         position: absolute;
-        right: -30px;
-        bottom: 40px;
+        right: -35px;
+        bottom: -25px;
         z-index: 2;
         display: flex;
-        gap: 15px;
+        gap: 20px;
         align-items: center;
-        padding: 20px 25px;
-        border: 1px solid $color-border;
-        border-radius: 15px;
-        background: $color-surface-overlay;
-        box-shadow: 0 10px 40px rgba(palette.$ink, 0.08);
-        transform: rotate(-4deg);
+        max-width: 410px;
+        padding: 25px 30px;
+        border: 5px solid palette.$white;
+        border-radius: 20px;
+        background: color.mix(palette.$white, palette.$gold, 78%);
+        box-shadow:
+          0 20px 35px rgba(palette.$ink, 0.25),
+          0 35px 65px rgba(palette.$ink, 0.15);
+        transform: rotate(-6deg);
 
         > span {
-          font-size: 30px;
-          color: color.adjust(palette.$gold, $lightness: -7%, $saturation: -12%);
+          flex-shrink: 0;
+          font-size: 40px;
+          color: color.adjust(palette.$gold, $lightness: -20%);
         }
 
         > div {
-          font-size: $font-size-small;
-          color: $color-text-secondary;
+          font-size: 18px;
+          font-weight: 500;
+          color: palette.$ink;
+          line-height: 1.35;
 
           strong {
             display: block;
-            font-size: $font-size-small;
-            font-weight: 500;
-            color: $color-text;
-            margin-top: 5px;
+            font-size: 26px;
+            font-weight: 750;
+            letter-spacing: -0.045em;
           }
         }
 
         @include max-width(tablet) {
-          display: none;
+          position: relative;
+          right: auto;
+          bottom: auto;
+          width: fit-content;
+          max-width: 350px;
+          margin: -10px auto 0;
+          padding: 20px;
+          gap: 15px;
+
+          > span {
+            font-size: 30px;
+          }
+
+          > div {
+            font-size: $font-size-body;
+
+            strong {
+              font-size: 22px;
+            }
+          }
         }
       }
 
@@ -233,7 +257,11 @@ Styles the public landing page and its responsive marketing sections.
     .preview-caption {
       color: $color-text-secondary;
       font-size: $font-size-fine-print;
-      margin-top: 25px;
+      margin-top: 65px;
+
+      @include max-width(tablet) {
+        margin-top: 30px;
+      }
     }
 
     @include max-width(tablet) {
@@ -370,75 +398,102 @@ Styles the public landing page and its responsive marketing sections.
   .how-section {
     padding: 80px 40px;
     background: $color-surface-subtle;
+    border-top: 1px solid $color-border-soft;
 
     .section-intro {
       text-align: center;
-      margin-bottom: 60px;
+      max-width: 600px;
+      margin: 0 auto 45px;
+
+      .eyebrow {
+        display: block;
+        color: $color-purple;
+        font-size: $font-size-small;
+        letter-spacing: 0.08em;
+      }
+
+      h2 {
+        margin-bottom: 15px;
+      }
+
+      > p {
+        line-height: 1.7;
+      }
     }
 
     .steps-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 65px;
-      max-width: 1050px;
-      margin: 0 auto 50px;
+      gap: 20px;
+      max-width: 1100px;
+      margin: 0 auto 30px;
+      padding: 0;
+      list-style: none;
 
-      article {
-        position: relative;
+      > li {
+        padding: 30px;
+        border: 1px solid $color-border;
+        border-radius: 15px;
+        background: $color-surface;
 
-        > .step-number {
-          display: block;
-          padding-bottom: 20px;
-          border-bottom: 1px solid $color-border-soft;
-          font-size: $font-size-small;
-          color: $color-text-secondary;
-          margin-bottom: 25px;
+        .step-heading {
+          display: flex;
+          align-items: center;
+          gap: 15px;
+          margin-bottom: 30px;
 
-          @include max-width(phone) {
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+          .step-icon {
+            display: grid;
+            place-items: center;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: $color-purple-active;
+            color: $color-purple;
+            font-size: 20px;
+          }
+
+          .step-number {
+            font-size: 18px;
+            font-weight: 600;
+            color: $color-purple;
+          }
+
+          @include max-width(tablet) {
+            margin-bottom: 25px;
           }
         }
 
-        > svg {
-          position: absolute;
-          top: 0;
-          right: 0;
-          color: $color-purple;
-          font-size: 15px;
-        }
-
         h3 {
-          font-size: 18px;
-          letter-spacing: -0.03em;
-          font-weight: 500;
+          font-size: 22px;
+          line-height: 1.3;
+          letter-spacing: -0.035em;
+          font-weight: 600;
           margin-bottom: 15px;
         }
 
         p {
           color: $color-text-secondary;
           font-size: $font-size-small;
-          line-height: 1.9;
+          line-height: 1.8;
+        }
+
+        @include max-width(tablet-large) {
+          padding: 25px;
         }
       }
 
       @include max-width(tablet) {
-        gap: 30px;
-      }
-
-      @include max-width(phone) {
         grid-template-columns: 1fr;
-        gap: 30px;
-        max-width: 330px;
+        max-width: 500px;
+        gap: 15px;
       }
     }
 
     .sample-disclosure {
-      max-width: 690px;
+      max-width: 800px;
       margin: 0 auto;
-      border: 1px solid $color-purple-border;
-      padding: 20px 25px;
-      border-radius: 15px;
+      padding: 20px;
       display: flex;
       align-items: flex-start;
       gap: 15px;
@@ -447,22 +502,24 @@ Styles the public landing page and its responsive marketing sections.
       > svg {
         margin-top: 5px;
         font-size: $font-size-small;
+        color: $color-purple-muted;
       }
 
       p {
         font-size: $font-size-small;
-        line-height: 1.9;
+        line-height: 1.8;
 
         strong {
           font-weight: 500;
           color: $color-text;
           display: block;
+          margin-bottom: 5px;
         }
       }
     }
 
     @include max-width(tablet) {
-      padding: 60px 30px;
+      padding: 60px 25px 40px;
     }
   }
 

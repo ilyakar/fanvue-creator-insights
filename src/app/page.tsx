@@ -78,7 +78,7 @@ const HomePage = async () => {
               </span>
 
               <div>
-                Less scrolling.<strong>More “oh, that’s a good idea.”</strong>
+                Turn fan requests into <strong>your next content idea.</strong>
               </div>
             </div>
           </div>
@@ -127,37 +127,44 @@ const HomePage = async () => {
         <section className="how-section" id="how-it-works">
           <div className="section-intro">
             <h2>How it works</h2>
+            <p>Connect your account, understand the feedback and decide what to create next.</p>
           </div>
 
-          <div className="steps-grid">
+          <ol className="steps-grid">
             {[
               {
-                number: '01',
+                number: '1',
                 icon: faLink,
-                title: 'Connect your Fanvue account',
+                title: 'Connect your account',
                 description: 'Sign in securely with the account you already use. No forms, no new password.'
               },
               {
-                number: '02',
+                number: '2',
                 icon: faWandMagicSparkles,
-                title: 'Analyse comments',
+                title: 'Understand your fans',
                 description: 'AI groups sample comments into praise, requests and suggestions.'
               },
               {
-                number: '03',
+                number: '3',
                 icon: faLightbulb,
-                title: 'Explore your insights',
+                title: 'Plan your next post',
                 description: 'Explore the insights, read the original comments and decide what comes next.'
               }
             ].map(step => (
-              <article key={step.number}>
-                <span className="step-number">{step.number}</span>
-                <FontAwesomeIcon icon={step.icon} />
+              <li key={step.number}>
+                <div className="step-heading">
+                  <span className="step-icon" aria-hidden="true">
+                    <FontAwesomeIcon icon={step.icon} />
+                  </span>
+
+                  <span className="step-number">Step {step.number}</span>
+                </div>
+
                 <h3>{step.title}</h3>
                 <p>{step.description}</p>
-              </article>
+              </li>
             ))}
-          </div>
+          </ol>
 
           <div className="sample-disclosure">
             <FontAwesomeIcon icon={faShieldHalved} />

@@ -5,15 +5,15 @@ Shows an explicitly illustrative product snapshot using the same sample evidence
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRight,
-  faAsterisk,
   faChartSimple,
   faCommentDots,
   faGear,
   faLayerGroup,
+  faUserGroup,
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
 
-import { categoryLabels, getDatasetCounts, getInsightCounts } from '@/lib/insights'
+import { categoryLabels, getDatasetCounts, getEvidence, getInsightCounts } from '@/lib/insights'
 import type { Dataset, Insight } from '@/lib/types'
 import { categoryIcons } from '@/app/Components/CategoryIcon/CategoryIcon'
 import Brand from '@/app/Components/Brand/Brand'
@@ -21,7 +21,17 @@ import Brand from '@/app/Components/Brand/Brand'
 // Shows an explicitly illustrative product snapshot using the same sample evidence as the app.
 const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Dataset; insights: Insight[] }) => {
   const counts = getDatasetCounts(audienceFeedback)
-  const previewInsights = [insights[0], insights[1], insights[2]]
+  const previewInsights = (['love', 'requests', 'improve'] as const)
+    .map(category => insights.find(insight => insight.category === category))
+    .filter((insight): insight is Insight => Boolean(insight))
+  const featuredInsight = insights
+    .filter(insight => insight.category === 'requests')
+    .sort(
+      (firstInsight, secondInsight) =>
+        getInsightCounts(secondInsight, audienceFeedback).fans - getInsightCounts(firstInsight, audienceFeedback).fans
+    )[0]
+  const featuredComment = featuredInsight ? getEvidence(featuredInsight, audienceFeedback)[0] : null
+  const featuredFan = audienceFeedback.fans.find(fan => fan.id === featuredComment?.fanId)
 
   return (
     <div className="product-preview" aria-label="Illustrative dashboard preview with sample data">
@@ -53,15 +63,6 @@ const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Data
           <FontAwesomeIcon icon={faGear} />
           Settings
         </span>
-
-        <div className="preview-sidebar-note">
-          <FontAwesomeIcon icon={faWandMagicSparkles} />
-
-          <span>
-            A little clarity.
-            <br />A lot of possibility.
-          </span>
-        </div>
       </aside>
 
       <div className="preview-main">
@@ -82,29 +83,51 @@ const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Data
 
           <div className="preview-metrics">
             {[
-              { value: counts.comments, label: 'Comments analysed' },
-              { value: counts.fans, label: 'Distinct fans' },
-              { value: insights.length, label: 'Audience themes' }
+              { value: counts.comments, label: 'Comments analysed', icon: faCommentDots },
+              { value: counts.fans, label: 'Distinct fans', icon: faUserGroup },
+              { value: insights.length, label: 'Audience themes', icon: faWandMagicSparkles },
+              { value: counts.posts, label: 'Posts analysed', icon: faLayerGroup }
             ].map(metric => (
               <div key={metric.label}>
-                <span>{metric.label}</span>
+                <span>
+                  <FontAwesomeIcon icon={metric.icon} />
+                  {metric.label}
+                </span>
+
                 <strong>{metric.value}</strong>
+                <small>In the sample dataset</small>
               </div>
             ))}
           </div>
 
-          <div className="preview-highlight">
-            <FontAwesomeIcon icon={faWandMagicSparkles} />
+          {featuredInsight && (
+            <div className="preview-highlight">
+              <div className="copy">
+                <span className="eyebrow">MOST REQUESTED BY FANS</span>
+                <h4>{featuredInsight.opportunity || featuredInsight.title}</h4>
+                <p>{featuredInsight.summary}</p>
 
-            <div>
-              <strong>Fan request</strong>
-              <p>{insights.find(insight => insight.category === 'requests')?.title}</p>
+                <span className="view-insight">
+                  View insight <FontAwesomeIcon icon={faArrowRight} />
+                </span>
+              </div>
+
+              {featuredComment && (
+                <div className="visual">
+                  <span className="orbit" aria-hidden="true" />
+                  <span className="orbit outer" aria-hidden="true" />
+
+                  <div className="comment">
+                    <span className="avatar" aria-hidden="true">
+                      {featuredFan?.displayName.slice(0, 1)}
+                    </span>
+
+                    <p>“{featuredComment.text}”</p>
+                  </div>
+                </div>
+              )}
             </div>
-
-            <span aria-hidden="true">
-              <FontAwesomeIcon icon={faAsterisk} />
-            </span>
-          </div>
+          )}
 
           <div className="preview-theme-heading">
             Audience insights <span>Illustrative insights</span>
