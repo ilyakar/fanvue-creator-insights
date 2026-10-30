@@ -1,10 +1,5 @@
 /* ------------------------------------------------------------
-Reuses the destination's JSX view while only its data sections show placeholders.
+Reuses the overview navigation fallback for the editorial preview.
 ---------------------------------------------------------------*/
 
-import Overview from '@/app/Components/Overview/Overview'
-
-// Keeps page copy and controls identical during navigation and after data arrives.
-const LoadingPage = () => <Overview />
-
-export default LoadingPage
+export { default } from '@/app/dashboard/loading'

@@ -25,6 +25,6 @@ export const requireSetting = (variableName: string) => {
 }
 
 // Uses a single trusted origin for OAuth redirects and mutation checks.
-export const getAppOrigin = () => new URL(process.env.APP_URL || 'http://127.0.0.1:3000').origin
+export const getAppOrigin = () => new URL(process.env.APP_URL || 'http://localhost:3000').origin
 
 export const sessionCookieName = 'fanvue_insights_session'

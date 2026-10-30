@@ -1,13 +1,47 @@
 /* ------------------------------------------------------------
-Streams the requested post's source context and evidence inside its shared page structure.
+Validates the requested source post before showing its context and scoped audience insights.
 ---------------------------------------------------------------*/
 
-import { getPreviewModel } from '@/lib/data/preview'
-import PostDetails from '@/app/Components/DashboardContent/PostDetails'
+import { Suspense } from 'react'
+import { notFound } from 'next/navigation'
 
-// Keeps post navigation visible while resolving the requested post and its insights.
-const PostPage = ({ params }: { params: Promise<{ postId: string }> }) => (
-  <PostDetails model={getPreviewModel()} params={params} basePath="/preview" />
+import { getPreviewAnalysis } from '@/lib/data/preview'
+import PostView from '@/app/dashboard/posts/[postId]/PostView'
+import PostContext from '@/app/dashboard/posts/[postId]/PostContext'
+import AudienceInsights from '@/app/Components/AudienceInsights/AudienceInsights'
+import ContentSkeleton from '@/app/Components/Skeleton/ContentSkeleton'
+
+// Keeps navigation visible while resolving the post and its saved feedback.
+const PreviewPostPage = ({ params }: { params: Promise<{ postId: string }> }) => (
+  <PostView basePath="/preview">
+    <Suspense fallback={<ContentSkeleton variant="post" />}>
+      <PostInsights params={params} />
+    </Suspense>
+  </PostView>
 )
 
-export default PostPage
+// Checks post existence before applying the analysis prerequisite.
+const PostInsights = async ({ params }: { params: Promise<{ postId: string }> }) => {
+  const { postId } = await params
+  const { audienceFeedback, savedAnalysis } = await getPreviewAnalysis()
+  const post = audienceFeedback.posts.find(post => post.id === postId)
+
+  if (!post) {
+    notFound()
+  }
+
+  return (
+    <>
+      <PostContext post={post} />
+
+      <AudienceInsights
+        audienceFeedback={audienceFeedback}
+        savedAnalysis={savedAnalysis}
+        scopedPostId={postId}
+        isPreview={true}
+      />
+    </>
+  )
+}
+
+export default PreviewPostPage

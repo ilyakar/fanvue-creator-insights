@@ -7,6 +7,7 @@ Keeps post filters intact when loading placeholders are replaced with fetched re
 import { createContext, useContext, useState, type Dispatch, type SetStateAction } from 'react'
 
 import type { Post } from '@/lib/types'
+import { filterPosts } from '@/lib/posts'
 
 interface PostsFilters {
   searchQuery: string
@@ -29,7 +30,7 @@ const PostsFilterProvider = ({ children }: { children: React.ReactNode }) => {
   )
 }
 
-// Reads the workspace's temporary post filters without persisting them to storage.
+// Reads the shell's temporary post filters without persisting them to storage.
 export const usePostsFilters = () => {
   const filters = useContext(PostsFilterContext)
 
@@ -41,16 +42,10 @@ export const usePostsFilters = () => {
 }
 
 // Applies the same filtering and ordering to the result count and the post cards.
-export const useFilteredPosts = (posts: Post[]) => {
+export const useFilteredPosts = <SourcePost extends Post>(posts: SourcePost[]) => {
   const { searchQuery, selectedFormat } = usePostsFilters()
 
-  return posts
-    .filter(
-      post =>
-        `${post.title} ${post.caption}`.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (selectedFormat === 'all' || post.format === selectedFormat)
-    )
-    .sort((firstPost, secondPost) => secondPost.publishedAt.localeCompare(firstPost.publishedAt))
+  return filterPosts(posts, searchQuery, selectedFormat)
 }
 
 export default PostsFilterProvider

@@ -4,27 +4,24 @@ Loads the shared demo content and explicitly editorial preview insights from Sup
 
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
 import { validateAnalysis } from '@/lib/analysis/validation'
-import type { DashboardModel } from '@/lib/types'
 
-import { audienceDataProvider, demoCreatorId } from './audience'
+import { getAudienceFeedback, demoCreatorId } from './audience'
 
 // Keeps illustrative preview results separate from private AI analysis jobs.
-export const getPreviewModel = async (): Promise<DashboardModel> => {
-  const dataset = await audienceDataProvider.getDataset(demoCreatorId)
+export const getPreviewAnalysis = async () => {
+  const audienceFeedback = await getAudienceFeedback(demoCreatorId)
   const preview = unwrapDatabase(
     await getDatabase().from('audience_preview_results').select('*').eq('creator_id', demoCreatorId).single()
   )
 
   return {
-    dataset,
-    result: {
-      insights: validateAnalysis({ insights: preview.insights }, dataset),
+    audienceFeedback,
+    savedAnalysis: {
+      insights: validateAnalysis({ insights: preview.insights }, audienceFeedback),
       analysedAt: preview.analysed_at,
-      datasetVersion: dataset.version,
+      datasetVersion: audienceFeedback.version,
       model: preview.model,
       promptVersion: preview.prompt_version
-    },
-    account: null,
-    isPreview: true
+    }
   }
 }

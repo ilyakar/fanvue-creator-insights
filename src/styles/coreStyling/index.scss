@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Loads shared foundations and application component styles in cascade order.
 ---------------------------------------------------------------*/
 
 @use 'base';
@@ -10,4 +10,9 @@ Defines shared visual styles for the audience insights experience.
 @use '../components/skeleton';
 @use '../components/insightDrawer';
 @use '../components/posts';
-@use '../components/states';
+@use '../components/emptyState';
+@use '../components/settings';
+@use '../components/messages';
+@use '../components/alerts';
+@use '../components/onboarding';
+@use '../components/information';

@@ -9,7 +9,7 @@ import { timingSafeEqual } from 'node:crypto'
 import { decryptSecret, hashSecret } from '@/lib/server/crypto'
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
 import { getAppOrigin } from '@/lib/server/config'
-import { enqueueAnalysis } from '@/lib/server/analysis'
+import { enqueueAnalysis } from '@/lib/server/analysis-queue'
 import { createSession } from '@/lib/server/session'
 import { exchangeFanvueTokens, getFanvueProfile, saveFanvueConnection } from '@/lib/server/fanvue'
 

@@ -1,10 +1,15 @@
 /* ------------------------------------------------------------
-Reuses the destination's JSX view while only its data sections show placeholders.
+Keeps the posts heading and working filters visible while source records load.
 ---------------------------------------------------------------*/
 
-import PostsWorkspace from '@/app/Components/PostsBrowser/PostsWorkspace'
+import PostsView from '@/app/dashboard/posts/PostsView'
+import ContentSkeleton from '@/app/Components/Skeleton/ContentSkeleton'
 
-// Keeps page copy and controls identical during navigation and after data arrives.
-const LoadingPage = () => <PostsWorkspace />
+// Uses the same filter controls during navigation and streaming.
+const PostsLoading = () => (
+  <PostsView postCount={null}>
+    <ContentSkeleton variant="posts" />
+  </PostsView>
+)
 
-export default LoadingPage
+export default PostsLoading

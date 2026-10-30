@@ -2,10 +2,10 @@
 Creates one durable run per owner and analysis input, reusing completed work.
 ---------------------------------------------------------------*/
 
-import { getAnalysisCacheKey } from '@/lib/analysis/validation'
+import { getAnalysisCacheKey } from '@/lib/analysis/cache'
 import { promptVersion } from '@/lib/analysis/service'
-import { audienceDataProvider } from '@/lib/data/audience'
-import type { AnalysisJob, DashboardModel, Account } from '@/lib/types'
+import { getAudienceFeedback } from '@/lib/data/audience'
+import type { AnalysisJob } from '@/lib/types'
 
 import { getDatabase, unwrapDatabase } from './database'
 
@@ -20,7 +20,7 @@ export const enqueueAnalysis = async (userId: string, retryFailed = false): Prom
     throw new Error('The connected account could not be found.')
   }
 
-  const dataset = await audienceDataProvider.getDataset(account.audience_creator_id)
+  const dataset = await getAudienceFeedback(account.audience_creator_id)
   const cacheKey = getAnalysisCacheKey(userId, dataset, process.env.OPENAI_MODEL || 'gpt-4.1-mini', promptVersion)
 
   const existing = unwrapDatabase(
@@ -64,30 +64,4 @@ export const enqueueAnalysis = async (userId: string, retryFailed = false): Prom
   }
 
   return unwrapDatabase(inserted) as AnalysisJob
-}
-
-// Looks up the current input's saved run without starting work as a side effect of reading.
-export const getCurrentAnalysis = async (userId: string): Promise<AnalysisJob | null> => {
-  const account = unwrapDatabase(
-    await getDatabase().from('app_users').select('audience_creator_id').eq('id', userId).single()
-  )
-
-  if (!account) {
-    throw new Error('The connected account could not be found.')
-  }
-
-  const dataset = await audienceDataProvider.getDataset(account.audience_creator_id)
-  const cacheKey = getAnalysisCacheKey(userId, dataset, process.env.OPENAI_MODEL || 'gpt-4.1-mini', promptVersion)
-
-  return unwrapDatabase(
-    await getDatabase().from('analysis_jobs').select('*').eq('user_id', userId).eq('cache_key', cacheKey).maybeSingle()
-  ) as AnalysisJob | null
-}
-
-// Loads private results only after ownership has been established by a server session.
-export const getDashboardModel = async (account: Account): Promise<DashboardModel> => {
-  const dataset = await audienceDataProvider.getDataset(account.audience_creator_id)
-  const job = await getCurrentAnalysis(account.id)
-
-  return { dataset, result: job?.status === 'complete' ? job.result : null, account, isPreview: false }
 }

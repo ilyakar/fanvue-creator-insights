@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Defines shared Inter typography, headings and responsive text defaults.
 ---------------------------------------------------------------*/
 
 @use '../stylingImports/index' as *;
@@ -80,19 +80,17 @@ h4 {
     width: 25px;
     height: 25px;
     flex: 0 0 auto;
+    @include max-width(phone) {
+      width: 20px;
+      height: 20px;
+    }
   }
   .wordmark {
     font-weight: 700;
     font-size: 22px;
     line-height: 1.1;
     letter-spacing: -0.04em;
-  }
-  @include max-width(phone) {
-    .mark {
-      width: 20px;
-      height: 20px;
-    }
-    .wordmark {
+    @include max-width(phone) {
       font-size: 18px;
     }
   }

@@ -6,6 +6,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 
 import { createSecret, hashSecret, encryptSecret, decryptSecret } from '@/lib/server/crypto'
+import { getAppOrigin } from '@/lib/server/config'
 import { requireSameOrigin } from '@/lib/server/http'
 import { exchangeFanvueTokens, getFanvueProfile } from '@/lib/server/fanvue'
 
@@ -30,25 +31,56 @@ test('session identifiers are random and stored as digests', () => {
   assert.equal(hashSecret(identifier).length, 64)
 })
 
+// Keeps local redirects on localhost while preserving explicitly configured deployment origins.
+test('app origin defaults to localhost and respects deployment configuration', testContext => {
+  const previousAppUrl = process.env.APP_URL
+
+  testContext.after(() => {
+    if (previousAppUrl === undefined) {
+      delete process.env.APP_URL
+    } else {
+      process.env.APP_URL = previousAppUrl
+    }
+  })
+
+  delete process.env.APP_URL
+  assert.equal(getAppOrigin(), 'http://localhost:3000')
+  assert.doesNotThrow(() =>
+    requireSameOrigin(
+      new Request('http://localhost:3000/api/account', { headers: { Origin: 'http://localhost:3000' } })
+    )
+  )
+  assert.throws(
+    () =>
+      requireSameOrigin(
+        new Request('http://localhost:3000/api/account', { headers: { Origin: 'http://127.0.0.1:3000' } })
+      ),
+    /from the app/
+  )
+
+  process.env.APP_URL = 'https://creator.example/settings'
+  assert.equal(getAppOrigin(), 'https://creator.example')
+})
+
 // Prevents another site from initiating account mutations with an ambient session cookie.
 test('account mutations require the configured origin', () => {
-  process.env.APP_URL = 'http://127.0.0.1:3000'
+  process.env.APP_URL = 'http://localhost:3000'
 
   assert.doesNotThrow(() =>
     requireSameOrigin(
-      new Request('http://127.0.0.1:3000/api/account', { headers: { Origin: 'http://127.0.0.1:3000' } })
+      new Request('http://localhost:3000/api/account', { headers: { Origin: 'http://localhost:3000' } })
     )
   )
 
   assert.throws(
     () =>
       requireSameOrigin(
-        new Request('http://127.0.0.1:3000/api/account', { headers: { Origin: 'https://other.example' } })
+        new Request('http://localhost:3000/api/account', { headers: { Origin: 'https://other.example' } })
       ),
     /from the app/
   )
 
-  assert.throws(() => requireSameOrigin(new Request('http://127.0.0.1:3000/api/account')), /from the app/)
+  assert.throws(() => requireSameOrigin(new Request('http://localhost:3000/api/account')), /from the app/)
 })
 
 // Checks the OAuth request against Fanvue's official client_secret_basic contract using a stub.

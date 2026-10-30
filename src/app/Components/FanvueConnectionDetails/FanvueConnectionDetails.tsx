@@ -24,7 +24,7 @@ const statusLabels: Record<ConnectionStatus, string> = {
 }
 
 // Keeps only account-specific text pending while the settings controls remain available.
-const SettingsConnectionDetails = ({
+const FanvueConnectionDetails = ({
   account = null,
   status
 }: {
@@ -78,4 +78,4 @@ const SettingsConnectionDetails = ({
   )
 }
 
-export default SettingsConnectionDetails
+export default FanvueConnectionDetails

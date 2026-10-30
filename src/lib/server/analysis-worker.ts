@@ -4,7 +4,7 @@ Claims and processes one durable analysis job with a renewable lease.
 
 import { randomUUID } from 'node:crypto'
 
-import { audienceDataProvider } from '@/lib/data/audience'
+import { getAudienceFeedback } from '@/lib/data/audience'
 import { analyseAudience } from '@/lib/analysis/service'
 import type { AnalysisJob } from '@/lib/types'
 
@@ -36,8 +36,7 @@ export const processNextAnalysis = async (): Promise<boolean> => {
   }, 30000)
 
   // Persist only results completed by this lease holder, then release its heartbeat.
-  await audienceDataProvider
-    .getDataset(job.audience_creator_id)
+  await getAudienceFeedback(job.audience_creator_id)
     .then(dataset =>
       analyseAudience(dataset, async () => {
         unwrapDatabase(

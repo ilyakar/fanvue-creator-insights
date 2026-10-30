@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Styles audience metrics, featured requests, insight cards and source post context.
 ---------------------------------------------------------------*/
 
 @use '../stylingImports/index' as *;
@@ -47,6 +47,10 @@ Defines shared visual styles for the audience insights experience.
         font-size: $font-size-small;
         color: #a6a8bb;
       }
+      @include max-width(tablet-large) {
+        font-size: $font-size-small;
+        gap: 5px;
+      }
     }
     > strong {
       font-size: 31px;
@@ -59,13 +63,15 @@ Defines shared visual styles for the audience insights experience.
       font-size: $font-size-small;
       color: #73788a;
     }
-  }
-  @include max-width(tablet-large) {
-    .metric {
+    @include max-width(tablet-large) {
       padding: 0 15px;
-      .metric-label {
-        font-size: $font-size-small;
-        gap: 5px;
+    }
+    @include max-width(phone) {
+      padding: 0 20px;
+    }
+    &:nth-child(2) {
+      @include max-width(phone) {
+        border: none;
       }
     }
   }
@@ -73,12 +79,6 @@ Defines shared visual styles for the audience insights experience.
     grid-template-columns: repeat(2, 1fr);
     padding: 20px 0;
     gap: 25px 0;
-    .metric:nth-child(2) {
-      border: none;
-    }
-    .metric {
-      padding: 0 20px;
-    }
   }
 }
 .featured-insight {
@@ -104,6 +104,9 @@ Defines shared visual styles for the audience insights experience.
       font-size: 23px;
       letter-spacing: -0.035em;
       margin-bottom: 10px;
+      @include max-width(phone) {
+        font-size: 22px;
+      }
     }
     p {
       font-size: $font-size-small;
@@ -174,6 +177,10 @@ Defines shared visual styles for the audience insights experience.
         margin-left: 10px;
         font-size: 22px;
       }
+      @include max-width(desktop) {
+        font-size: $font-size-small;
+        padding: 15px;
+      }
     }
     .mini-avatar {
       background: #e8dfd8;
@@ -193,25 +200,18 @@ Defines shared visual styles for the audience insights experience.
       color: #ccafcc;
       transform: rotate(15deg);
     }
-  }
-  @include max-width(desktop) {
-    grid-template-columns: 1.6fr 1fr;
-    .featured-visual .floating-comment {
-      font-size: $font-size-small;
-      padding: 15px;
-    }
-  }
-  @include max-width(tablet-large) {
-    grid-template-columns: 1fr;
-    .featured-visual {
+    @include max-width(tablet-large) {
       display: none;
     }
   }
+  @include max-width(desktop) {
+    grid-template-columns: 1.6fr 1fr;
+  }
+  @include max-width(tablet-large) {
+    grid-template-columns: 1fr;
+  }
   @include max-width(phone) {
     padding: 25px;
-    .featured-copy h2 {
-      font-size: 22px;
-    }
   }
 }
 .insight-columns {
@@ -224,6 +224,14 @@ Defines shared visual styles for the audience insights experience.
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
+      @include max-width(tablet-large) {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+      }
+      @include max-width(phone) {
+        grid-template-columns: 1fr;
+      }
     }
   }
   .column-heading {
@@ -245,35 +253,31 @@ Defines shared visual styles for the audience insights experience.
       display: grid;
       place-items: center;
       margin-left: auto;
+      @include max-width(tablet-large) {
+        margin-left: 0;
+      }
+    }
+    @include max-width(tablet-large) {
+      max-width: 100%;
+      margin-bottom: 15px;
     }
   }
   .column-cards {
     display: flex;
     flex-direction: column;
     gap: 15px;
-  }
-  @include max-width(tablet-large) {
-    grid-template-columns: 1fr;
-    gap: 30px;
-    .column-cards,
-    &.filtered .column-cards {
+    @include max-width(tablet-large) {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 15px;
     }
-    .column-heading {
-      max-width: 100%;
-      margin-bottom: 15px;
-      > span:last-child {
-        margin-left: 0;
-      }
-    }
-  }
-  @include max-width(phone) {
-    .column-cards,
-    &.filtered .column-cards {
+    @include max-width(phone) {
       grid-template-columns: 1fr;
     }
+  }
+  @include max-width(tablet-large) {
+    grid-template-columns: 1fr;
+    gap: 30px;
   }
 }
 .category-icon {
@@ -391,12 +395,12 @@ Defines shared visual styles for the audience insights experience.
   .updated-at {
     margin-left: auto;
     white-space: nowrap;
+    @include max-width(phone) {
+      display: none;
+    }
   }
   @include max-width(phone) {
     align-items: flex-start;
-    .updated-at {
-      display: none;
-    }
   }
 }
 .post-context {
@@ -413,6 +417,10 @@ Defines shared visual styles for the audience insights experience.
     height: 115px;
     border-radius: 10px;
     object-fit: cover;
+    @include max-width(phone) {
+      width: 85px;
+      height: 115px;
+    }
   }
   > div {
     .post-format {
@@ -426,17 +434,13 @@ Defines shared visual styles for the audience insights experience.
       margin: 10px 0 15px;
       color: #676e80;
       font-size: $font-size-small;
+      @include max-width(phone) {
+        font-size: $font-size-small;
+      }
     }
   }
   @include max-width(phone) {
     align-items: flex-start;
     gap: 15px;
-    > img {
-      width: 85px;
-      height: 115px;
-    }
-    > div p {
-      font-size: $font-size-small;
-    }
   }
 }

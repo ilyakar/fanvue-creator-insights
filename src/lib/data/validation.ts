@@ -30,10 +30,6 @@ const datasetSchema = z.object({
   fans: z.array(z.object({ id: z.string(), username: z.string(), displayName: z.string() }))
 })
 
-export interface AudienceDataProvider {
-  getDataset: (creatorId: string) => Promise<Dataset>
-}
-
 // Rejects duplicate identifiers and broken source relationships before analysis.
 export const validateDataset = (input: unknown): Dataset => {
   const dataset = datasetSchema.parse(input)

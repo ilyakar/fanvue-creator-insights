@@ -63,9 +63,3 @@ export const validateAnalysis = (input: unknown, dataset: Dataset): Insight[] =>
     return { ...insight, id: identifier, commentIds }
   })
 }
-
-// Includes every input that changes the meaning or ownership of cached analysis.
-export const getAnalysisCacheKey = (userId: string, dataset: Dataset, model: string, promptVersion: string) =>
-  createHash('sha256')
-    .update(JSON.stringify([userId, dataset, model, promptVersion]))
-    .digest('hex')

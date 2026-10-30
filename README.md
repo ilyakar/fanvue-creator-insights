@@ -13,8 +13,8 @@ npm ci
 npm run dev
 ```
 
-- Landing page: http://127.0.0.1:3000
-- **Local design preview:** http://127.0.0.1:3000/preview
+- Landing page: http://localhost:3000
+- **Local design preview:** http://localhost:3000/preview
 
 The development preview is intentionally labelled **illustrative insights**. Its editorial themes are not model output, it creates no account, and it cannot mutate private data. All `/preview` routes are unavailable in production. There is no public Explore demo flow.
 
@@ -32,10 +32,10 @@ Production uses Fanvue OAuth, Supabase and OpenAI through server-only credential
 
 1. Copy `.env.example` to `.env.local` and fill its six required server-side values. Real credentials stay in the ignored local file.
 2. Create a Supabase project, apply the migrations in `supabase/migrations/` in order, and run `supabase/seed.sql` to populate the fictional creator dataset.
-3. Register your Fanvue app's exact callback URL: `http://127.0.0.1:3000/api/auth/callback` (or the chosen deployed origin). Enable `openid offline_access offline read:self`. The app reads the creator profile only; audience content is synthetic.
+3. Register your Fanvue app's exact callback URL: `http://localhost:3000/api/auth/callback` (or the chosen deployed origin). Enable `openid offline_access offline read:self`. The app reads the creator profile only; audience content is synthetic.
 4. Set `FANVUE_CLIENT_ID`, `FANVUE_CLIENT_SECRET`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`, and `OPENAI_API_KEY` locally. Never place credentials in chat or client-exposed environment variables.
 5. `TOKEN_ENCRYPTION_KEY` protects saved Fanvue access tokens, refresh tokens and temporary OAuth verifiers before they enter the database. It is an app-generated secret, not a provider credential. Generate it once with `openssl rand -hex 32` if it is missing. Keep it stable and use the same value for the web app and worker; losing it makes existing encrypted connections unreadable.
-6. The local origin defaults to `http://127.0.0.1:3000`, so no `APP_URL` entry is needed for the default local setup. Only add it when using another origin or deploying. `127.0.0.1` and `localhost` are different OAuth origins; use the same one throughout.
+6. The local origin defaults to `http://localhost:3000`, so no `APP_URL` entry is needed for the default local setup. Only add it when using another origin or deploying. `localhost` and `127.0.0.1` are different OAuth origins; use `localhost` consistently for local development.
 7. Restart the web server, then run the durable worker in a second terminal:
 
 ```sh
@@ -80,9 +80,9 @@ Apply the migration before connecting an account. All private tables have RLS en
 - `src/styles/`: shared SCSS tokens, mixins, foundations and component styles
 - `src/redux/`: an isolated store persisting only the sidebar preference
 - `src/mock-data/`: source fixtures retained for seeding and offline tests; the running app reads Supabase
-- `src/lib/data/`: replaceable provider and dataset validation
-- `src/lib/analysis/`: model inference, schema and evidence validation
-- `src/lib/server/`: database, OAuth, encrypted credentials and sessions
+- `src/lib/data/`: direct audience snapshot reads, schema validation and editorial previews
+- `src/lib/analysis/`: AI generation, evidence validation and analysis cache keys
+- `src/lib/server/`: saved-analysis reads, explicit queue mutations, worker, database, OAuth and sessions
 - `src/proxy.ts`: request guards for authenticated routes and local-only design previews
 - `scripts/analysis-worker.ts`: durable background processing
 - `supabase/migrations/`: versioned database foundation

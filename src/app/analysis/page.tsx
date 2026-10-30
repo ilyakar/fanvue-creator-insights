@@ -1,20 +1,21 @@
 /* ------------------------------------------------------------
-Resumes an existing run or queues the authenticated creator's first analysis.
+Reads existing analysis progress and offers explicit start or retry controls.
 ---------------------------------------------------------------*/
 
 import { redirect } from 'next/navigation'
 
+import { getAudienceFeedback } from '@/lib/data/audience'
 import { requireAccount } from '@/lib/server/session'
-import { getCurrentAnalysis } from '@/lib/server/analysis'
+import { getCurrentAnalysis } from '@/lib/server/saved-analysis'
 import Brand from '@/app/Components/Brand/Brand'
-import AnalysisLoading from '@/app/Components/AnalysisLoading/AnalysisLoading'
+import AnalysisProgress from '@/app/Components/AnalysisProgress/AnalysisProgress'
 
 export const dynamic = 'force-dynamic'
 
-// Resumes an existing run or queues the authenticated creator's first analysis.
+// Reads existing analysis progress and offers explicit start or retry controls.
 const AnalysisPage = async () => {
   const account = await requireAccount()
-  const job = await getCurrentAnalysis(account.id)
+  const job = await getCurrentAnalysis(account.id, await getAudienceFeedback(account.audience_creator_id))
 
   if (job?.status === 'complete') {
     redirect('/dashboard')
@@ -27,7 +28,7 @@ const AnalysisPage = async () => {
       </header>
 
       <main id="main-content">
-        <AnalysisLoading initialStage={job?.status || 'idle'} initialError={job?.error || null} />
+        <AnalysisProgress initialStage={job?.status || 'idle'} initialError={job?.error || null} />
       </main>
     </div>
   )

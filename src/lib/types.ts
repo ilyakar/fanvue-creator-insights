@@ -67,13 +67,6 @@ export interface Account {
   avatar_url: string | null
 }
 
-export interface DashboardModel {
-  dataset: Dataset
-  result: AnalysisResult | null
-  account: Account | null
-  isPreview: boolean
-}
-
 export type JobStage = 'queued' | 'analysing' | 'validating' | 'complete' | 'failed'
 
 export interface AnalysisJob {

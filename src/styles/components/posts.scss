@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Styles post search controls, source cards and responsive results grids.
 ---------------------------------------------------------------*/
 
 @use '../stylingImports/index' as *;
@@ -37,6 +37,9 @@ Defines shared visual styles for the audience insights experience.
         color: #73788a;
       }
     }
+    @include max-width(phone) {
+      width: 100%;
+    }
   }
   > div {
     display: flex;
@@ -46,16 +49,13 @@ Defines shared visual styles for the audience insights experience.
       font-size: $font-size-small;
       color: #73788a;
     }
+    @include max-width(phone) {
+      justify-content: space-between;
+    }
   }
   @include max-width(phone) {
     flex-direction: column;
     align-items: stretch;
-    .search-field {
-      width: 100%;
-    }
-    > div {
-      justify-content: space-between;
-    }
   }
 }
 .posts-grid {
@@ -148,13 +148,13 @@ Defines shared visual styles for the audience insights experience.
           }
         }
       }
+      @include max-width(desktop) {
+        padding: 15px;
+      }
     }
   }
   @include max-width(desktop) {
     gap: 20px;
-    .post-card .post-copy {
-      padding: 15px;
-    }
   }
   @include max-width(tablet-large) {
     grid-template-columns: repeat(2, minmax(0, 1fr));

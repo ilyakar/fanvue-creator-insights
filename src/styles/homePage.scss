@@ -1,8 +1,9 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Styles the public landing page and its responsive marketing sections.
 ---------------------------------------------------------------*/
 
 @use 'stylingImports/index' as *;
+@use 'components/productPreview';
 
 .landing-page {
   overflow: hidden;
@@ -27,28 +28,28 @@ Defines shared visual styles for the audience insights experience.
       a:hover {
         color: $color-purple;
       }
+      @include max-width(tablet) {
+        display: none;
+      }
     }
     .button {
       min-height: 40px;
       font-size: $font-size-small;
+      @include max-width(tablet) {
+        padding: 10px 20px;
+      }
+      @include max-width(phone) {
+        gap: 10px;
+        padding: 10px;
+      }
     }
     @include max-width(tablet) {
       padding: 20px 25px;
       min-height: 85px;
-      > nav {
-        display: none;
-      }
-      .button {
-        padding: 10px 20px;
-      }
     }
     @include max-width(phone) {
       gap: 10px;
       padding: 20px;
-      .button {
-        gap: 10px;
-        padding: 10px;
-      }
     }
   }
   .landing-hero {
@@ -69,6 +70,10 @@ Defines shared visual styles for the audience insights experience.
         color: #b7a1c4;
         font-size: 21px;
       }
+      @include max-width(phone) {
+        font-size: $font-size-small;
+        gap: 5px;
+      }
     }
     > h1 {
       position: relative;
@@ -82,6 +87,12 @@ Defines shared visual styles for the audience insights experience.
         color: transparent;
         background-clip: text;
       }
+      @include max-width(tablet) {
+        font-size: 60px;
+      }
+      @include max-width(phone) {
+        font-size: 54px;
+      }
     }
     > p:not(.preview-caption) {
       max-width: 465px;
@@ -89,6 +100,13 @@ Defines shared visual styles for the audience insights experience.
       color: #737082;
       font-size: 15px;
       line-height: 1.85;
+      @include max-width(tablet) {
+        font-size: $font-size-small;
+      }
+      @include max-width(phone) {
+        font-size: $font-size-small;
+        max-width: 315px;
+      }
     }
     .hero-cta {
       min-height: 50px;
@@ -151,6 +169,12 @@ Defines shared visual styles for the audience insights experience.
             margin-top: 5px;
           }
         }
+        @include max-width(tablet) {
+          display: none;
+        }
+      }
+      @include max-width(tablet) {
+        margin-top: 50px;
       }
     }
     .preview-caption {
@@ -160,31 +184,6 @@ Defines shared visual styles for the audience insights experience.
     }
     @include max-width(tablet) {
       padding: 45px 20px 60px;
-      > h1 {
-        font-size: 60px;
-      }
-      > p:not(.preview-caption) {
-        font-size: $font-size-small;
-      }
-      .hero-product {
-        margin-top: 50px;
-        .floating-note {
-          display: none;
-        }
-      }
-    }
-    @include max-width(phone) {
-      > h1 {
-        font-size: 54px;
-      }
-      .hero-kicker {
-        font-size: $font-size-small;
-        gap: 5px;
-      }
-      > p:not(.preview-caption) {
-        font-size: $font-size-small;
-        max-width: 315px;
-      }
     }
   }
   .section-intro {
@@ -211,11 +210,21 @@ Defines shared visual styles for the audience insights experience.
     .section-intro {
       text-align: center;
       margin-bottom: 55px;
+      @include max-width(phone) {
+        margin-bottom: 40px;
+      }
     }
     .benefit-grid {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 50px;
+      @include max-width(tablet) {
+        gap: 25px;
+      }
+      @include max-width(phone) {
+        grid-template-columns: 1fr;
+        gap: 35px;
+      }
     }
     .benefit {
       padding: 0 10px;
@@ -227,6 +236,9 @@ Defines shared visual styles for the audience insights experience.
         place-items: center;
         margin-bottom: 25px;
         font-size: 16px;
+        @include max-width(phone) {
+          margin: 0 auto 20px;
+        }
       }
       &.love .benefit-icon {
         color: #bd8795;
@@ -245,6 +257,9 @@ Defines shared visual styles for the audience insights experience.
         font-weight: 500;
         letter-spacing: -0.035em;
         margin-bottom: 15px;
+        @include max-width(tablet) {
+          font-size: 19px;
+        }
       }
       p {
         font-size: $font-size-small;
@@ -252,44 +267,26 @@ Defines shared visual styles for the audience insights experience.
         color: #737082;
         margin-bottom: 25px;
         max-width: 265px;
-      }
-      .benefit-label {
-        color: #7b7284;
-        font-size: $font-size-small;
-      }
-    }
-    @include max-width(tablet) {
-      padding: 65px 30px;
-      .benefit-grid {
-        gap: 25px;
-      }
-      .benefit {
-        padding: 0;
-        h3 {
-          font-size: 19px;
-        }
-      }
-    }
-    @include max-width(phone) {
-      .section-intro {
-        margin-bottom: 40px;
-      }
-      .benefit-grid {
-        grid-template-columns: 1fr;
-        gap: 35px;
-      }
-      .benefit {
-        text-align: center;
-        .benefit-icon {
-          margin: 0 auto 20px;
-        }
-        p {
+        @include max-width(phone) {
           margin-left: auto;
           margin-right: auto;
           margin-bottom: 10px;
           max-width: 300px;
         }
       }
+      .benefit-label {
+        color: #7b7284;
+        font-size: $font-size-small;
+      }
+      @include max-width(tablet) {
+        padding: 0;
+      }
+      @include max-width(phone) {
+        text-align: center;
+      }
+    }
+    @include max-width(tablet) {
+      padding: 65px 30px;
     }
   }
   .how-section {
@@ -314,6 +311,10 @@ Defines shared visual styles for the audience insights experience.
           font-size: $font-size-small;
           color: #b8adc4;
           margin-bottom: 25px;
+          @include max-width(phone) {
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+          }
         }
         > svg {
           position: absolute;
@@ -333,6 +334,14 @@ Defines shared visual styles for the audience insights experience.
           font-size: $font-size-small;
           line-height: 1.9;
         }
+      }
+      @include max-width(tablet) {
+        gap: 30px;
+      }
+      @include max-width(phone) {
+        grid-template-columns: 1fr;
+        gap: 30px;
+        max-width: 330px;
       }
     }
     .sample-disclosure {
@@ -361,20 +370,6 @@ Defines shared visual styles for the audience insights experience.
     }
     @include max-width(tablet) {
       padding: 60px 30px;
-      .steps-grid {
-        gap: 30px;
-      }
-    }
-    @include max-width(phone) {
-      .steps-grid {
-        grid-template-columns: 1fr;
-        gap: 30px;
-        max-width: 330px;
-        article > .step-number {
-          padding-bottom: 15px;
-          margin-bottom: 15px;
-        }
-      }
     }
   }
   .final-cta {
@@ -436,6 +431,9 @@ Defines shared visual styles for the audience insights experience.
     > span {
       font-size: $font-size-fine-print;
       color: #7b7284;
+      @include max-width(tablet) {
+        display: none;
+      }
     }
     > div {
       display: flex;
@@ -446,357 +444,15 @@ Defines shared visual styles for the audience insights experience.
       a:hover {
         color: $color-purple;
       }
+      @include max-width(phone) {
+        width: 100%;
+        margin-left: 0;
+      }
     }
     @include max-width(tablet) {
       padding: 30px 25px;
       flex-wrap: wrap;
       gap: 20px;
-      > span {
-        display: none;
-      }
-    }
-    @include max-width(phone) {
-      > div {
-        width: 100%;
-        margin-left: 0;
-      }
-    }
-  }
-}
-.product-preview {
-  display: flex;
-  overflow: hidden;
-  border: 1px solid #eee8ef;
-  border-radius: 15px;
-  background: #fff;
-  box-shadow: 0 20px 75px #8e647322;
-  pointer-events: none;
-  .preview-sidebar {
-    flex: 0 0 175px;
-    padding: 25px 15px;
-    background: white;
-    border-right: 1px solid #eeedf2;
-    display: flex;
-    flex-direction: column;
-    .preview-logo {
-      margin-bottom: 25px;
-      .brand {
-        gap: 5px;
-        .mark {
-          width: 15px;
-          height: 15px;
-        }
-        .wordmark {
-          font-size: 16px;
-        }
-      }
-    }
-    .preview-workspace {
-      display: flex;
-      gap: 10px;
-      align-items: center;
-      color: #b1a4bc;
-      border: 1px solid #eeebf2;
-      border-radius: 10px;
-      padding: 10px;
-      font-size: $font-size-small;
-      margin-bottom: 25px;
-      > span {
-        color: #9b94a7;
-      }
-    }
-    .mini-nav {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: $font-size-small;
-      color: #aaa2b3;
-      border-radius: 5px;
-      padding: 10px;
-      margin-bottom: 5px;
-      svg {
-        width: 10px;
-        font-size: $font-size-small;
-      }
-      &.active {
-        color: #8172bf;
-        background: #f3effb;
-      }
-    }
-    .preview-sidebar-note {
-      margin-top: auto;
-      border-radius: 10px;
-      background: #faf7fc;
-      padding: 15px;
-      > svg {
-        color: #b6a8c4;
-        font-size: $font-size-small;
-        margin-bottom: 10px;
-      }
-      > span {
-        display: block;
-        color: #b2a6ba;
-        font-size: $font-size-small;
-        line-height: 1.8;
-      }
-    }
-  }
-  .preview-main {
-    flex: 1;
-    min-width: 0;
-    background: #f9f9fc;
-    .preview-topbar {
-      height: 50px;
-      background: white;
-      border-bottom: 1px solid #eeedf2;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 25px;
-      > span:first-child {
-        color: #b4acbd;
-        font-size: $font-size-small;
-        > span {
-          padding: 0 10px;
-        }
-      }
-      .sample-pill {
-        font-size: $font-size-small;
-        padding: 0 5px;
-      }
-    }
-    .preview-body {
-      padding: 25px;
-      > .eyebrow {
-        font-size: $font-size-small;
-        color: #a99fb6;
-        margin-bottom: 10px;
-      }
-      > h3 {
-        font-size: 25px;
-        font-weight: 500;
-        letter-spacing: -0.04em;
-        margin-bottom: 10px;
-      }
-      > p {
-        font-size: $font-size-small;
-        color: #b2aabd;
-        margin-bottom: 20px;
-      }
-      .preview-metrics {
-        display: flex;
-        background: white;
-        border: 1px solid #edebf1;
-        border-radius: 10px;
-        padding: 15px 0;
-        margin-bottom: 20px;
-        > div {
-          flex: 1;
-          padding: 0 20px;
-          border-right: 1px solid #f1eef5;
-          &:last-child {
-            border: none;
-          }
-          > span {
-            display: block;
-            color: #b6acbf;
-            font-size: $font-size-small;
-            margin-bottom: 5px;
-          }
-          > strong {
-            display: block;
-            font-size: 25px;
-            font-weight: 500;
-            letter-spacing: -0.035em;
-          }
-        }
-      }
-      .preview-highlight {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        border: 1px solid #eee6ed;
-        border-radius: 10px;
-        padding: 20px;
-        margin-bottom: 25px;
-        background: linear-gradient(110deg, #f3edfb, #faf0df);
-        > svg {
-          font-size: 18px;
-          color: #b6a5c9;
-        }
-        > div {
-          > strong {
-            font-size: $font-size-small;
-            font-weight: 500;
-          }
-          > p {
-            color: #b3a4b6;
-            font-size: $font-size-small;
-            margin-top: 5px;
-          }
-        }
-        > span {
-          color: #d4b5ca;
-          font-size: 35px;
-          margin-left: auto;
-          line-height: 1;
-        }
-      }
-      .preview-theme-heading {
-        font-weight: 500;
-        font-size: $font-size-small;
-        margin-bottom: 15px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        > span {
-          color: #baaec3;
-          font-size: $font-size-small;
-          font-weight: 400;
-        }
-      }
-      .preview-insights {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 15px;
-        .mini-category {
-          display: flex;
-          gap: 5px;
-          align-items: center;
-          font-size: $font-size-small;
-          color: #a397af;
-          margin-bottom: 10px;
-          svg {
-            color: #bf9daa;
-          }
-        }
-        .requests .mini-category svg {
-          color: #c1ab75;
-        }
-        .improve .mini-category svg {
-          color: #b2a4c7;
-        }
-        .preview-card {
-          background: white;
-          border: 1px solid #edebf1;
-          border-radius: 10px;
-          padding: 15px;
-          min-height: 160px;
-          display: flex;
-          flex-direction: column;
-          > h4 {
-            font-size: $font-size-small;
-            line-height: 1.4;
-            font-weight: 500;
-            letter-spacing: -0.02em;
-            margin-bottom: 10px;
-          }
-          > p {
-            color: #b1a7bd;
-            font-size: $font-size-small;
-            line-height: 1.8;
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            margin-bottom: 15px;
-          }
-          > span {
-            margin-top: auto;
-            display: flex;
-            align-items: center;
-            font-size: $font-size-small;
-            color: #b3a9bd;
-            border-top: 1px solid #f1eef5;
-            padding-top: 10px;
-            strong {
-              margin-right: 5px;
-              color: #9c8dab;
-            }
-            svg {
-              margin-left: auto;
-              font-size: $font-size-small;
-            }
-          }
-        }
-      }
-    }
-  }
-  @include max-width(tablet) {
-    .preview-sidebar {
-      display: none;
-      flex-basis: 120px;
-      padding: 20px 10px;
-      .preview-workspace {
-        padding: 5px;
-        font-size: $font-size-small;
-        gap: 5px;
-      }
-      .mini-nav {
-        font-size: $font-size-small;
-      }
-      .preview-sidebar-note {
-        padding: 10px;
-        > span {
-          font-size: $font-size-small;
-        }
-      }
-    }
-    .preview-main .preview-body {
-      padding: 20px;
-      > h3 {
-        font-size: 19px;
-      }
-      .preview-insights {
-        gap: 10px;
-        .preview-card {
-          padding: 10px;
-        }
-        .mini-category {
-          font-size: $font-size-small;
-        }
-      }
-      .preview-highlight {
-        padding: 15px;
-      }
-    }
-  }
-  @include max-width(phone) {
-    .preview-sidebar {
-      display: none;
-    }
-    .preview-main {
-      .preview-topbar {
-        height: 35px;
-        padding: 0 15px;
-      }
-      .preview-body {
-        padding: 20px 15px;
-        > h3 {
-          font-size: 19px;
-        }
-        .preview-metrics > div {
-          padding: 0 15px;
-          > span {
-            font-size: $font-size-small;
-          }
-          > strong {
-            font-size: 23px;
-          }
-        }
-        .preview-highlight > div > strong {
-          font-size: $font-size-small;
-        }
-        .preview-insights {
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          .preview-column:last-child {
-            display: none;
-          }
-          .preview-card {
-            min-height: 150px;
-          }
-        }
-      }
     }
   }
 }

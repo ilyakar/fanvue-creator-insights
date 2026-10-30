@@ -5,7 +5,7 @@ Returns only the signed-in owner's latest run status for genuine progress report
 import { NextResponse } from 'next/server'
 
 import { getCurrentAccount } from '@/lib/server/session'
-import { enqueueAnalysis } from '@/lib/server/analysis'
+import { enqueueAnalysis } from '@/lib/server/analysis-queue'
 import { getDatabase, unwrapDatabase } from '@/lib/server/database'
 import { getFanvueAccessToken, ReconnectRequired } from '@/lib/server/fanvue'
 import { requireSameOrigin, errorResponse, RequestError } from '@/lib/server/http'

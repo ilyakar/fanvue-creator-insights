@@ -1,7 +1,6 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Exposes shared style tokens and responsive mixins to application styles.
 ---------------------------------------------------------------*/
 
 @forward 'variables';
-@forward 'functions';
 @forward 'responsive';

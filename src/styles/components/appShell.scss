@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Styles navigation, account identity and the responsive application shell.
 ---------------------------------------------------------------*/
 
 @use '../stylingImports/index' as *;
@@ -71,6 +71,14 @@ Defines shared visual styles for the audience insights experience.
     margin-bottom: 35px;
     .mobile-close {
       display: none;
+      @include max-width(tablet) {
+        display: inline-flex;
+      }
+    }
+    @include max-width(tablet) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
   }
   .brand {
@@ -165,6 +173,10 @@ Defines shared visual styles for the audience insights experience.
       border-radius: 5px;
       padding: 0 5px;
     }
+    @include max-width(tablet-large) {
+      gap: 10px;
+      padding-left: 10px;
+    }
   }
   .sidebar-bottom {
     margin-top: auto;
@@ -199,6 +211,9 @@ Defines shared visual styles for the audience insights experience.
       color: #898797;
       font-size: $font-size-small;
       max-width: 140px;
+    }
+    @include max-width(tablet) {
+      display: none;
     }
   }
   .privacy-link {
@@ -267,34 +282,19 @@ Defines shared visual styles for the audience insights experience.
       width: 10px;
       height: 10px;
     }
+    @include max-width(tablet) {
+      display: none;
+    }
   }
   @include max-width(tablet-large) {
     padding-left: 15px;
     padding-right: 15px;
-    .nav-link {
-      gap: 10px;
-      padding-left: 10px;
-    }
   }
   @include max-width(tablet) {
     width: 270px;
     transform: translateX(-100%);
     transition: transform 180ms;
     padding: 25px 20px 0;
-    .brand-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      .mobile-close {
-        display: inline-flex;
-      }
-    }
-    .collapse-button {
-      display: none;
-    }
-    .sidebar-note {
-      display: none;
-    }
   }
 }
 .account-avatar {
@@ -351,14 +351,16 @@ Defines shared visual styles for the audience insights experience.
   }
   .mobile-toggle {
     display: none;
+    @include max-width(tablet) {
+      display: inline-flex;
+    }
   }
   @include max-width(tablet) {
     padding: 0 20px;
     min-height: 65px;
-    .mobile-toggle {
-      display: inline-flex;
-    }
-    .workspace-breadcrumb {
+  }
+  .workspace-breadcrumb {
+    @include max-width(tablet) {
       display: none;
     }
   }
@@ -384,7 +386,9 @@ Defines shared visual styles for the audience insights experience.
     justify-content: flex-start;
     gap: 5px;
     flex-wrap: wrap;
-    span {
+  }
+  span {
+    @include max-width(phone) {
       flex-basis: 100%;
       padding-left: 15px;
     }
@@ -427,7 +431,9 @@ Defines shared visual styles for the audience insights experience.
     padding: 15px 20px;
     flex-wrap: wrap;
     gap: 15px;
-    > span:first-child {
+  }
+  > span:first-child {
+    @include max-width(phone) {
       max-width: 200px;
     }
   }
@@ -436,11 +442,13 @@ Defines shared visual styles for the audience insights experience.
   display: none;
 }
 .menu-open {
-  @include max-width(tablet) {
-    .sidebar {
+  .sidebar {
+    @include max-width(tablet) {
       transform: translateX(0);
     }
-    .menu-backdrop {
+  }
+  .menu-backdrop {
+    @include max-width(tablet) {
       display: block;
       position: fixed;
       inset: 0;

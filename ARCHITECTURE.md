@@ -8,6 +8,29 @@ One Next.js App Router application uses TypeScript, React client components for 
 
 Application source lives under `src/`, including `src/app/`, `src/lib/`, `src/redux/`, `src/styles/`, `src/mock-data/`, and `src/proxy.ts`. Aliases such as `@/lib` resolve from `src/`. Public assets, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup remain at the repository root. Copied reference source uses `good-code-from-another-project/src/`.
 
+## Reading a screen
+
+Routes orchestrate account lookup, audience reads, saved-analysis prerequisites and rendering. They do not contain SQL, OAuth mechanics or analysis creation. Request-scoped React caching shares the signed-in account between the dashboard layout and route sections; it does not persist identity between requests.
+
+- `src/app/dashboard/page.tsx` starts one audience feedback promise and streams the date range and saved insights independently. Its `DashboardInsights` section reads the matching saved run and redirects to `/analysis` when incomplete. `FeaturedRequest.tsx` owns the overview-only recommendation and evidence interaction.
+- `src/app/dashboard/posts/page.tsx` loads audience feedback without requiring completed analysis, then prepares one shared posts promise. `PostsBrowser` and `PostsCount` consume that promise directly at their separate Suspense positions. `src/lib/posts.ts` owns source comment counts, search, format filtering and ordering. Cards receive posts with comment counts; the count receives only posts.
+- `src/app/dashboard/posts/[postId]/page.tsx` validates post existence before applying the saved-analysis redirect. Adjacent `PostContext.tsx` owns the heading, image, caption and sample-link interaction. The route passes an explicit `scopedPostId` to shared insights.
+- `src/app/dashboard/settings/page.tsx` streams the server connection check through `src/lib/server/connection-status.ts`. `SettingsView.tsx` owns static settings copy and panels. `AccountAction` owns each typed action, confirmation, request state and focus restoration. Its dialog uses a portal to avoid inheriting compact action-row styles.
+
+Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView` compositions share static copy and navigation with `loading.tsx` and local preview routes. They accept explicit pending or ready JSX slots, never optional data promises that implicitly select loading mode. Data-dependent sections remain inside Suspense so headings and controls can render first.
+
+`AudienceInsights` shares metrics, category filtering, cards and the evidence drawer across overview and post screens. It receives audience feedback, saved analysis and optional explicit post scope, with no account or redirect concerns. `useFocusTrap` supports both first-control focus for account confirmations and panel-first focus for the evidence drawer.
+
+`PostsFilterProvider` intentionally stays in the persistent `AppShell`. Its transient search and format state survives streamed results, post-detail navigation and visits to other dashboard screens, then resets when the shell unmounts. Moving it to a posts-only layout would change that behavior. Redux continues to persist only the sidebar preference.
+
+## Analysis code ownership
+
+`src/lib/server/saved-analysis.ts` only reads saved jobs, accepting already-resolved audience feedback instead of loading the account or snapshot again. `src/lib/server/analysis-queue.ts` explicitly creates or retries jobs. `src/lib/server/analysis-worker.ts` claims durable work and persists its outcome. `src/lib/analysis/service.ts` generates AI output; `validation.ts` validates evidence and post scope; `cache.ts` hashes ownership, full source content, AI model and prompt version. The queue, worker and read paths keep the existing cache and lease semantics.
+
+## Style ownership
+
+`src/styles/coreStyling/` loads shared foundations and component styles. Settings and confirmations, messages, onboarding/progress, information pages, alerts and empty/error states have recognizable stylesheets under `src/styles/components/`. `homePage.scss` owns marketing sections and imports `components/productPreview.scss` for the illustrative snapshot. Responsive rules stay with the selectors they modify where possible, preserving existing selectors, specificity and typography.
+
 ## Identity and credentials
 
 Fanvue is the sole sign-in provider. Authorization uses PKCE S256, a random browser-bound state and a ten-minute database OAuth attempt containing an encrypted verifier. The callback atomically consumes the attempt, exchanges the code with `client_secret_basic`, validates the documented unwrapped v1 profile and accepts creator accounts.
@@ -24,9 +47,9 @@ Redux follows the reference structure but creates an isolated store per provider
 
 ## Source data
 
-`AudienceDataProvider` loads and validates creator-scoped records from Supabase. Each Fanvue account is mapped to the same demo creator by default, whose dataset contains 18 synthetic posts, 360 comments and 96 fans. Account sessions and analysis jobs remain individually owned. The JSON files are retained as seed and test fixtures, not runtime data. Future live data can use a different creator mapping and requires suitable verified Fanvue permissions/endpoints.
+`getAudienceFeedback(creatorId)` in `src/lib/data/audience.ts` reads one atomic creator snapshot from Supabase. `src/lib/data/validation.ts` owns its schema and relationship checks. Each Fanvue account is mapped to the same demo creator by default, whose dataset contains 18 synthetic posts, 360 comments and 96 fans. Account sessions and analysis jobs remain individually owned. The JSON files are retained as seed and test fixtures, not runtime data. Future live data can use a different creator mapping and requires suitable verified Fanvue permissions/endpoints.
 
-The source provider is stable for a given dataset version. The result stores comment identifiers, not invented quotations. The matching source dataset must remain available for every saved result. If a live provider is added, persist immutable snapshots before saving any results; this MVP's committed sample files provide that immutable source.
+Audience snapshots are stable for a given dataset version. The result stores comment identifiers, not invented quotations. The matching source dataset must remain available for every saved result. If a live provider is added, persist immutable snapshots before saving any results; this MVP's committed sample files provide that immutable source.
 
 ## Analysis contract
 

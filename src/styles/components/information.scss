@@ -1,0 +1,46 @@
+/* ------------------------------------------------------------
+Styles the privacy and terms information pages.
+---------------------------------------------------------------*/
+
+@use '../stylingImports/index' as *;
+
+.information-page {
+  background: white;
+  min-height: 100vh;
+  > header {
+    max-width: 1200px;
+    padding: 30px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    > a:last-child {
+      color: #9992ac;
+      font-size: $font-size-small;
+    }
+  }
+  > main {
+    max-width: 750px;
+    padding: 50px 30px 100px;
+    margin: 0 auto;
+    .eyebrow {
+      color: #a594bb;
+      margin-bottom: 20px;
+    }
+    h1 {
+      font-size: 45px;
+      letter-spacing: -0.04em;
+      margin-bottom: 25px;
+    }
+    h2 {
+      font-size: 20px;
+      margin-bottom: 15px;
+    }
+    p {
+      color: #86889b;
+      font-size: $font-size-small;
+      line-height: 1.9;
+      margin-bottom: 35px;
+    }
+  }
+}

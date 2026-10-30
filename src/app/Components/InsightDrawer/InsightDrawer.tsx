@@ -4,7 +4,7 @@
 Reveals the original evidence in a keyboard-accessible modal with honest source links.
 ---------------------------------------------------------------*/
 
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -17,19 +17,20 @@ import {
 
 import type { Dataset, Insight } from '@/lib/types'
 import { categoryLabels, formatDate, getEvidence, getInsightCounts } from '@/lib/insights'
+import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 import { useAlert } from '@/app/AlertProvider'
 import CategoryIcon from '@/app/Components/CategoryIcon/CategoryIcon'
 
 // Reveals the original evidence in a keyboard-accessible modal with honest source links.
 const InsightDrawer = ({
   insight,
-  dataset,
+  audienceFeedback,
   postId,
   basePath,
   onClose
 }: {
   insight: Insight
-  dataset: Dataset
+  audienceFeedback: Dataset
   postId?: string
   basePath: string
   onClose: () => void
@@ -39,65 +40,13 @@ const InsightDrawer = ({
   const [visibleCount, setVisibleCount] = useState(12)
   const showAlert = useAlert()
 
-  const comments = getEvidence(insight, dataset, postId)
-  const counts = getInsightCounts(insight, dataset, postId)
+  const comments = getEvidence(insight, audienceFeedback, postId)
+  const counts = getInsightCounts(insight, audienceFeedback, postId)
   const scopedSummary = insight.postSummaries.find(entry => entry.postId === postId)
   const summary = postId ? scopedSummary?.summary : insight.summary
   const opportunity = postId ? scopedSummary?.opportunity : insight.opportunity
 
-  // Moves focus into the panel, traps keyboard navigation and restores focus on dismissal.
-  useEffect(() => {
-    const previousFocus = document.activeElement as HTMLElement | null
-    const previousOverflow = document.body.style.overflow
-    document.body.style.overflow = 'hidden'
-    panelReference.current?.focus()
-
-    // Keeps modal keyboard interactions inside the open evidence panel.
-    const _handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        onClose()
-      }
-
-      if (event.key !== 'Tab') {
-        return
-      }
-
-      const focusable = panelReference.current?.querySelectorAll<HTMLElement>(
-        'button:not([disabled]), a[href], input, select, [tabindex="0"]'
-      )
-
-      if (!focusable?.length) {
-        event.preventDefault()
-
-        return
-      }
-
-      const firstElement = focusable[0]
-      const lastElement = focusable[focusable.length - 1]
-
-      if (
-        event.shiftKey &&
-        (document.activeElement === firstElement || document.activeElement === panelReference.current)
-      ) {
-        event.preventDefault()
-        lastElement.focus()
-      } else if (
-        !event.shiftKey &&
-        (document.activeElement === lastElement || document.activeElement === panelReference.current)
-      ) {
-        event.preventDefault()
-        firstElement.focus()
-      }
-    }
-
-    document.addEventListener('keydown', _handleKeyDown)
-
-    return () => {
-      document.body.style.overflow = previousOverflow
-      document.removeEventListener('keydown', _handleKeyDown)
-      previousFocus?.focus()
-    }
-  }, [onClose])
+  useFocusTrap(panelReference, true, onClose, 'container')
 
   // Explains why synthetic source records do not link to real Fanvue content.
   const _handleSampleLink = () =>
@@ -163,8 +112,8 @@ const InsightDrawer = ({
 
           <div className="comment-list">
             {comments.slice(0, visibleCount).map((comment, position) => {
-              const fan = dataset.fans.find(entry => entry.id === comment.fanId)!
-              const post = dataset.posts.find(entry => entry.id === comment.postId)!
+              const fan = audienceFeedback.fans.find(entry => entry.id === comment.fanId)!
+              const post = audienceFeedback.posts.find(entry => entry.id === comment.postId)!
 
               return (
                 <article className="comment-row" key={comment.id}>

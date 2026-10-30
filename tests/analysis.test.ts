@@ -5,8 +5,9 @@ Confirms the authored source data is internally consistent and supports repeated
 import test from 'node:test'
 import assert from 'node:assert/strict'
 
-import { validateDataset } from '@/lib/data/provider'
-import { validateAnalysis, getAnalysisCacheKey } from '@/lib/analysis/validation'
+import { validateDataset } from '@/lib/data/validation'
+import { validateAnalysis } from '@/lib/analysis/validation'
+import { getAnalysisCacheKey } from '@/lib/analysis/cache'
 import { getDatasetCounts, getInsightCounts, getEvidence } from '@/lib/insights'
 import previewInsights from '@/mock-data/preview-insights.json'
 import type { Insight } from '@/lib/types'

@@ -17,7 +17,7 @@ import {
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
 
-import { getPreviewModel } from '@/lib/data/preview'
+import { getPreviewAnalysis } from '@/lib/data/preview'
 
 import Brand from './Components/Brand/Brand'
 import ProductPreview from './Components/ProductPreview/ProductPreview'
@@ -27,7 +27,7 @@ export const dynamic = 'force-dynamic'
 
 // Introduces the product through a concise promise, a real interface preview and the core creator journey.
 const HomePage = async () => {
-  const model = await getPreviewModel()
+  const { audienceFeedback, savedAnalysis } = await getPreviewAnalysis()
 
   return (
     <div className="landing-page">
@@ -75,7 +75,7 @@ const HomePage = async () => {
 
           <div className="hero-product">
             <div className="product-glow" />
-            <ProductPreview dataset={model.dataset} insights={model.result!.insights} />
+            <ProductPreview audienceFeedback={audienceFeedback} insights={savedAnalysis.insights} />
 
             <div className="floating-note">
               <span aria-hidden="true">

@@ -1,5 +1,5 @@
 /* ------------------------------------------------------------
-Defines shared visual styles for the audience insights experience.
+Styles the evidence drawer, original comments and supporting source links.
 ---------------------------------------------------------------*/
 
 @use '../stylingImports/index' as *;
@@ -45,6 +45,9 @@ Defines shared visual styles for the audience insights experience.
       letter-spacing: 0.1em;
       font-weight: 600;
     }
+    @include max-width(phone) {
+      padding: 15px 20px;
+    }
   }
   .drawer-content {
     padding: 35px 40px;
@@ -60,6 +63,9 @@ Defines shared visual styles for the audience insights experience.
       font-size: 31px;
       letter-spacing: -0.035em;
       margin-bottom: 15px;
+      @include max-width(phone) {
+        font-size: 28px;
+      }
     }
     .drawer-counts {
       display: flex;
@@ -77,6 +83,9 @@ Defines shared visual styles for the audience insights experience.
       line-height: 1.85;
       color: #6c7285;
       margin-bottom: 25px;
+    }
+    @include max-width(phone) {
+      padding: 25px 20px;
     }
   }
   .opportunity {
@@ -207,17 +216,6 @@ Defines shared visual styles for the audience insights experience.
     font-size: $font-size-fine-print;
     color: #73788a;
     line-height: 1.8;
-  }
-  @include max-width(phone) {
-    .drawer-toolbar {
-      padding: 15px 20px;
-    }
-    .drawer-content {
-      padding: 25px 20px;
-      h2 {
-        font-size: 28px;
-      }
-    }
   }
 }
 @keyframes slide-in {

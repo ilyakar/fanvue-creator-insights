@@ -10,7 +10,8 @@ import { useEffect, type RefObject } from 'react'
 export const useFocusTrap = (
   containerReference: RefObject<HTMLElement | null>,
   isActive: boolean,
-  onClose: () => void
+  onClose: () => void,
+  initialFocus: 'first-control' | 'container' = 'first-control'
 ) => {
   useEffect(() => {
     if (!isActive) {
@@ -25,7 +26,7 @@ export const useFocusTrap = (
 
     const container = containerReference.current
     const firstControl = container?.querySelector<HTMLElement>('button:not([disabled]), a[href]')
-    const focusTarget = firstControl || container
+    const focusTarget = initialFocus === 'container' ? container : firstControl || container
 
     focusTarget?.focus()
 
@@ -55,10 +56,10 @@ export const useFocusTrap = (
       const firstElement = focusable[0]
       const lastElement = focusable[focusable.length - 1]
 
-      if (event.shiftKey && document.activeElement === firstElement) {
+      if (event.shiftKey && (document.activeElement === firstElement || document.activeElement === container)) {
         event.preventDefault()
         lastElement.focus()
-      } else if (!event.shiftKey && document.activeElement === lastElement) {
+      } else if (!event.shiftKey && (document.activeElement === lastElement || document.activeElement === container)) {
         event.preventDefault()
         firstElement.focus()
       }
@@ -71,5 +72,5 @@ export const useFocusTrap = (
       document.removeEventListener('keydown', _handleKeyDown)
       previousFocus?.focus()
     }
-  }, [containerReference, isActive, onClose])
+  }, [containerReference, isActive, onClose, initialFocus])
 }

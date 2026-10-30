@@ -1,10 +1,15 @@
 /* ------------------------------------------------------------
-Reuses the destination's JSX view while only its data sections show placeholders.
+Keeps post navigation visible while source context and analysis are pending.
 ---------------------------------------------------------------*/
 
-import PostDetails from '@/app/Components/DashboardContent/PostDetails'
+import PostView from '@/app/dashboard/posts/[postId]/PostView'
+import ContentSkeleton from '@/app/Components/Skeleton/ContentSkeleton'
 
-// Keeps page copy and controls identical during navigation and after data arrives.
-const LoadingPage = () => <PostDetails basePath="/preview" />
+// Renders only the pending post sections beneath the persistent back link.
+const PostLoading = () => (
+  <PostView basePath="/preview">
+    <ContentSkeleton variant="post" />
+  </PostView>
+)
 
-export default LoadingPage
+export default PostLoading

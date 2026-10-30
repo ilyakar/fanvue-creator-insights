@@ -1,58 +1,55 @@
 'use client'
 
 /* ------------------------------------------------------------
-Reuses one insight presentation for the cross-post overview and single-post feedback.
+Shows scoped audience metrics, interactive insight categories and original evidence.
 ---------------------------------------------------------------*/
 
 import { useCallback, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
-  faArrowRight,
-  faArrowUpRightFromSquare,
-  faAsterisk,
   faChevronDown,
   faCommentDots,
   faLayerGroup,
   faShieldHalved,
-  faStar,
   faUserGroup,
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
 
-import { categoryLabels, formatDate, getDatasetCounts, getEvidence, getInsightCounts } from '@/lib/insights'
-import type { Category, DashboardModel, Insight } from '@/lib/types'
-import { useAlert } from '@/app/AlertProvider'
+import { categoryLabels, formatDate, getDatasetCounts, getInsightCounts } from '@/lib/insights'
+import type { AnalysisResult, Category, Dataset, Insight } from '@/lib/types'
 import CategoryIcon from '@/app/Components/CategoryIcon/CategoryIcon'
 import InsightCard from '@/app/Components/InsightCard/InsightCard'
 import InsightDrawer from '@/app/Components/InsightDrawer/InsightDrawer'
 
-// Reuses one insight presentation for the cross-post overview and single-post feedback.
-const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: string }) => {
+// Shows scoped audience metrics, interactive insight categories and original evidence.
+const AudienceInsights = ({
+  audienceFeedback,
+  savedAnalysis,
+  scopedPostId,
+  isPreview,
+  featuredRequest
+}: {
+  audienceFeedback: Dataset
+  savedAnalysis: AnalysisResult
+  scopedPostId?: string
+  isPreview: boolean
+  featuredRequest?: React.ReactNode
+}) => {
   const [selectedCategory, setSelectedCategory] = useState<Category | 'all'>('all')
   const [selectedInsight, setSelectedInsight] = useState<Insight | null>(null)
-  const showAlert = useAlert()
 
-  const { dataset, result, isPreview } = model
   const basePath = isPreview ? '/preview' : '/dashboard'
-  const post = dataset.posts.find(entry => entry.id === postId)
-  const scopedComments = dataset.comments.filter(comment => !postId || comment.postId === postId)
-  const counts = getDatasetCounts({ ...dataset, comments: scopedComments, posts: post ? [post] : dataset.posts })
-
-  const insights = (result?.insights || []).filter(
-    insight => !postId || getInsightCounts(insight, dataset, postId).comments > 0
+  const scopedPost = audienceFeedback.posts.find(post => post.id === scopedPostId)
+  const scopedComments = audienceFeedback.comments.filter(comment => !scopedPostId || comment.postId === scopedPostId)
+  const counts = getDatasetCounts({
+    ...audienceFeedback,
+    comments: scopedComments,
+    posts: scopedPost ? [scopedPost] : audienceFeedback.posts
+  })
+  const insights = savedAnalysis.insights.filter(
+    insight => !scopedPostId || getInsightCounts(insight, audienceFeedback, scopedPostId).comments > 0
   )
-
   const categories: Category[] = ['love', 'requests', 'improve']
-
-  const featuredInsight = insights
-    .filter(insight => insight.category === 'requests')
-    .sort(
-      (firstInsight, secondInsight) =>
-        getInsightCounts(secondInsight, dataset, postId).fans - getInsightCounts(firstInsight, dataset, postId).fans
-    )[0]
-
-  const featuredComment = featuredInsight ? getEvidence(featuredInsight, dataset, postId)[0] : null
-  const featuredFan = dataset.fans.find(fan => fan.id === featuredComment?.fanId)
 
   // Closes the evidence panel while preserving the current filters and scroll position.
   const _handleInsightClose = useCallback(() => setSelectedInsight(null), [])
@@ -61,47 +58,8 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
   const _handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) =>
     setSelectedCategory(event.target.value as Category | 'all')
 
-  // Opens the most-supported content request as an actionable starting point.
-  const _handleFeaturedOpen = () => {
-    if (featuredInsight) {
-      setSelectedInsight(featuredInsight)
-    }
-  }
-
-  // Replaces unavailable synthetic source URLs with a consistent explanation.
-  const _handleSampleLink = () =>
-    showAlert('You’re viewing sample data', 'Links to Fanvue aren’t available in this prototype.')
-
   return (
     <>
-      {post && (
-        <div className="page-heading">
-          <div>
-            <span className="eyebrow">A CLOSER LOOK</span>
-            <h1>{post.title}</h1>
-            <p>Here’s what your fans are saying about this post.</p>
-          </div>
-        </div>
-      )}
-
-      {post && (
-        <div className="post-context">
-          <img src={post.thumbnail} alt={`Sample imagery for ${post.title}`} />
-
-          <div>
-            <span className="post-format">
-              {post.format} <span>·</span> {formatDate(post.publishedAt, true)}
-            </span>
-
-            <p>{post.caption}</p>
-
-            <button className="text-button" onClick={_handleSampleLink}>
-              View on Fanvue <FontAwesomeIcon icon={faArrowUpRightFromSquare} />
-            </button>
-          </div>
-        </div>
-      )}
-
       <div className="metric-strip" aria-label="Analysed sample dataset">
         {[
           { label: 'Comments analysed', value: counts.comments, icon: faCommentDots },
@@ -121,50 +79,13 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
         ))}
       </div>
 
-      {!post && featuredInsight && (
-        <section className="featured-insight">
-          <div className="featured-copy">
-            <span className="eyebrow">
-              <FontAwesomeIcon icon={faWandMagicSparkles} /> A GOOD PLACE TO START
-            </span>
-
-            <h2>Your next idea? It’s in the comments.</h2>
-            <p>{featuredInsight.opportunity || featuredInsight.summary}</p>
-
-            <button className="text-button" onClick={_handleFeaturedOpen}>
-              See what fans are asking for <FontAwesomeIcon icon={faArrowRight} />
-            </button>
-          </div>
-
-          <div className="featured-visual" aria-hidden="true">
-            <span className="orbit orbit-one" />
-            <span className="orbit orbit-two" />
-
-            <div className="floating-comment">
-              <span className="mini-avatar">{featuredFan?.displayName.slice(0, 1)}</span>
-
-              <span className="quote">
-                <span>“{featuredComment?.text}”</span>
-                <small>From the original comments.</small>
-              </span>
-
-              <span className="spark">
-                <FontAwesomeIcon icon={faStar} />
-              </span>
-            </div>
-
-            <span className="decorative-star">
-              <FontAwesomeIcon icon={faAsterisk} />
-            </span>
-          </div>
-        </section>
-      )}
+      {featuredRequest}
 
       <section className="insights-section" aria-labelledby="audience-themes-title">
         <div className="section-heading">
           <div>
             <h2 id="audience-themes-title">
-              {post ? 'What this post is telling you' : 'Here’s what’s coming through'}
+              {scopedPostId ? 'What this post is telling you' : 'Here’s what’s coming through'}
             </h2>
 
             <p>Every insight starts with something a fan actually said.</p>
@@ -203,8 +124,8 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
                 .filter(insight => insight.category === category)
                 .sort(
                   (firstInsight, secondInsight) =>
-                    getInsightCounts(secondInsight, dataset, postId).fans -
-                    getInsightCounts(firstInsight, dataset, postId).fans
+                    getInsightCounts(secondInsight, audienceFeedback, scopedPostId).fans -
+                    getInsightCounts(firstInsight, audienceFeedback, scopedPostId).fans
                 )
 
               return (
@@ -220,8 +141,8 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
                       <InsightCard
                         key={insight.id}
                         insight={insight}
-                        dataset={dataset}
-                        postId={postId}
+                        audienceFeedback={audienceFeedback}
+                        postId={scopedPostId}
                         onOpen={setSelectedInsight}
                       />
                     ))}
@@ -244,9 +165,9 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
           behind every insight.
         </span>
 
-        {result && (
+        {savedAnalysis && (
           <span className="updated-at">
-            {isPreview ? 'Sample period' : 'Analysed'} {formatDate(result.analysedAt)}
+            {isPreview ? 'Sample period' : 'Analysed'} {formatDate(savedAnalysis.analysedAt)}
           </span>
         )}
       </div>
@@ -255,8 +176,8 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
         <InsightDrawer
           key={selectedInsight.id}
           insight={selectedInsight}
-          dataset={dataset}
-          postId={postId}
+          audienceFeedback={audienceFeedback}
+          postId={scopedPostId}
           basePath={basePath}
           onClose={_handleInsightClose}
         />
@@ -265,4 +186,4 @@ const DashboardContent = ({ model, postId }: { model: DashboardModel; postId?: s
   )
 }
 
-export default DashboardContent
+export default AudienceInsights

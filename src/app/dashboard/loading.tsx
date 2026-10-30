@@ -1,10 +1,17 @@
 /* ------------------------------------------------------------
-Reuses the destination's JSX view while only its data sections show placeholders.
+Keeps the overview heading visible while only its data sections show placeholders.
 ---------------------------------------------------------------*/
 
-import Overview from '@/app/Components/Overview/Overview'
+import Skeleton from '@/app/Components/Skeleton/Skeleton'
+import ContentSkeleton from '@/app/Components/Skeleton/ContentSkeleton'
 
-// Keeps page copy and controls identical during navigation and after data arrives.
-const LoadingPage = () => <Overview />
+import DashboardView from './DashboardView'
 
-export default LoadingPage
+// Uses explicit pending sections without duplicating overview copy.
+const DashboardLoading = () => (
+  <DashboardView dateRange={<Skeleton className="date-placeholder" />}>
+    <ContentSkeleton />
+  </DashboardView>
+)
+
+export default DashboardLoading

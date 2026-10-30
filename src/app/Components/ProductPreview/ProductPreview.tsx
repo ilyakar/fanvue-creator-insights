@@ -9,20 +9,18 @@ import {
   faChartSimple,
   faCommentDots,
   faGear,
-  faHeart,
   faLayerGroup,
-  faLightbulb,
-  faSliders,
   faWandMagicSparkles
 } from '@fortawesome/free-solid-svg-icons'
 
-import { getDatasetCounts, getInsightCounts } from '@/lib/insights'
+import { categoryLabels, getDatasetCounts, getInsightCounts } from '@/lib/insights'
 import type { Dataset, Insight } from '@/lib/types'
+import { categoryIcons } from '@/app/Components/CategoryIcon/CategoryIcon'
 import Brand from '@/app/Components/Brand/Brand'
 
 // Shows an explicitly illustrative product snapshot using the same sample evidence as the app.
-const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Insight[] }) => {
-  const counts = getDatasetCounts(dataset)
+const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Dataset; insights: Insight[] }) => {
+  const counts = getDatasetCounts(audienceFeedback)
   const featured = [insights[0], insights[1], insights[2]]
 
   return (
@@ -114,11 +112,11 @@ const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Ins
           </div>
 
           <div className="preview-insights">
-            {featured.map((insight, position) => (
+            {featured.map(insight => (
               <div className={`preview-column ${insight.category}`} key={insight.id}>
                 <span className="mini-category">
-                  <FontAwesomeIcon icon={[faHeart, faLightbulb, faSliders][position]} />
-                  {['What fans love', 'What fans want next', 'What could be better'][position]}
+                  <FontAwesomeIcon icon={categoryIcons[insight.category]} />
+                  {categoryLabels[insight.category]}
                 </span>
 
                 <div className="preview-card">
@@ -126,7 +124,7 @@ const ProductPreview = ({ dataset, insights }: { dataset: Dataset; insights: Ins
                   <p>{insight.summary}</p>
 
                   <span>
-                    <strong>{getInsightCounts(insight, dataset).fans}</strong> fans{' '}
+                    <strong>{getInsightCounts(insight, audienceFeedback).fans}</strong> fans{' '}
                     <FontAwesomeIcon icon={faArrowRight} />
                   </span>
                 </div>

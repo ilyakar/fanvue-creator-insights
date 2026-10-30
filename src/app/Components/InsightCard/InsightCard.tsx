@@ -13,16 +13,16 @@ import type { Dataset, Insight } from '@/lib/types'
 // Presents a readable theme with counts calculated from its original evidence.
 const InsightCard = ({
   insight,
-  dataset,
+  audienceFeedback,
   postId,
   onOpen
 }: {
   insight: Insight
-  dataset: Dataset
+  audienceFeedback: Dataset
   postId?: string
   onOpen: (insight: Insight) => void
 }) => {
-  const counts = getInsightCounts(insight, dataset, postId)
+  const counts = getInsightCounts(insight, audienceFeedback, postId)
   const summary = postId ? insight.postSummaries.find(entry => entry.postId === postId)?.summary : insight.summary
 
   // Opens the selected theme's original supporting comments.

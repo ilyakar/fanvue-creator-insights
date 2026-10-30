@@ -5,17 +5,17 @@ Renders settings immediately while streaming the account connection check separa
 import { Suspense } from 'react'
 
 import { requireAccount } from '@/lib/server/session'
-import { getDatabase, unwrapDatabase } from '@/lib/server/database'
-import { getFanvueAccessToken } from '@/lib/server/fanvue'
-import SettingsContent from '@/app/Components/SettingsContent/SettingsContent'
-import SettingsConnectionDetails from '@/app/Components/SettingsContent/SettingsConnectionDetails'
+import { getConnectionStatus } from '@/lib/server/connection-status'
+import FanvueConnectionDetails from '@/app/Components/FanvueConnectionDetails/FanvueConnectionDetails'
+
+import SettingsView from './SettingsView'
 
 // Shows static settings and actions before the private connection details are available.
 const SettingsPage = () => (
-  <SettingsContent
+  <SettingsView
     isPreview={false}
     connectionDetails={
-      <Suspense fallback={<SettingsConnectionDetails status="checking" />}>
+      <Suspense fallback={<FanvueConnectionDetails status="checking" />}>
         <SettingsConnection />
       </Suspense>
     }
@@ -26,22 +26,9 @@ const SettingsPage = () => (
 const SettingsConnection = async () => {
   const account = await requireAccount()
 
-  return Promise.resolve()
-    .then(async () => {
-      await getFanvueAccessToken(account.id).catch(() => undefined)
+  const connectionStatus = await getConnectionStatus(account)
 
-      const connection = unwrapDatabase(
-        await getDatabase().from('fanvue_connections').select('needs_reconnect').eq('user_id', account.id).maybeSingle()
-      )
-
-      return (
-        <SettingsConnectionDetails
-          account={account}
-          status={!connection || connection.needs_reconnect ? 'reconnect' : 'connected'}
-        />
-      )
-    })
-    .catch(() => <SettingsConnectionDetails account={account} status="unavailable" />)
+  return <FanvueConnectionDetails account={account} status={connectionStatus} />
 }
 
 export default SettingsPage

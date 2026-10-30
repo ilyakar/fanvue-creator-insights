@@ -4,20 +4,28 @@
 Lets creators find a source post and explore feedback scoped to that post.
 ---------------------------------------------------------------*/
 
+import { use } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowRight, faComment, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons'
 
 import { formatDate } from '@/lib/insights'
-import type { DashboardModel } from '@/lib/types'
+import type { PostWithCommentCount } from '@/lib/posts'
+import type { Post } from '@/lib/types'
 
 import { useFilteredPosts, usePostsFilters } from './PostsFilterProvider'
 
 // Lets creators find a source post and explore feedback scoped to that post.
-const PostsBrowser = ({ model }: { model: DashboardModel }) => {
+const PostsBrowser = ({
+  postsPromise,
+  basePath
+}: {
+  postsPromise: Promise<PostWithCommentCount[]>
+  basePath: string
+}) => {
   const { setSearchQuery, setSelectedFormat } = usePostsFilters()
-  const posts = useFilteredPosts(model.dataset.posts)
-  const basePath = model.isPreview ? '/preview' : '/dashboard'
+  const sourcePosts = use(postsPromise)
+  const posts = useFilteredPosts(sourcePosts)
 
   // Restores the complete posts list after an empty search.
   const _handleReset = () => {
@@ -47,7 +55,7 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
               <div className="post-meta">
                 <span>
                   <FontAwesomeIcon icon={faComment} />
-                  {model.dataset.comments.filter(comment => comment.postId === post.id).length} comments
+                  {post.commentCount} comments
                 </span>
 
                 <span>
@@ -75,8 +83,9 @@ const PostsBrowser = ({ model }: { model: DashboardModel }) => {
 }
 
 // Uses the same filtered posts as the cards when displaying the loaded result count.
-export const PostsCount = ({ model }: { model: DashboardModel }) => {
-  const posts = useFilteredPosts(model.dataset.posts)
+export const PostsCount = ({ postsPromise }: { postsPromise: Promise<Post[]> }) => {
+  const sourcePosts = use(postsPromise)
+  const posts = useFilteredPosts(sourcePosts)
 
   return (
     <span className="post-count">

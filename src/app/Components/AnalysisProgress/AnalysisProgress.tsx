@@ -15,7 +15,7 @@ import type { JobStage } from '@/lib/types'
 const stageOrder: JobStage[] = ['queued', 'analysing', 'validating', 'complete']
 
 // Displays actual durable job stages and supports retrying failed analysis.
-const AnalysisLoading = ({
+const AnalysisProgress = ({
   initialStage,
   initialError
 }: {
@@ -197,4 +197,4 @@ const AnalysisLoading = ({
   )
 }
 
-export default AnalysisLoading
+export default AnalysisProgress

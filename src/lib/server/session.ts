@@ -3,6 +3,7 @@ Resolves identity solely from an unexpired server-side session.
 ---------------------------------------------------------------*/
 
 import 'server-only'
+import { cache } from 'react'
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 
@@ -19,8 +20,8 @@ export const cookieOptions = {
   path: '/'
 }
 
-// Resolves identity solely from an unexpired server-side session.
-export const getCurrentAccount = async (): Promise<Account | null> => {
+// Shares one unexpired session lookup between layout and route consumers within a server render.
+export const getCurrentAccount = cache(async (): Promise<Account | null> => {
   const identifier = (await cookies()).get(sessionCookieName)?.value
 
   if (!identifier || !process.env.SUPABASE_URL || !process.env.SUPABASE_SECRET_KEY) {
@@ -41,7 +42,7 @@ export const getCurrentAccount = async (): Promise<Account | null> => {
   }
 
   return unwrapDatabase(await getDatabase().from('app_users').select('*').eq('id', session.user_id).single()) as Account
-}
+})
 
 // Guards authenticated routes without exposing user identifiers to request parameters.
 export const requireAccount = async () => {

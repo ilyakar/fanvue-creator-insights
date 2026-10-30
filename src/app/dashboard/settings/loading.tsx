@@ -1,10 +1,13 @@
 /* ------------------------------------------------------------
-Reuses the destination's JSX view while only its data sections show placeholders.
+Keeps settings copy and account actions visible with an explicit connection status.
 ---------------------------------------------------------------*/
 
-import SettingsContent from '@/app/Components/SettingsContent/SettingsContent'
+import SettingsView from '@/app/dashboard/settings/SettingsView'
+import FanvueConnectionDetails from '@/app/Components/FanvueConnectionDetails/FanvueConnectionDetails'
 
-// Keeps page copy and controls identical during navigation and after data arrives.
-const LoadingPage = () => <SettingsContent isPreview={false} />
+// Uses the shared settings composition with pending connection details.
+const SettingsLoading = () => (
+  <SettingsView isPreview={false} connectionDetails={<FanvueConnectionDetails status="checking" />} />
+)
 
-export default LoadingPage
+export default SettingsLoading
