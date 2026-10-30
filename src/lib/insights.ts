@@ -45,11 +45,11 @@ export const formatDate = (value: string, includeYear = false) =>
 // Uses independent post themes when available and preserves explicitly editorial legacy previews.
 export const getDisplayInsights = (analysis: AnalysisResult, dataset: Dataset, postId?: string): Insight[] => {
   if (!postId) {
-    return analysis.insights
+    return analysis.insights.map(normalizeInsightTerminology)
   }
 
   if (analysis.postThemes) {
-    return analysis.postThemes.filter(theme => theme.postId === postId)
+    return analysis.postThemes.filter(theme => theme.postId === postId).map(normalizeInsightTerminology)
   }
 
   return analysis.insights
@@ -63,4 +63,34 @@ export const getDisplayInsights = (analysis: AnalysisResult, dataset: Dataset, p
         opportunity: scopedSummary?.opportunity ?? null
       }
     })
+    .map(normalizeInsightTerminology)
 }
+
+// Keeps generated and saved insight wording consistent without changing original fan comments.
+const normalizeInsightTerminology = (insight: Insight): Insight => ({
+  ...insight,
+  title: normalizeFanTerminology(insight.title),
+  summary: normalizeFanTerminology(insight.summary),
+  opportunity: insight.opportunity === null ? null : normalizeFanTerminology(insight.opportunity),
+  postSummaries: insight.postSummaries.map(postSummary => ({
+    ...postSummary,
+    summary: normalizeFanTerminology(postSummary.summary),
+    opportunity: postSummary.opportunity === null ? null : normalizeFanTerminology(postSummary.opportunity)
+  }))
+})
+
+// Replaces audience labels while preserving singular forms, possessives and capitalization.
+const normalizeFanTerminology = (text: string): string =>
+  text.replace(/\b(follower|viewer)(s?)\b/gi, (audienceLabel, singularLabel: string, pluralSuffix: string) => {
+    const fanLabel = `fan${pluralSuffix.toLowerCase()}`
+
+    if (audienceLabel === audienceLabel.toUpperCase()) {
+      return fanLabel.toUpperCase()
+    }
+
+    if (singularLabel[0] === singularLabel[0].toUpperCase()) {
+      return `F${fanLabel.slice(1)}`
+    }
+
+    return fanLabel
+  })

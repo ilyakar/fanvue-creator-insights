@@ -5,10 +5,9 @@ Displays saved analysis progress and supports explicit starts and retries.
 ---------------------------------------------------------------*/
 
 import { useCallback, useEffect, useRef, useState } from 'react'
-import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faCheck, faRotateRight, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons'
+import { faCheck, faRotateRight, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons'
 
 import type { JobStage } from '@/lib/types'
 
@@ -212,10 +211,6 @@ const AnalysisProgress = ({
             <FontAwesomeIcon icon={faRotateRight} />
             {isRequestingAnalysis ? 'One moment…' : actionLabel}
           </button>
-
-          <Link className="text-button" href="/dashboard/settings">
-            Check connection <FontAwesomeIcon icon={faArrowRight} />
-          </Link>
         </div>
       )}
 

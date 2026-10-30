@@ -150,3 +150,47 @@ test('overview rejects unknown, category-mismatched and reused theme references'
   assert.throws(() => buildOverviewInsights({ groups: [{ ...group, category: 'requests' }] }, postThemes), /mismatched/)
   assert.throws(() => buildOverviewInsights({ groups: [group, group] }, postThemes), /already grouped/)
 })
+
+// Keeps current and legacy insight copy consistent while preserving original comment evidence.
+test('display insights call commenters fans across overview and post views', () => {
+  const insight = {
+    id: 'fan-terminology',
+    title: 'Followers’ favourite themes',
+    category: 'requests' as const,
+    summary: 'Followers admire your work, and one follower asks for polls.',
+    opportunity: "Ask followers to vote on a follower's suggestion.",
+    commentIds: ['kitten-request'],
+    postSummaries: [
+      {
+        postId: posts[0].id,
+        summary: 'Viewers want polls, and a viewer asks to choose themes.',
+        opportunity: null
+      }
+    ]
+  }
+  const analysis: AnalysisResult = {
+    insights: [insight],
+    analysedAt: '2026-10-30T00:00:00Z',
+    datasetVersion: dataset.version,
+    model: 'test',
+    promptVersion: 'legacy'
+  }
+  const originalAnalysis = structuredClone(analysis)
+  const originalComments = structuredClone(dataset.comments)
+  const overviewInsight = getDisplayInsights(analysis, dataset)[0]
+  const legacyPostInsight = getDisplayInsights(analysis, dataset, posts[0].id)[0]
+  const postInsight = getDisplayInsights(
+    { ...analysis, postThemes: [{ ...insight, postId: posts[0].id }] },
+    dataset,
+    posts[0].id
+  )[0]
+
+  assert.equal(overviewInsight.title, 'Fans’ favourite themes')
+  assert.equal(overviewInsight.summary, 'Fans admire your work, and one fan asks for polls.')
+  assert.equal(overviewInsight.opportunity, "Ask fans to vote on a fan's suggestion.")
+  assert.equal(legacyPostInsight.summary, 'Fans want polls, and a fan asks to choose themes.')
+  assert.equal(legacyPostInsight.opportunity, null)
+  assert.equal(postInsight.summary, overviewInsight.summary)
+  assert.deepEqual(analysis, originalAnalysis)
+  assert.deepEqual(dataset.comments, originalComments)
+})
