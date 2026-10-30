@@ -361,7 +361,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
   flex-direction: column;
   text-align: left;
   background: $color-surface;
-  border: 1px solid $color-border;
+  border: 1px solid $color-border-soft;
   padding: 20px;
   border-radius: 15px;
   transition:
@@ -372,6 +372,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
 
   &.love {
     background: $color-rose-soft;
+    border-color: color-mix(in srgb, $color-rose-border 25%, transparent);
 
     &:hover {
       border-color: $color-rose-border;
@@ -382,12 +383,13 @@ Styles audience metrics, featured requests, insight cards and source post contex
     }
 
     .evidence-counts {
-      border-top-color: $color-rose-border;
+      border-top-color: color-mix(in srgb, $color-rose-border 40%, transparent);
     }
   }
 
   &.requests {
     background: $color-gold-soft;
+    border-color: color-mix(in srgb, $color-gold-border 25%, transparent);
 
     &:hover {
       border-color: $color-gold-border;
@@ -398,12 +400,13 @@ Styles audience metrics, featured requests, insight cards and source post contex
     }
 
     .evidence-counts {
-      border-top-color: $color-gold-border;
+      border-top-color: color-mix(in srgb, $color-gold-border 40%, transparent);
     }
   }
 
   &.improve {
     background: $color-purple-soft;
+    border-color: color-mix(in srgb, $color-purple-border 25%, transparent);
 
     &:hover {
       border-color: $color-purple-border;
@@ -414,7 +417,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
     }
 
     .evidence-counts {
-      border-top-color: $color-purple-border;
+      border-top-color: color-mix(in srgb, $color-purple-border 40%, transparent);
     }
   }
 
