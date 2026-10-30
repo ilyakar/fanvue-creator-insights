@@ -1,34 +1,62 @@
+'use client'
+
 /* ------------------------------------------------------------
-Highlights the strongest audience request and links to the audience insights section.
+Highlights the strongest audience request and opens its supporting insight details.
 ---------------------------------------------------------------*/
 
+import { useCallback, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown, faAsterisk, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faAsterisk, faStar } from '@fortawesome/free-solid-svg-icons'
 
-import type { Dataset, Insight } from '@/lib/types'
+import type { Dataset, Insight, PostTheme } from '@/lib/types'
 import { getEvidence, getInsightCounts } from '@/lib/insights'
+import InsightDrawer from '@/app/Components/InsightDrawer/InsightDrawer'
 
-// Keeps the featured request and its audience insights link together on the overview.
-const FeaturedRequest = ({ audienceFeedback, insights }: { audienceFeedback: Dataset; insights: Insight[] }) => {
+// Keeps the featured request and its evidence drawer together on the overview.
+const FeaturedRequest = ({
+  audienceFeedback,
+  insights,
+  basePath,
+  postThemes
+}: {
+  audienceFeedback: Dataset
+  insights: Insight[]
+  basePath: string
+  postThemes?: PostTheme[]
+}) => {
+  const [isEvidenceOpen, setIsEvidenceOpen] = useState(false)
+
   const featuredInsight = insights
     .filter(insight => insight.category === 'requests')
     .sort(
       (firstInsight, secondInsight) =>
         getInsightCounts(secondInsight, audienceFeedback).fans - getInsightCounts(firstInsight, audienceFeedback).fans
     )[0]
+
   const featuredComment = featuredInsight ? getEvidence(featuredInsight, audienceFeedback)[0] : null
   const featuredFan = audienceFeedback.fans.find(fan => fan.id === featuredComment?.fanId)
 
+  // Opens the highlighted theme's supporting evidence.
+  const _handleFeaturedOpen = () => setIsEvidenceOpen(true)
+
+  // Restores focus to the theme control after dismissing its evidence.
+  const _handleClose = useCallback(() => setIsEvidenceOpen(false), [])
+
+  if (!featuredInsight) {
+    return null
+  }
+
   return (
-    featuredInsight && (
+    <>
       <section className="featured-insight">
         <div className="featured-copy">
-          <h2>Most requested by fans</h2>
-          <p>{featuredInsight.opportunity || featuredInsight.summary}</p>
+          <span className="eyebrow">MOST REQUESTED BY FANS</span>
+          <h2>{featuredInsight.opportunity || featuredInsight.title}</h2>
+          <p>{featuredInsight.summary}</p>
 
-          <a className="text-button" href="#audience-themes-title">
-            See what fans are asking for <FontAwesomeIcon icon={faArrowDown} />
-          </a>
+          <button className="text-button" onClick={_handleFeaturedOpen}>
+            View insight <FontAwesomeIcon icon={faArrowRight} />
+          </button>
         </div>
 
         <div className="featured-visual" aria-hidden="true">
@@ -53,7 +81,17 @@ const FeaturedRequest = ({ audienceFeedback, insights }: { audienceFeedback: Dat
           </span>
         </div>
       </section>
-    )
+
+      {isEvidenceOpen && (
+        <InsightDrawer
+          insight={featuredInsight}
+          audienceFeedback={audienceFeedback}
+          basePath={basePath}
+          postThemes={postThemes}
+          onClose={_handleClose}
+        />
+      )}
+    </>
   )
 }
 

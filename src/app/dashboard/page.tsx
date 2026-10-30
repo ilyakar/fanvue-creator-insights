@@ -56,7 +56,14 @@ const DashboardInsights = async ({
       audienceFeedback={audienceFeedback}
       savedAnalysis={savedAnalysis}
       isPreview={false}
-      featuredRequest={<FeaturedRequest audienceFeedback={audienceFeedback} insights={savedAnalysis.insights} />}
+      featuredRequest={
+        <FeaturedRequest
+          audienceFeedback={audienceFeedback}
+          insights={savedAnalysis.insights}
+          basePath="/dashboard"
+          postThemes={savedAnalysis.postThemes}
+        />
+      }
     />
   )
 }
