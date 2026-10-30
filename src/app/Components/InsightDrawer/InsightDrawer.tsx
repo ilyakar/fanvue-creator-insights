@@ -8,6 +8,7 @@ import { useRef, useState } from 'react'
 import Link from 'next/link'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
+  faArrowRight,
   faArrowUpRightFromSquare,
   faCheck,
   faChevronDown,
@@ -153,7 +154,8 @@ const InsightDrawer = ({
 
                     <div className="comment-source">
                       <Link href={`${basePath}/posts/${post.id}`} onClick={onClose}>
-                        {post.title}
+                        <span>{post.title}</span>
+                        <FontAwesomeIcon icon={faArrowRight} />
                       </Link>
 
                       <button aria-label="Open original comment on Fanvue" onClick={_handleSampleLink}>
