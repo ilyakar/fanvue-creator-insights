@@ -5,7 +5,7 @@ Styles the privacy and terms information pages.
 @use '../stylingImports/index' as *;
 
 .information-page {
-  background: white;
+  background: $color-surface;
   min-height: 100vh;
 
   > header {
@@ -17,7 +17,7 @@ Styles the privacy and terms information pages.
     align-items: center;
 
     > a:last-child {
-      color: #9992ac;
+      color: $color-text-secondary;
       font-size: $font-size-small;
     }
   }
@@ -28,7 +28,7 @@ Styles the privacy and terms information pages.
     margin: 0 auto;
 
     .eyebrow {
-      color: #a594bb;
+      color: $color-purple;
       margin-bottom: 20px;
     }
 
@@ -44,7 +44,7 @@ Styles the privacy and terms information pages.
     }
 
     p {
-      color: #86889b;
+      color: $color-text-secondary;
       font-size: $font-size-small;
       line-height: 1.9;
       margin-bottom: 35px;

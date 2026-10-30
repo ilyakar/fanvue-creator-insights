@@ -30,6 +30,7 @@ import type { Account } from '@/lib/types'
 import { useAlert } from '@/app/AlertProvider'
 import Brand from '@/app/Components/Brand/Brand'
 import PostsFilterProvider from '@/app/Components/PostsBrowser/PostsFilterProvider'
+import ThemeToggle from '@/app/Components/Theme/ThemeToggle'
 import { useFocusTrap } from '@/lib/hooks/useFocusTrap'
 
 // Gives every authenticated screen a shared, responsive navigation and sample-data context.
@@ -238,6 +239,8 @@ const AppShell = ({
               <span />
               Sample data
             </span>
+
+            <ThemeToggle />
           </div>
         </header>
 

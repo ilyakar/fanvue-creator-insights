@@ -12,7 +12,7 @@ Styles post search controls, source cards and responsive results grids.
   margin-bottom: 30px;
 
   .search-field {
-    background: white;
+    background: $color-surface;
     border: 1px solid $color-border;
     border-radius: 10px;
     display: flex;
@@ -23,7 +23,7 @@ Styles post search controls, source cards and responsive results grids.
     max-width: 100%;
 
     svg {
-      color: #a2a5b3;
+      color: $color-text-secondary;
       font-size: $font-size-small;
     }
 
@@ -34,11 +34,11 @@ Styles post search controls, source cards and responsive results grids.
       min-width: 0;
       width: 100%;
       outline-offset: 0;
-      color: #565b70;
+      color: $color-text;
       font-size: $font-size-small;
 
       &::placeholder {
-        color: #73788a;
+        color: $color-text-secondary;
       }
     }
 
@@ -54,7 +54,7 @@ Styles post search controls, source cards and responsive results grids.
 
     .post-count {
       font-size: $font-size-small;
-      color: #73788a;
+      color: $color-text-secondary;
     }
 
     @include max-width(phone) {
@@ -77,7 +77,7 @@ Styles post search controls, source cards and responsive results grids.
     overflow: hidden;
     border: 1px solid $color-border;
     border-radius: 15px;
-    background: white;
+    background: $color-surface;
     transition:
       transform 180ms,
       border-color 180ms,
@@ -85,7 +85,7 @@ Styles post search controls, source cards and responsive results grids.
 
     &:hover {
       transform: translateY(-3px);
-      border-color: #d0c9f4;
+      border-color: $color-purple-border;
       box-shadow: $shadow-soft;
 
       .post-meta > span:last-child {
@@ -97,7 +97,7 @@ Styles post search controls, source cards and responsive results grids.
       position: relative;
       aspect-ratio: 1.65;
       overflow: hidden;
-      background: #f0e9e5;
+      background: $color-surface-muted;
 
       > img {
         width: 100%;
@@ -110,8 +110,8 @@ Styles post search controls, source cards and responsive results grids.
         bottom: 15px;
         left: 15px;
         padding: 5px 10px;
-        background: #ffffffed;
-        color: #6e6571;
+        background: $color-surface-overlay;
+        color: $color-text;
         border-radius: 30px;
         backdrop-filter: blur(5px);
         font-size: $font-size-small;
@@ -129,7 +129,7 @@ Styles post search controls, source cards and responsive results grids.
       padding: 20px;
 
       > time {
-        color: #73788a;
+        color: $color-text-secondary;
         font-size: $font-size-small;
       }
 
@@ -140,7 +140,7 @@ Styles post search controls, source cards and responsive results grids.
       }
 
       > p {
-        color: #707688;
+        color: $color-text-secondary;
         font-size: $font-size-small;
         line-height: 1.8;
         min-height: 50px;
@@ -156,10 +156,10 @@ Styles post search controls, source cards and responsive results grids.
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        border-top: 1px solid #f0f1f5;
+        border-top: 1px solid $color-border-soft;
         padding-top: 15px;
         font-size: $font-size-small;
-        color: #727789;
+        color: $color-text-secondary;
 
         > span {
           display: flex;
@@ -167,7 +167,7 @@ Styles post search controls, source cards and responsive results grids.
           align-items: center;
 
           &:last-child {
-            color: #817597;
+            color: $color-purple;
             font-weight: 500;
           }
         }

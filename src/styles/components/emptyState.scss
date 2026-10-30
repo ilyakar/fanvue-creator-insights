@@ -7,17 +7,17 @@ Styles empty results and route error messages.
 .empty-state {
   text-align: center;
   padding: 75px 25px;
-  color: #9599a8;
+  color: $color-text-secondary;
 
   > svg {
     font-size: 25px;
-    color: #b3a9d2;
+    color: $color-purple;
     margin-bottom: 20px;
   }
 
   h2,
   h3 {
-    color: #5a5b73;
+    color: $color-text;
     font-size: 20px;
     margin-bottom: 15px;
   }
@@ -32,7 +32,7 @@ Styles empty results and route error messages.
 
     h1 {
       margin: 20px 0;
-      color: $color-navy;
+      color: $color-text;
     }
 
     > div {

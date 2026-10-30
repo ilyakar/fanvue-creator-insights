@@ -21,6 +21,7 @@ import { getPreviewAnalysis } from '@/lib/data/preview'
 
 import Brand from './Components/Brand/Brand'
 import ProductPreview from './Components/ProductPreview/ProductPreview'
+import ThemeToggle from './Components/Theme/ThemeToggle'
 import '@styles/homePage.scss'
 
 export const dynamic = 'force-dynamic'
@@ -38,6 +39,8 @@ const HomePage = async () => {
           <a href="#a-little-clarity">Why Insights</a>
           <a href="#how-it-works">How it works</a>
         </nav>
+
+        <ThemeToggle />
 
         <a className="button primary" href="/api/auth/fanvue">
           Start free <FontAwesomeIcon icon={faArrowRight} />

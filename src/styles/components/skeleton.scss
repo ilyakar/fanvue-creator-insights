@@ -6,7 +6,7 @@ Styles reusable loading shapes without defining page copy or route behavior.
 
 .skeleton {
   display: block;
-  background: #eeedf4;
+  background: $color-surface-muted;
   border-radius: 5px;
   animation: content-pulse 1.5s ease-in-out infinite;
 
@@ -62,7 +62,7 @@ Styles reusable loading shapes without defining page copy or route behavior.
       grid-template-columns: repeat(4, minmax(0, 1fr));
       border: 1px solid $color-border;
       border-radius: 15px;
-      background: white;
+      background: $color-surface;
       margin-bottom: 30px;
 
       @include max-width(phone) {
@@ -96,7 +96,7 @@ Styles reusable loading shapes without defining page copy or route behavior.
       .panel {
         border: 1px solid $color-border;
         border-radius: 15px;
-        background: white;
+        background: $color-surface;
         overflow: hidden;
 
         .thumbnail {

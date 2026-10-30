@@ -20,7 +20,7 @@ Styles the messages placeholder and privacy reassurance.
     display: grid;
     place-items: center;
     margin-bottom: 25px;
-    color: #9b8bbb;
+    color: $color-purple;
 
     > svg {
       font-size: 55px;
@@ -32,18 +32,18 @@ Styles the messages placeholder and privacy reassurance.
       width: 120px;
       height: 120px;
       border-radius: 50%;
-      border: 1px solid #e5e0ef;
+      border: 1px solid $color-border-soft;
 
       &:last-child {
         width: 160px;
         height: 160px;
-        border-color: #efebf5;
+        border-color: $color-border;
       }
     }
   }
 
   .coming-pill {
-    color: #9d90b6;
+    color: $color-purple;
     font-size: $font-size-small;
     font-weight: 600;
     letter-spacing: 0.09em;
@@ -61,7 +61,7 @@ Styles the messages placeholder and privacy reassurance.
   }
 
   > p {
-    color: #73788a;
+    color: $color-text-secondary;
     font-size: $font-size-small;
     line-height: 1.9;
     max-width: 390px;
@@ -70,7 +70,7 @@ Styles the messages placeholder and privacy reassurance.
 
   .privacy-reassurance {
     font-size: $font-size-fine-print;
-    color: #73788a;
+    color: $color-text-secondary;
     margin-bottom: 30px;
 
     svg {

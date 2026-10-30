@@ -5,6 +5,8 @@ Applies the shared visual foundation and accessible app providers.
 import type { Metadata } from 'next'
 import { config } from '@fortawesome/fontawesome-svg-core'
 
+import { themeInitializationScript } from '@/lib/theme'
+
 import '@fortawesome/fontawesome-svg-core/styles.css'
 import '@styles/coreStyling/index.scss'
 import Providers from './Providers'
@@ -19,7 +21,11 @@ export const metadata: Metadata = {
 
 // Applies the shared visual foundation and accessible app providers.
 const RootLayout = ({ children }: Readonly<{ children: React.ReactNode }>) => (
-  <html lang="en" data-scroll-behavior="smooth">
+  <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
+    <head>
+      <script dangerouslySetInnerHTML={{ __html: themeInitializationScript }} />
+    </head>
+
     <body>
       <a className="skip-link" href="#main-content">
         Skip to content

@@ -2,6 +2,7 @@
 Loads shared foundations and application component styles in cascade order.
 ---------------------------------------------------------------*/
 
+@use 'themes';
 @use 'base';
 @use 'typography';
 @use 'buttons';

@@ -1,0 +1,113 @@
+/* ------------------------------------------------------------
+Builds light and dark theme tokens from the shared base palette.
+---------------------------------------------------------------*/
+
+@use 'sass:color';
+@use '../stylingImports/palette';
+
+// Mixing a color with white creates a tint; negative lightness creates a darker shade.
+:root {
+  color-scheme: light;
+  --theme-toggle-sun-display: none;
+  --theme-toggle-moon-display: block;
+
+  // Neutral surfaces and readable text.
+  --color-canvas: #{color.mix(palette.$ink, palette.$white, 3%)};
+  --color-surface: #{palette.$white};
+  --color-surface-subtle: #{color.mix(palette.$lavender, palette.$white, 3%)};
+  --color-surface-muted: #{color.mix(palette.$ink, palette.$white, 6%)};
+  --color-surface-overlay: #{rgba(palette.$white, 0.93)};
+  --color-text: #{palette.$ink};
+  --color-text-secondary: #{color.mix(palette.$ink, palette.$white, 65%)};
+  --color-border: #{color.mix(palette.$ink, palette.$white, 10%)};
+  --color-border-soft: #{color.mix(palette.$ink, palette.$white, 6%)};
+  --color-overlay: #{rgba(palette.$ink, 0.27)};
+
+  // Purple actions, selected states and supporting notes.
+  --color-purple: #{palette.$purple};
+  --color-purple-hover: #{color.adjust(palette.$purple, $lightness: -6%, $saturation: -15%)};
+  --color-on-purple: #{palette.$white};
+  --color-purple-muted: #{color.adjust(palette.$lavender, $lightness: -12%)};
+  --color-purple-soft: #{color.mix(palette.$lavender, palette.$white, 12%)};
+  --color-purple-active: #{color.mix(palette.$purple, palette.$white, 10%)};
+  --color-purple-border: #{color.mix(palette.$lavender, palette.$white, 45%)};
+
+  // Shared color families for insights, badges, avatars and status messages.
+  --color-rose: #{palette.$rose};
+  --color-rose-soft: #{color.mix(palette.$rose, palette.$white, 12%)};
+  --color-rose-border: #{color.mix(palette.$rose, palette.$white, 45%)};
+  --color-gold: #{color.adjust(palette.$gold, $lightness: -20%)};
+  --color-gold-text: #{color.adjust(palette.$gold, $lightness: -35%)};
+  --color-gold-soft: #{color.mix(palette.$gold, palette.$white, 15%)};
+  --color-gold-border: #{color.mix(palette.$gold, palette.$white, 45%)};
+  --color-green: #{palette.$green};
+  --color-green-soft: #{color.mix(palette.$green, palette.$white, 8%)};
+  --color-green-border: #{color.mix(palette.$green, palette.$white, 15%)};
+
+  --gradient-soft: linear-gradient(110deg, var(--color-purple-soft), #{color.mix(palette.$peach, palette.$white, 20%)});
+  --gradient-hero: radial-gradient(
+    ellipse at 50% 93%,
+    #{color.mix(palette.$peach, palette.$white, 15%)} 0,
+    var(--color-surface) 67%
+  );
+  --shadow-soft: 0 5px 25px #{rgba(palette.$ink, 0.035)};
+}
+
+// Reuses the dark palette for saved overrides and the system fallback before JavaScript runs.
+@mixin dark-theme {
+  $canvas: color.adjust(palette.$ink, $saturation: -15%, $lightness: -1%);
+  $surface: color.mix(palette.$white, $canvas, 4%);
+  $purple: color.mix(palette.$white, palette.$purple, 40%);
+
+  color-scheme: dark;
+  --theme-toggle-sun-display: block;
+  --theme-toggle-moon-display: none;
+
+  --color-canvas: #{$canvas};
+  --color-surface: #{$surface};
+  --color-surface-subtle: #{color.mix(palette.$white, $surface, 3%)};
+  --color-surface-muted: #{color.mix(palette.$white, $surface, 6%)};
+  --color-surface-overlay: #{rgba($surface, 0.93)};
+  --color-text: #{color.mix(palette.$white, $canvas, 94%)};
+  --color-text-secondary: #{color.mix(palette.$white, $surface, 68%)};
+  --color-border: #{color.mix(palette.$white, $surface, 12%)};
+  --color-border-soft: #{color.mix(palette.$white, $surface, 8%)};
+  --color-overlay: #{rgba(palette.$black, 0.58)};
+
+  --color-purple: #{$purple};
+  --color-purple-hover: #{color.adjust($purple, $lightness: 6%)};
+  --color-on-purple: #{$canvas};
+  --color-purple-muted: #{color.mix(palette.$white, palette.$lavender, 45%)};
+  --color-purple-soft: #{color.mix(palette.$lavender, palette.$black, 30%)};
+  --color-purple-active: #{color.mix(palette.$lavender, $surface, 25%)};
+  --color-purple-border: #{color.mix(palette.$lavender, palette.$black, 65%)};
+
+  --color-rose: #{color.mix(palette.$white, palette.$rose, 35%)};
+  --color-rose-soft: #{color.mix(palette.$rose, palette.$black, 30%)};
+  --color-rose-border: #{color.mix(palette.$rose, palette.$black, 55%)};
+  --color-gold: #{palette.$gold};
+  --color-gold-text: #{color.mix(palette.$white, palette.$gold, 25%)};
+  --color-gold-soft: #{color.mix(palette.$gold, palette.$black, 25%)};
+  --color-gold-border: #{color.mix(palette.$gold, palette.$black, 50%)};
+  --color-green: #{color.adjust(palette.$green, $lightness: 40%)};
+  --color-green-soft: #{color.mix(palette.$green, palette.$black, 45%)};
+  --color-green-border: #{color.mix(palette.$green, palette.$black, 70%)};
+
+  --gradient-soft: linear-gradient(110deg, var(--color-purple-soft), var(--color-gold-soft));
+  --gradient-hero: radial-gradient(
+    ellipse at 50% 93%,
+    #{color.mix(palette.$peach, $canvas, 12%)} 0,
+    var(--color-canvas) 67%
+  );
+  --shadow-soft: 0 5px 25px #{rgba(palette.$black, 0.2)};
+}
+
+:root[data-theme='dark'] {
+  @include dark-theme;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include dark-theme;
+  }
+}

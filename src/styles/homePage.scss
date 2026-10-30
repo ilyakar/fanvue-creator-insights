@@ -2,12 +2,14 @@
 Styles the public landing page and its responsive marketing sections.
 ---------------------------------------------------------------*/
 
+@use 'sass:color';
+@use 'stylingImports/palette';
 @use 'stylingImports/index' as *;
 @use 'components/productPreview';
 
 .landing-page {
   overflow: hidden;
-  background: white;
+  background: $color-surface;
 
   .landing-header {
     max-width: 1260px;
@@ -26,7 +28,7 @@ Styles the public landing page and its responsive marketing sections.
       margin-left: auto;
       margin-right: 25px;
       font-size: $font-size-small;
-      color: #7a7c8b;
+      color: $color-text-secondary;
 
       a:hover {
         color: $color-purple;
@@ -60,26 +62,35 @@ Styles the public landing page and its responsive marketing sections.
       gap: 10px;
       padding: 20px;
     }
+
+    @media (max-width: 350px) {
+      flex-wrap: wrap;
+      min-height: 0;
+
+      .button {
+        margin-left: auto;
+      }
+    }
   }
 
   .landing-hero {
     position: relative;
     text-align: center;
     padding: 65px 30px 85px;
-    background: radial-gradient(ellipse at 50% 93%, #f9efe5 0, #fff 67%);
+    background: $gradient-hero;
 
     .hero-kicker {
       display: inline-flex;
       align-items: center;
       gap: 10px;
-      color: #8f889e;
+      color: $color-text-secondary;
       font-size: $font-size-small;
       font-weight: 600;
       letter-spacing: 0.11em;
       margin-bottom: 25px;
 
       > span {
-        color: #b7a1c4;
+        color: $color-purple;
         font-size: 21px;
       }
 
@@ -98,7 +109,12 @@ Styles the public landing page and its responsive marketing sections.
       margin-bottom: 30px;
 
       > span {
-        background: linear-gradient(110deg, #c8aa61, #c48490 65%, #a88ccd);
+        background: linear-gradient(
+          110deg,
+          color.adjust(palette.$gold, $lightness: -7%, $saturation: -12%),
+          color.adjust(palette.$rose, $lightness: 3%) 65%,
+          color.adjust(palette.$lavender, $lightness: 6%)
+        );
         color: transparent;
         background-clip: text;
       }
@@ -115,7 +131,7 @@ Styles the public landing page and its responsive marketing sections.
     > p:not(.preview-caption) {
       max-width: 465px;
       margin: 0 auto 30px;
-      color: #737082;
+      color: $color-text-secondary;
       font-size: 15px;
       line-height: 1.85;
 
@@ -141,11 +157,11 @@ Styles the public landing page and its responsive marketing sections.
       align-items: center;
       justify-content: center;
       gap: 5px;
-      color: #7b7284;
+      color: $color-text-secondary;
       font-size: $font-size-fine-print;
 
       svg {
-        color: #a5b49e;
+        color: $color-green;
         font-size: $font-size-small;
       }
     }
@@ -160,7 +176,12 @@ Styles the public landing page and its responsive marketing sections.
       .product-glow {
         position: absolute;
         inset: -40px -50px -20px;
-        background: linear-gradient(120deg, #e9d7a65c, #e9beaf78, #d7b9d373);
+        background: linear-gradient(
+          120deg,
+          rgba(color.mix(palette.$white, palette.$gold, 40%), 0.36),
+          rgba(color.adjust(palette.$peach, $lightness: 15%), 0.47),
+          rgba(color.mix(palette.$white, palette.$lavender, 50%), 0.45)
+        );
         filter: blur(45px);
         z-index: -1;
         border-radius: 50%;
@@ -175,26 +196,26 @@ Styles the public landing page and its responsive marketing sections.
         gap: 15px;
         align-items: center;
         padding: 20px 25px;
-        border: 1px solid #ffffffa8;
+        border: 1px solid $color-border;
         border-radius: 15px;
-        background: #ffffffec;
-        box-shadow: 0 10px 40px #5e426f15;
+        background: $color-surface-overlay;
+        box-shadow: 0 10px 40px rgba(palette.$ink, 0.08);
         transform: rotate(-4deg);
 
         > span {
           font-size: 30px;
-          color: #c4a46f;
+          color: color.adjust(palette.$gold, $lightness: -7%, $saturation: -12%);
         }
 
         > div {
           font-size: $font-size-small;
-          color: #b3a2ae;
+          color: $color-text-secondary;
 
           strong {
             display: block;
             font-size: $font-size-small;
             font-weight: 500;
-            color: #7f6a88;
+            color: $color-text;
             margin-top: 5px;
           }
         }
@@ -210,7 +231,7 @@ Styles the public landing page and its responsive marketing sections.
     }
 
     .preview-caption {
-      color: #7e6c76;
+      color: $color-text-secondary;
       font-size: $font-size-fine-print;
       margin-top: 25px;
     }
@@ -222,7 +243,7 @@ Styles the public landing page and its responsive marketing sections.
 
   .section-intro {
     .eyebrow {
-      color: #7b6b87;
+      color: $color-text-secondary;
       margin-bottom: 20px;
     }
 
@@ -235,7 +256,7 @@ Styles the public landing page and its responsive marketing sections.
     }
 
     > p {
-      color: #737082;
+      color: $color-text-secondary;
       font-size: $font-size-small;
     }
   }
@@ -287,18 +308,18 @@ Styles the public landing page and its responsive marketing sections.
       }
 
       &.love .benefit-icon {
-        color: #bd8795;
-        background: #fbf0f3;
+        color: $color-rose;
+        background: $color-rose-soft;
       }
 
       &.requests .benefit-icon {
-        color: #b49b5a;
-        background: #fbf5e8;
+        color: $color-gold;
+        background: $color-gold-soft;
       }
 
       &.improve .benefit-icon {
-        color: #a698c0;
-        background: #f3f0fa;
+        color: $color-purple-muted;
+        background: $color-purple-soft;
       }
 
       h3 {
@@ -315,7 +336,7 @@ Styles the public landing page and its responsive marketing sections.
       p {
         font-size: $font-size-small;
         line-height: 1.9;
-        color: #737082;
+        color: $color-text-secondary;
         margin-bottom: 25px;
         max-width: 265px;
 
@@ -328,7 +349,7 @@ Styles the public landing page and its responsive marketing sections.
       }
 
       .benefit-label {
-        color: #7b7284;
+        color: $color-text-secondary;
         font-size: $font-size-small;
       }
 
@@ -348,7 +369,7 @@ Styles the public landing page and its responsive marketing sections.
 
   .how-section {
     padding: 80px 40px;
-    background: #faf9fc;
+    background: $color-surface-subtle;
 
     .section-intro {
       text-align: center;
@@ -368,9 +389,9 @@ Styles the public landing page and its responsive marketing sections.
         > .step-number {
           display: block;
           padding-bottom: 20px;
-          border-bottom: 1px solid #e5dfe9;
+          border-bottom: 1px solid $color-border-soft;
           font-size: $font-size-small;
-          color: #b8adc4;
+          color: $color-text-secondary;
           margin-bottom: 25px;
 
           @include max-width(phone) {
@@ -383,7 +404,7 @@ Styles the public landing page and its responsive marketing sections.
           position: absolute;
           top: 0;
           right: 0;
-          color: #b5a6c6;
+          color: $color-purple;
           font-size: 15px;
         }
 
@@ -395,7 +416,7 @@ Styles the public landing page and its responsive marketing sections.
         }
 
         p {
-          color: #737082;
+          color: $color-text-secondary;
           font-size: $font-size-small;
           line-height: 1.9;
         }
@@ -415,13 +436,13 @@ Styles the public landing page and its responsive marketing sections.
     .sample-disclosure {
       max-width: 690px;
       margin: 0 auto;
-      border: 1px solid #e9e3ed;
+      border: 1px solid $color-purple-border;
       padding: 20px 25px;
       border-radius: 15px;
       display: flex;
       align-items: flex-start;
       gap: 15px;
-      color: #a99eaf;
+      color: $color-text-secondary;
 
       > svg {
         margin-top: 5px;
@@ -434,7 +455,7 @@ Styles the public landing page and its responsive marketing sections.
 
         strong {
           font-weight: 500;
-          color: #93849d;
+          color: $color-text;
           display: block;
         }
       }
@@ -449,15 +470,15 @@ Styles the public landing page and its responsive marketing sections.
     position: relative;
     text-align: center;
     overflow: hidden;
-    background: #15172d;
+    background: palette.$ink;
     padding: 90px 25px;
-    color: white;
+    color: palette.$white;
 
     .cta-star {
       position: absolute;
       right: -50px;
       bottom: -100px;
-      color: #55506d;
+      color: color.adjust(palette.$lavender, $lightness: -20%);
       opacity: 0.22;
       font-size: 450px;
       line-height: 1;
@@ -467,7 +488,7 @@ Styles the public landing page and its responsive marketing sections.
 
     > .eyebrow {
       position: relative;
-      color: #bfb7c9;
+      color: color.mix(palette.$white, palette.$ink, 70%);
       margin-bottom: 20px;
       font-size: $font-size-small;
     }
@@ -480,7 +501,12 @@ Styles the public landing page and its responsive marketing sections.
       margin-bottom: 30px;
 
       span {
-        background: linear-gradient(100deg, #ddc283, #dba79b, #c7a0cb);
+        background: linear-gradient(
+          100deg,
+          palette.$gold,
+          color.adjust(palette.$peach, $lightness: 10%),
+          color.mix(palette.$white, palette.$lavender, 30%)
+        );
         background-clip: text;
         color: transparent;
       }
@@ -495,7 +521,7 @@ Styles the public landing page and its responsive marketing sections.
     > .cta-note {
       position: relative;
       display: block;
-      color: #b0a8bc;
+      color: color.mix(palette.$white, palette.$ink, 70%);
       font-size: $font-size-fine-print;
       margin-top: 20px;
     }
@@ -511,7 +537,7 @@ Styles the public landing page and its responsive marketing sections.
 
     > span {
       font-size: $font-size-fine-print;
-      color: #7b7284;
+      color: $color-text-secondary;
 
       @include max-width(tablet) {
         display: none;
@@ -523,7 +549,7 @@ Styles the public landing page and its responsive marketing sections.
       gap: 25px;
       margin-left: auto;
       font-size: $font-size-fine-print;
-      color: #7b7284;
+      color: $color-text-secondary;
 
       a:hover {
         color: $color-purple;

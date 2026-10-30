@@ -2,6 +2,8 @@
 Defines shared button variants and interactive control styling.
 ---------------------------------------------------------------*/
 
+@use 'sass:color';
+@use '../stylingImports/palette';
 @use '../stylingImports/index' as *;
 
 .button {
@@ -26,29 +28,29 @@ Defines shared button variants and interactive control styling.
   }
 
   &.primary {
-    color: white;
+    color: $color-on-purple;
     background: $color-purple;
 
     &:not(:disabled):hover {
-      background: #5048e4;
-      box-shadow: 0 5px 15px #625bf630;
+      background: $color-purple-hover;
+      box-shadow: 0 5px 15px color-mix(in srgb, $color-purple 20%, transparent);
     }
   }
 
   &.secondary {
-    color: $color-navy;
-    background: white;
-    border-color: #dedfe8;
+    color: $color-text;
+    background: $color-surface;
+    border-color: $color-border;
 
     &:not(:disabled):hover {
-      background: #f5f4ff;
-      border-color: #c6c1f7;
+      background: $color-purple-soft;
+      border-color: $color-purple-border;
     }
   }
 
   &.danger {
-    color: white;
-    background: #b73950;
+    color: palette.$white;
+    background: color.adjust(palette.$rose, $saturation: 20%, $lightness: -15%);
   }
 
   svg {
@@ -69,11 +71,41 @@ Defines shared button variants and interactive control styling.
   text-align: left;
 
   &:hover {
-    color: #443cce;
+    color: $color-purple-hover;
   }
 
   svg {
     font-size: $font-size-small;
+  }
+}
+
+.theme-toggle {
+  display: inline-grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+  border: 1px solid $color-border;
+  border-radius: 10px;
+  background: $color-surface;
+  color: $color-text-secondary;
+  transition:
+    background 150ms,
+    border-color 150ms,
+    color 150ms;
+
+  .sun-icon {
+    display: var(--theme-toggle-sun-display);
+  }
+
+  .moon-icon {
+    display: var(--theme-toggle-moon-display);
+  }
+
+  &:hover {
+    border-color: $color-purple-border;
+    background: $color-purple-soft;
+    color: $color-purple;
   }
 }
 
@@ -86,23 +118,23 @@ Defines shared button variants and interactive control styling.
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: $color-muted;
+  color: $color-text-secondary;
   font-size: 15px;
 
   &:hover {
     color: $color-purple;
-    background: #f0eeff;
+    background: $color-purple-soft;
   }
 }
 
 select {
   appearance: none;
-  border: 1px solid #e0e2eb;
+  border: 1px solid $color-border;
   border-radius: 10px;
   min-height: 40px;
   padding: 10px 40px 10px 15px;
-  color: #4d5265;
-  background: white;
+  color: $color-text;
+  background: $color-surface;
   font-size: $font-size-small;
   cursor: pointer;
 }
@@ -115,7 +147,7 @@ select {
   > svg {
     position: absolute;
     right: 15px;
-    color: $color-muted;
+    color: $color-text-secondary;
     font-size: $font-size-small;
     pointer-events: none;
   }
@@ -125,7 +157,7 @@ select {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  color: $color-muted;
+  color: $color-text-secondary;
   font-size: $font-size-small;
   margin-bottom: 25px;
 
@@ -138,9 +170,9 @@ select {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  border: 1px solid #e8e2d2;
-  background: #fffcf4;
-  color: #7a6945;
+  border: 1px solid $color-gold-border;
+  background: $color-gold-soft;
+  color: $color-gold-text;
   border-radius: 30px;
   padding: 5px 10px;
   font-size: $font-size-fine-print;
@@ -151,6 +183,6 @@ select {
     width: 5px;
     height: 5px;
     border-radius: 50%;
-    background: #c6a762;
+    background: $color-gold;
   }
 }

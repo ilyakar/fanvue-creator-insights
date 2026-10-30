@@ -1,16 +1,46 @@
 /* ------------------------------------------------------------
-Defines shared colour, typography and surface tokens.
+Exposes a small set of theme-aware colors and shared typography tokens.
 ---------------------------------------------------------------*/
 
-$color-purple: #625bf6;
-$color-navy: #111528;
-$color-background: #f8f9fb;
-$color-white: #fff;
-$color-muted: #696e80;
-$color-border: #e8e9ef;
-$color-gold: #e7cb7d;
-$color-peach: #cd9480;
-$shadow-soft: 0 5px 25px rgba(17, 21, 40, 0.035);
+// Use these tokens in components; edit palette.scss to change the base colors.
+// Soft colors are tinted backgrounds, borders outline them, and plain colors provide emphasis.
+
+// Layout and text.
+$color-canvas: var(--color-canvas);
+$color-surface: var(--color-surface);
+$color-surface-subtle: var(--color-surface-subtle);
+$color-surface-muted: var(--color-surface-muted);
+$color-surface-overlay: var(--color-surface-overlay);
+$color-text: var(--color-text);
+$color-text-secondary: var(--color-text-secondary);
+$color-border: var(--color-border);
+$color-border-soft: var(--color-border-soft);
+$color-overlay: var(--color-overlay);
+
+// Purple actions and supporting notes.
+$color-purple: var(--color-purple);
+$color-purple-hover: var(--color-purple-hover);
+$color-on-purple: var(--color-on-purple);
+$color-purple-muted: var(--color-purple-muted);
+$color-purple-soft: var(--color-purple-soft);
+$color-purple-active: var(--color-purple-active);
+$color-purple-border: var(--color-purple-border);
+
+// Insight and status colors.
+$color-rose: var(--color-rose);
+$color-rose-soft: var(--color-rose-soft);
+$color-rose-border: var(--color-rose-border);
+$color-gold: var(--color-gold);
+$color-gold-text: var(--color-gold-text);
+$color-gold-soft: var(--color-gold-soft);
+$color-gold-border: var(--color-gold-border);
+$color-green: var(--color-green);
+$color-green-soft: var(--color-green-soft);
+$color-green-border: var(--color-green-border);
+
+$gradient-soft: var(--gradient-soft);
+$gradient-hero: var(--gradient-hero);
+$shadow-soft: var(--shadow-soft);
 
 $font-family-sans: 'Inter', 'Helvetica Neue', Arial, sans-serif;
 $font-size-body: 16px;

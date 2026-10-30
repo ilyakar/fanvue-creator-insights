@@ -1,0 +1,17 @@
+/* ------------------------------------------------------------
+Defines the base colors from which both themes derive their tints and shades.
+---------------------------------------------------------------*/
+
+@use 'sass:color';
+
+$white: #fff;
+$black: #000;
+$ink: #111528;
+$purple: #625bf6;
+$rose: #bf7c8a;
+$gold: #d6bd78;
+$green: #52715e;
+$peach: #cd9480;
+
+// Keeps softer purple decorations in the same family as the main action color.
+$lavender: color.adjust($purple, $hue: 15deg, $saturation: -60%, $lightness: -5%);

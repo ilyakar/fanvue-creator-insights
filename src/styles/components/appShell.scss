@@ -73,7 +73,7 @@ Styles navigation, account identity and the responsive application shell.
   inset: 0 auto 0 0;
   z-index: 30;
   width: var(--sidebar-width);
-  background: white;
+  background: $color-surface;
   border-right: 1px solid $color-border;
   display: flex;
   flex-direction: column;
@@ -130,8 +130,8 @@ Styles navigation, account identity and the responsive application shell.
     height: 30px;
     flex: 0 0 30px;
     border-radius: 10px;
-    background: #eae7fb;
-    color: #655bb6;
+    background: $color-purple-soft;
+    color: $color-purple-muted;
     font-weight: 600;
     font-size: $font-size-small;
   }
@@ -150,7 +150,7 @@ Styles navigation, account identity and the responsive application shell.
     }
 
     span {
-      color: #73788a;
+      color: $color-text-secondary;
       font-size: $font-size-small;
     }
   }
@@ -159,7 +159,7 @@ Styles navigation, account identity and the responsive application shell.
     font-size: $font-size-small;
     letter-spacing: 0.1em;
     font-weight: 600;
-    color: #73788a;
+    color: $color-text-secondary;
     margin: 0 10px 15px;
   }
 
@@ -175,7 +175,7 @@ Styles navigation, account identity and the responsive application shell.
     gap: 15px;
     padding: 10px 15px;
     border-radius: 10px;
-    color: #747888;
+    color: $color-text-secondary;
     min-height: 45px;
     font-size: $font-size-small;
     transition: background 150ms;
@@ -186,12 +186,12 @@ Styles navigation, account identity and the responsive application shell.
     }
 
     &:hover {
-      background: #f8f7ff;
+      background: $color-purple-soft;
       color: $color-purple;
     }
 
     &.active {
-      background: #efedff;
+      background: $color-purple-active;
       color: $color-purple;
       font-weight: 600;
     }
@@ -200,8 +200,8 @@ Styles navigation, account identity and the responsive application shell.
       margin-left: auto;
       font-size: $font-size-fine-print;
       font-weight: 500;
-      color: #9396a3;
-      background: #f0f1f5;
+      color: $color-text-secondary;
+      background: $color-surface-muted;
       border-radius: 5px;
       padding: 0 5px;
     }
@@ -228,11 +228,11 @@ Styles navigation, account identity and the responsive application shell.
 
     padding: 20px;
     border-radius: 15px;
-    background: linear-gradient(130deg, #fbf9f3, #f7f4ff);
+    background: $gradient-soft;
     margin-bottom: 25px;
 
     > svg {
-      color: #a393c4;
+      color: $color-purple;
       font-size: 16px;
       margin-bottom: 15px;
     }
@@ -246,7 +246,7 @@ Styles navigation, account identity and the responsive application shell.
     }
 
     p {
-      color: #898797;
+      color: $color-text-secondary;
       font-size: $font-size-small;
       max-width: 140px;
     }
@@ -260,7 +260,7 @@ Styles navigation, account identity and the responsive application shell.
     display: flex;
     align-items: center;
     gap: 10px;
-    color: #73788a;
+    color: $color-text-secondary;
     font-size: $font-size-fine-print;
     margin-bottom: 25px;
     padding-left: 5px;
@@ -300,7 +300,7 @@ Styles navigation, account identity and the responsive application shell.
 
       span {
         font-size: $font-size-small;
-        color: #727789;
+        color: $color-text-secondary;
       }
     }
 
@@ -320,8 +320,8 @@ Styles navigation, account identity and the responsive application shell.
     height: 25px;
     padding: 0;
     border: 1px solid $color-border;
-    background: white;
-    color: #9698a6;
+    background: $color-surface;
+    color: $color-text-secondary;
     font-size: $font-size-small;
     line-height: 1;
     display: grid;
@@ -356,11 +356,11 @@ Styles navigation, account identity and the responsive application shell.
   height: 35px;
   border-radius: 50%;
   flex: 0 0 35px;
-  background: #f0e5dc;
+  background: $color-surface-muted;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: #9b7764;
+  color: $color-text-secondary;
   font-size: $font-size-small;
   font-weight: 600;
 }
@@ -380,7 +380,7 @@ Styles navigation, account identity and the responsive application shell.
   align-items: center;
   justify-content: space-between;
   padding: 0 40px;
-  background: #fff;
+  background: $color-surface;
   gap: 15px;
 
   .breadcrumb {
@@ -388,23 +388,23 @@ Styles navigation, account identity and the responsive application shell.
     align-items: center;
     gap: 15px;
     font-size: $font-size-small;
-    color: #73788a;
+    color: $color-text-secondary;
 
     strong {
-      color: #525768;
+      color: $color-text;
       font-weight: 500;
     }
 
     .workspace-breadcrumb span {
       padding-left: 15px;
-      color: #c6c9d2;
+      color: $color-text-secondary;
     }
   }
 
   .topbar-context {
     display: flex;
     align-items: center;
-    gap: 25px;
+    gap: 10px;
   }
 
   .mobile-toggle {
@@ -420,6 +420,10 @@ Styles navigation, account identity and the responsive application shell.
     min-height: 65px;
   }
 
+  @include max-width(phone) {
+    padding: 0 15px;
+  }
+
   .workspace-breadcrumb {
     @include max-width(tablet) {
       display: none;
@@ -433,13 +437,13 @@ Styles navigation, account identity and the responsive application shell.
   justify-content: center;
   gap: 10px;
   padding: 10px 25px;
-  background: #f0eefb;
-  color: #8179a3;
+  background: $color-purple-soft;
+  color: $color-purple-muted;
   font-size: $font-size-small;
 
   strong {
     font-weight: 600;
-    color: #6b608e;
+    color: $color-text;
   }
 
   svg {
@@ -482,7 +486,7 @@ Styles navigation, account identity and the responsive application shell.
   width: 100%;
   margin: 0 auto;
   padding: 20px 40px;
-  color: #73788a;
+  color: $color-text-secondary;
   font-size: $font-size-fine-print;
   display: flex;
   align-items: center;
@@ -529,7 +533,7 @@ Styles navigation, account identity and the responsive application shell.
       display: block;
       position: fixed;
       inset: 0;
-      background: #11152850;
+      background: $color-overlay;
       border: 0;
       z-index: 29;
     }

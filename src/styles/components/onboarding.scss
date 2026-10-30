@@ -6,7 +6,7 @@ Styles connection setup and durable analysis progress.
 
 .onboarding-page {
   min-height: 100vh;
-  background: #faf9fc;
+  background: $color-surface-subtle;
 
   > header {
     max-width: 1250px;
@@ -33,7 +33,7 @@ Styles connection setup and durable analysis progress.
   padding: 40px;
   text-align: center;
   margin: 45px auto;
-  background: white;
+  background: $color-surface;
   border-radius: 25px;
   border: 1px solid $color-border;
   box-shadow: $shadow-soft;
@@ -44,8 +44,8 @@ Styles connection setup and durable analysis progress.
     height: 75px;
     display: grid;
     place-items: center;
-    background: linear-gradient(130deg, #f2edfc, #f8eddc);
-    color: #ab97ba;
+    background: $gradient-soft;
+    color: $color-purple;
     border-radius: 25px;
     margin: 0 auto 30px;
     font-size: 25px;
@@ -53,7 +53,7 @@ Styles connection setup and durable analysis progress.
 
   > .eyebrow {
     font-size: $font-size-small;
-    color: #a296b4;
+    color: $color-text-secondary;
     margin-bottom: 15px;
   }
 
@@ -70,7 +70,7 @@ Styles connection setup and durable analysis progress.
   > p {
     font-size: $font-size-small;
     line-height: 1.85;
-    color: #73788a;
+    color: $color-text-secondary;
     margin-bottom: 25px;
   }
 
@@ -78,12 +78,12 @@ Styles connection setup and durable analysis progress.
     text-align: left;
     list-style: none;
     padding: 20px;
-    background: #faf9fd;
+    background: $color-surface-subtle;
     border-radius: 15px;
     margin: 0 0 25px;
 
     li {
-      color: #9691a7;
+      color: $color-text-secondary;
       font-size: $font-size-small;
       display: flex;
       align-items: center;
@@ -91,7 +91,7 @@ Styles connection setup and durable analysis progress.
       padding: 5px 0;
 
       svg {
-        color: #b3a2c4;
+        color: $color-purple;
         font-size: $font-size-small;
       }
     }
@@ -104,7 +104,7 @@ Styles connection setup and durable analysis progress.
   .connection-footnote {
     margin: 20px 0 0;
     font-size: $font-size-fine-print;
-    color: #73788a;
+    color: $color-text-secondary;
 
     svg {
       margin-right: 5px;
@@ -114,8 +114,8 @@ Styles connection setup and durable analysis progress.
   .connection-message {
     padding: 15px;
     font-size: $font-size-small;
-    color: #9c8254;
-    background: #fcf8ed;
+    color: $color-gold-text;
+    background: $color-gold-soft;
     border-radius: 10px;
     margin-bottom: 20px;
   }
@@ -143,7 +143,7 @@ Styles connection setup and durable analysis progress.
       display: flex;
       align-items: center;
       gap: 15px;
-      color: #73788a;
+      color: $color-text-secondary;
       padding-bottom: 25px;
       font-size: $font-size-small;
 
@@ -156,32 +156,32 @@ Styles connection setup and durable analysis progress.
         height: 25px;
         display: grid;
         place-items: center;
-        border: 1px solid #e6e2ee;
+        border: 1px solid $color-border;
         border-radius: 50%;
         font-size: $font-size-small;
       }
 
       &.done {
-        color: #9393a9;
+        color: $color-text-secondary;
 
         > span {
-          background: #f0f5f0;
-          border-color: #e0ece1;
-          color: #9daf9a;
+          background: $color-green-soft;
+          border-color: $color-green-border;
+          color: $color-green;
         }
       }
 
       &.current {
-        color: #8a79b6;
+        color: $color-purple;
 
         > span {
-          border-color: #bcabe1;
+          border-color: $color-purple-hover;
 
           .loading-indicator {
             width: 15px;
             height: 15px;
-            border: 2px solid #d9d1eb;
-            border-top-color: #8a79b6;
+            border: 2px solid $color-purple-active;
+            border-top-color: $color-purple;
             border-radius: 50%;
             animation: analysis-loading-spin 800ms linear infinite;
           }
@@ -193,8 +193,8 @@ Styles connection setup and durable analysis progress.
   .analysis-notice,
   .analysis-error {
     font-size: $font-size-small;
-    background: #faf7f0;
-    color: #a89677;
+    background: $color-gold-soft;
+    color: $color-gold-text;
     border-radius: 10px;
     padding: 15px;
   }
@@ -222,6 +222,6 @@ Styles connection setup and durable analysis progress.
 
 @keyframes breathe {
   50% {
-    box-shadow: 0 0 0 10px #f7f4fc;
+    box-shadow: 0 0 0 10px $color-purple-soft;
   }
 }

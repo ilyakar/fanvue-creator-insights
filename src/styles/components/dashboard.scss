@@ -2,6 +2,8 @@
 Styles audience metrics, featured requests, insight cards and source post context.
 ---------------------------------------------------------------*/
 
+@use 'sass:color';
+@use '../stylingImports/palette';
 @use '../stylingImports/index' as *;
 
 .date-range {
@@ -10,15 +12,15 @@ Styles audience metrics, featured requests, insight cards and source post contex
   gap: 10px;
   border: 1px solid $color-border;
   border-radius: 10px;
-  background: white;
+  background: $color-surface;
   padding: 10px 15px;
   font-size: $font-size-small;
-  color: #6e7484;
+  color: $color-text-secondary;
   white-space: nowrap;
 
   svg {
     font-size: $font-size-small;
-    color: #8c90a0;
+    color: $color-text-secondary;
   }
 }
 
@@ -28,14 +30,14 @@ Styles audience metrics, featured requests, insight cards and source post contex
   padding: 25px 0;
   border: 1px solid $color-border;
   border-radius: 15px;
-  background: white;
+  background: $color-surface;
   margin-bottom: 25px;
 
   .metric {
     display: flex;
     flex-direction: column;
     padding: 0 25px;
-    border-right: 1px solid #eff0f4;
+    border-right: 1px solid $color-border-soft;
 
     &:last-child {
       border-right: none;
@@ -45,13 +47,13 @@ Styles audience metrics, featured requests, insight cards and source post contex
       display: flex;
       gap: 10px;
       align-items: center;
-      color: #686f81;
+      color: $color-text-secondary;
       font-size: $font-size-small;
       margin-bottom: 10px;
 
       svg {
         font-size: $font-size-small;
-        color: #a6a8bb;
+        color: $color-text-secondary;
       }
 
       @include max-width(tablet-large) {
@@ -69,7 +71,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
 
     .metric-caption {
       font-size: $font-size-small;
-      color: #73788a;
+      color: $color-text-secondary;
     }
 
     @include max-width(tablet-large) {
@@ -98,8 +100,8 @@ Styles audience metrics, featured requests, insight cards and source post contex
   overflow: hidden;
   display: grid;
   grid-template-columns: 1.3fr 1fr;
-  background: linear-gradient(110deg, #f4f1fe 0%, #faf7f3 70%, #f9ede0 100%);
-  border: 1px solid #ebe5f1;
+  background: $gradient-soft;
+  border: 1px solid $color-border;
   padding: 30px;
   border-radius: 15px;
   margin-bottom: 40px;
@@ -111,7 +113,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
       display: flex;
       align-items: center;
       gap: 10px;
-      color: #8776ae;
+      color: $color-purple-muted;
       font-size: $font-size-small;
       margin-bottom: 15px;
     }
@@ -128,7 +130,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
 
     p {
       font-size: $font-size-small;
-      color: #838092;
+      color: $color-text-secondary;
       max-width: 450px;
       margin-bottom: 20px;
     }
@@ -148,7 +150,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
 
     .orbit {
       position: absolute;
-      border: 1px solid #e4dce8;
+      border: 1px solid $color-border-soft;
       border-radius: 50%;
       width: 250px;
       height: 250px;
@@ -169,20 +171,20 @@ Styles audience metrics, featured requests, insight cards and source post contex
       gap: 10px;
       align-items: center;
       padding: 15px 20px;
-      border: 1px solid #ffffffb3;
-      background: #ffffffd9;
+      border: 1px solid $color-border;
+      background: $color-surface-overlay;
       border-radius: 15px;
-      box-shadow: 0 10px 30px #7f648412;
+      box-shadow: 0 10px 30px rgba(palette.$ink, 0.07);
       transform: rotate(-4deg);
       white-space: nowrap;
       font-size: $font-size-small;
 
       > span:not(.mini-avatar):not(.spark) {
-        color: #625b72;
+        color: $color-text;
 
         small {
           font-size: $font-size-small;
-          color: #a59cae;
+          color: $color-text-secondary;
           display: block;
           margin-top: 5px;
         }
@@ -201,7 +203,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
       }
 
       .spark {
-        color: #ccab68;
+        color: color.adjust(palette.$gold, $lightness: -7%, $saturation: -12%);
         margin-left: 10px;
         font-size: 22px;
       }
@@ -212,8 +214,8 @@ Styles audience metrics, featured requests, insight cards and source post contex
     }
 
     .mini-avatar {
-      background: #e8dfd8;
-      color: #a48e83;
+      background: $color-purple-soft;
+      color: $color-purple-muted;
       border-radius: 50%;
       width: 30px;
       height: 30px;
@@ -227,7 +229,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
       top: -25px;
       right: 20px;
       font-size: 48px;
-      color: #ccafcc;
+      color: color.mix(palette.$white, palette.$lavender, 50%);
       transform: rotate(15deg);
     }
 
@@ -285,8 +287,8 @@ Styles audience metrics, featured requests, insight cards and source post contex
     }
 
     > span:last-child {
-      color: #73788a;
-      background: #eff0f4;
+      color: $color-text-secondary;
+      background: $color-surface-muted;
       font-size: $font-size-small;
       width: 20px;
       height: 20px;
@@ -338,18 +340,18 @@ Styles audience metrics, featured requests, insight cards and source post contex
   font-size: $font-size-small;
 
   &.love {
-    color: #bf7c8a;
-    background: #faedf0;
+    color: $color-rose;
+    background: $color-rose-soft;
   }
 
   &.requests {
-    color: #a48a45;
-    background: #faf2d9;
+    color: $color-gold;
+    background: $color-gold-soft;
   }
 
   &.improve {
-    color: #8c81b5;
-    background: #eeeafa;
+    color: $color-purple-muted;
+    background: $color-purple-soft;
   }
 }
 
@@ -358,7 +360,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
   display: flex;
   flex-direction: column;
   text-align: left;
-  background: white;
+  background: $color-surface;
   border: 1px solid $color-border;
   padding: 20px;
   border-radius: 15px;
@@ -369,56 +371,56 @@ Styles audience metrics, featured requests, insight cards and source post contex
   min-height: 205px;
 
   &.love {
-    background: #f9eef1;
+    background: $color-rose-soft;
 
     &:hover {
-      border-color: #e3b9c2;
+      border-color: $color-rose-border;
 
       .card-heading svg {
-        color: #bf7c8a;
+        color: $color-rose;
       }
     }
 
     .evidence-counts {
-      border-top-color: #e6c3cb;
+      border-top-color: $color-rose-border;
     }
   }
 
   &.requests {
-    background: #faf3e4;
+    background: $color-gold-soft;
 
     &:hover {
-      border-color: #e4d19a;
+      border-color: $color-gold-border;
 
       .card-heading svg {
-        color: #a48a45;
+        color: $color-gold;
       }
     }
 
     .evidence-counts {
-      border-top-color: #e6d7aa;
+      border-top-color: $color-gold-border;
     }
   }
 
   &.improve {
-    background: #efecf8;
+    background: $color-purple-soft;
 
     &:hover {
-      border-color: #c7bde0;
+      border-color: $color-purple-border;
 
       .card-heading svg {
-        color: #8c81b5;
+        color: $color-purple-muted;
       }
     }
 
     .evidence-counts {
-      border-top-color: #d3cbea;
+      border-top-color: $color-purple-border;
     }
   }
 
   &:hover {
-    border-color: #c8c1f5;
-    box-shadow: 0 5px 20px #2a254c08;
+    border-color: $color-purple-border;
+    box-shadow: 0 5px 20px rgba(palette.$ink, 0.03);
     transform: translateY(-2px);
 
     .card-heading svg {
@@ -443,14 +445,14 @@ Styles audience metrics, featured requests, insight cards and source post contex
 
     svg {
       opacity: 0.35;
-      color: #a7a5b6;
+      color: $color-text-secondary;
       font-size: $font-size-small;
       margin-top: 5px;
     }
   }
 
   > p {
-    color: #707587;
+    color: $color-text-secondary;
     font-size: $font-size-small;
     line-height: 1.8;
     margin-bottom: 25px;
@@ -468,9 +470,9 @@ Styles audience metrics, featured requests, insight cards and source post contex
     gap: 15px;
     margin-top: auto;
     padding-top: 15px;
-    border-top: 1px solid #f0f1f5;
+    border-top: 1px solid $color-border-soft;
     font-size: $font-size-small;
-    color: #727789;
+    color: $color-text-secondary;
 
     span {
       display: flex;
@@ -479,7 +481,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
     }
 
     strong {
-      color: #676d7d;
+      color: $color-text;
       font-weight: 600;
     }
 
@@ -490,10 +492,10 @@ Styles audience metrics, featured requests, insight cards and source post contex
 }
 
 .category-empty {
-  border: 1px dashed #dddde8;
+  border: 1px dashed $color-border;
   padding: 25px;
   border-radius: 15px;
-  color: $color-muted;
+  color: $color-text-secondary;
   font-size: $font-size-small;
 }
 
@@ -504,7 +506,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
   margin-top: 30px;
   padding-top: 20px;
   border-top: 1px solid $color-border;
-  color: #727789;
+  color: $color-text-secondary;
   font-size: $font-size-fine-print;
 
   > svg {
@@ -533,7 +535,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
   margin-bottom: 25px;
   border: 1px solid $color-border;
   border-radius: 15px;
-  background: white;
+  background: $color-surface;
 
   > img {
     width: 160px;
@@ -549,7 +551,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
 
   > div {
     .post-format {
-      color: #9295a5;
+      color: $color-text-secondary;
       font-size: $font-size-small;
 
       span {
@@ -559,7 +561,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
 
     p {
       margin: 10px 0 15px;
-      color: #676e80;
+      color: $color-text;
       font-size: $font-size-small;
     }
   }

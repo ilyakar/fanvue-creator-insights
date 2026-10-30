@@ -2,22 +2,23 @@
 Styles the illustrative landing-page dashboard snapshot and its responsive layout.
 ---------------------------------------------------------------*/
 
+@use '../stylingImports/palette';
 @use '../stylingImports/index' as *;
 
 .product-preview {
   display: flex;
   overflow: hidden;
-  border: 1px solid #eee8ef;
+  border: 1px solid $color-border;
   border-radius: 15px;
-  background: #fff;
-  box-shadow: 0 20px 75px #8e647322;
+  background: $color-surface;
+  box-shadow: 0 20px 75px rgba(palette.$rose, 0.13);
   pointer-events: none;
 
   .preview-sidebar {
     flex: 0 0 175px;
     padding: 25px 15px;
-    background: white;
-    border-right: 1px solid #eeedf2;
+    background: $color-surface;
+    border-right: 1px solid $color-border-soft;
     display: flex;
     flex-direction: column;
 
@@ -42,15 +43,15 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
       display: flex;
       gap: 10px;
       align-items: center;
-      color: #b1a4bc;
-      border: 1px solid #eeebf2;
+      color: $color-text-secondary;
+      border: 1px solid $color-border;
       border-radius: 10px;
       padding: 10px;
       font-size: $font-size-small;
       margin-bottom: 25px;
 
       > span {
-        color: #9b94a7;
+        color: $color-text-secondary;
       }
     }
 
@@ -59,7 +60,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
       align-items: center;
       gap: 10px;
       font-size: $font-size-small;
-      color: #aaa2b3;
+      color: $color-text-secondary;
       border-radius: 5px;
       padding: 10px;
       margin-bottom: 5px;
@@ -70,26 +71,26 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
       }
 
       &.active {
-        color: #8172bf;
-        background: #f3effb;
+        color: $color-purple;
+        background: $color-purple-active;
       }
     }
 
     .preview-sidebar-note {
       margin-top: auto;
       border-radius: 10px;
-      background: #faf7fc;
+      background: $color-surface-subtle;
       padding: 15px;
 
       > svg {
-        color: #b6a8c4;
+        color: $color-purple;
         font-size: $font-size-small;
         margin-bottom: 10px;
       }
 
       > span {
         display: block;
-        color: #b2a6ba;
+        color: $color-text-secondary;
         font-size: $font-size-small;
         line-height: 1.8;
       }
@@ -103,19 +104,19 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
   .preview-main {
     flex: 1;
     min-width: 0;
-    background: #f9f9fc;
+    background: $color-surface-subtle;
 
     .preview-topbar {
       height: 50px;
-      background: white;
-      border-bottom: 1px solid #eeedf2;
+      background: $color-surface;
+      border-bottom: 1px solid $color-border-soft;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 25px;
 
       > span:first-child {
-        color: #b4acbd;
+        color: $color-text-secondary;
         font-size: $font-size-small;
 
         > span {
@@ -138,7 +139,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
 
       > .eyebrow {
         font-size: $font-size-small;
-        color: #a99fb6;
+        color: $color-text-secondary;
         margin-bottom: 10px;
       }
 
@@ -155,14 +156,14 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
 
       > p {
         font-size: $font-size-small;
-        color: #b2aabd;
+        color: $color-text-secondary;
         margin-bottom: 20px;
       }
 
       .preview-metrics {
         display: flex;
-        background: white;
-        border: 1px solid #edebf1;
+        background: $color-surface;
+        border: 1px solid $color-border-soft;
         border-radius: 10px;
         padding: 15px 0;
         margin-bottom: 20px;
@@ -170,7 +171,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
         > div {
           flex: 1;
           padding: 0 20px;
-          border-right: 1px solid #f1eef5;
+          border-right: 1px solid $color-border-soft;
 
           &:last-child {
             border: none;
@@ -178,7 +179,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
 
           > span {
             display: block;
-            color: #b6acbf;
+            color: $color-text-secondary;
             font-size: $font-size-small;
             margin-bottom: 5px;
           }
@@ -204,15 +205,15 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
         display: flex;
         align-items: center;
         gap: 15px;
-        border: 1px solid #eee6ed;
+        border: 1px solid $color-border;
         border-radius: 10px;
         padding: 20px;
         margin-bottom: 25px;
-        background: linear-gradient(110deg, #f3edfb, #faf0df);
+        background: $gradient-soft;
 
         > svg {
           font-size: 18px;
-          color: #b6a5c9;
+          color: $color-purple;
         }
 
         > div {
@@ -222,14 +223,14 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
           }
 
           > p {
-            color: #b3a4b6;
+            color: $color-text-secondary;
             font-size: $font-size-small;
             margin-top: 5px;
           }
         }
 
         > span {
-          color: #d4b5ca;
+          color: $color-rose;
           font-size: 35px;
           margin-left: auto;
           line-height: 1;
@@ -249,7 +250,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
         justify-content: space-between;
 
         > span {
-          color: #baaec3;
+          color: $color-text-secondary;
           font-size: $font-size-small;
           font-weight: 400;
         }
@@ -265,25 +266,25 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
           gap: 5px;
           align-items: center;
           font-size: $font-size-small;
-          color: #a397af;
+          color: $color-text-secondary;
           margin-bottom: 10px;
 
           svg {
-            color: #bf9daa;
+            color: $color-rose;
           }
         }
 
         .requests .mini-category svg {
-          color: #c1ab75;
+          color: $color-gold;
         }
 
         .improve .mini-category svg {
-          color: #b2a4c7;
+          color: $color-purple-muted;
         }
 
         .preview-card {
-          background: white;
-          border: 1px solid #edebf1;
+          background: $color-surface;
+          border: 1px solid $color-border-soft;
           border-radius: 10px;
           padding: 15px;
           min-height: 160px;
@@ -299,7 +300,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
           }
 
           > p {
-            color: #b1a7bd;
+            color: $color-text-secondary;
             font-size: $font-size-small;
             line-height: 1.8;
             display: -webkit-box;
@@ -314,13 +315,13 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
             display: flex;
             align-items: center;
             font-size: $font-size-small;
-            color: #b3a9bd;
-            border-top: 1px solid #f1eef5;
+            color: $color-text-secondary;
+            border-top: 1px solid $color-border-soft;
             padding-top: 10px;
 
             strong {
               margin-right: 5px;
-              color: #9c8dab;
+              color: $color-text;
             }
 
             svg {

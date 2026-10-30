@@ -23,8 +23,8 @@ html {
 
 body {
   margin: 0;
-  background: $color-background;
-  color: $color-navy;
+  background: $color-canvas;
+  color: $color-text;
   font-family: $font-family-sans;
   font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
@@ -69,12 +69,12 @@ svg {
 }
 
 :focus-visible {
-  outline: 3px solid #837cfc;
+  outline: 3px solid $color-purple-hover;
   outline-offset: 4px;
 }
 
 ::selection {
-  background: #e4e1ff;
+  background: $color-purple-active;
 }
 
 .sr-only {
@@ -96,8 +96,8 @@ svg {
   left: 20px;
   padding: 15px 20px;
   border-radius: 10px;
-  background: $color-navy;
-  color: white;
+  background: $color-purple;
+  color: $color-on-purple;
 
   &:focus {
     top: 15px;

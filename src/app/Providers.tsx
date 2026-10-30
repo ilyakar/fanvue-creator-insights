@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react'
 import { Provider } from 'react-redux'
 import { makeStore, persistStore } from '@redux/stores'
 
+import ThemeProvider from './Components/Theme/ThemeProvider'
 import AlertProvider from './AlertProvider'
 
 // Provides isolated interface state without delaying server-rendered content behind rehydration.
@@ -24,9 +25,11 @@ const Providers = ({ children }: { children: React.ReactNode }) => {
   }, [store])
 
   return (
-    <Provider store={store}>
-      <AlertProvider>{children}</AlertProvider>
-    </Provider>
+    <ThemeProvider>
+      <Provider store={store}>
+        <AlertProvider>{children}</AlertProvider>
+      </Provider>
+    </ThemeProvider>
   )
 }
 
