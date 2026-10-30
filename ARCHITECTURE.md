@@ -6,7 +6,7 @@
 
 One Next.js App Router application uses TypeScript, React client components for interaction, server components for private reads, and route handlers for OAuth and mutations. SCSS follows the reference project's shared foundations and component hierarchy. `AGENTS.md` remains the source of code style rules.
 
-Application source lives under `src/`, including `src/app/`, `src/lib/`, `src/redux/`, `src/styles/`, `src/mock-data/`, and `src/proxy.ts`. Aliases such as `@/lib` resolve from `src/`. Public assets, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup remain at the repository root. Copied reference source uses `good-code-from-another-project/src/`.
+Application source lives under `src/`, including `src/app/`, `src/lib/`, `src/styles/`, `src/mock-data/`, and `src/proxy.ts`. Aliases such as `@/lib` resolve from `src/`. Public assets, configuration and environment files, documentation, tooling scripts, tests, and Supabase setup remain at the repository root. Copied reference source uses `good-code-from-another-project/src/`.
 
 ## Reading a screen
 
@@ -21,7 +21,7 @@ Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView`
 
 `AudienceInsights` shares metrics, category filtering, cards and the evidence drawer across overview and post screens. It receives audience feedback, saved analysis and optional explicit post scope, with no account or redirect concerns. `useFocusTrap` supports both first-control focus for account confirmations and panel-first focus for the evidence drawer.
 
-`PostsFilterProvider` intentionally stays in the persistent `AppShell`. Its transient search and format state survives streamed results, post-detail navigation and visits to other dashboard screens, then resets when the shell unmounts. Moving it to a posts-only layout would change that behavior. Redux continues to persist only the sidebar preference.
+`PostsFilterProvider` intentionally stays in the persistent `AppShell`. Its transient search and format state survives streamed results, post-detail navigation and visits to other dashboard screens, then resets when the shell unmounts. Moving it to a posts-only layout would change that behavior.
 
 ## Analysis code ownership
 
@@ -35,9 +35,9 @@ Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView`
 
 The closest reference examples are `src/app/home/page.tsx` for visible page composition, `src/app/Components/MyFutureSelfCard.tsx` for focused component props, `src/app/AlertProvider.tsx` for shared notices, and `src/styles/components/myFutureSelfCard.scss` for nested styles with local responsive rules, all inside `good-code-from-another-project/`.
 
-The active application follows that source grouping, component composition, promise-based request handling, Redux persistence approach and SCSS foundation. Explicit `AGENTS.md` rules take precedence over older reference examples, including arrow functions, descriptive names, underscore-prefixed interaction handlers, headers, comments, braces and whitespace.
+The active application follows that source grouping, component composition, promise-based request handling and SCSS foundation. Explicit `AGENTS.md` rules take precedence over older reference examples, including arrow functions, descriptive names, underscore-prefixed interaction handlers, headers, comments, braces and whitespace.
 
-Two deliberate adaptations remain: authenticated reads run on the server, and small route-adjacent views share copy with streamed loading states. Redux stores are isolated per provider and restore only sidebar preferences after hydration, preserving immediate server-rendered content. These boundaries support the current app's privacy and loading requirements without adding generic loaders or another state-management layer.
+Two deliberate adaptations remain: authenticated reads run on the server, and small route-adjacent views share copy with streamed loading states. These boundaries support the current app's privacy and loading requirements without adding generic loaders or another state-management layer.
 
 ## Identity and credentials
 
@@ -51,7 +51,7 @@ Refresh-token rotation is serialized by a database lease. Each new pair is writt
 
 Supabase Postgres owns accounts, connections, sessions, OAuth attempts, creator-scoped audience records and durable analysis jobs/results. Every private query derives its owner from the server session, never from an arbitrary browser user ID. RLS is enabled and browser roles have no private table privileges. The server-only service role performs explicitly scoped operations.
 
-Redux follows the reference structure but creates an isolated store per provider. It persists only the sidebar preference. Saved analysis, credentials and session identities never live in persisted Redux. Local component state owns dialogs and transient filters.
+Local component state owns dialogs and transient filters. Shared providers supply theme and alert context without persisting application state.
 
 ## Source data
 

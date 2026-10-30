@@ -7,15 +7,12 @@ Gives every authenticated screen a shared, responsive navigation and sample-data
 import { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useDispatch, useSelector } from 'react-redux'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faArrowRightFromBracket,
   faArrowUpRightFromSquare,
   faBars,
   faChartSimple,
-  faChevronLeft,
-  faChevronRight,
   faCommentDots,
   faGear,
   faLayerGroup,
@@ -23,8 +20,6 @@ import {
   faWandMagicSparkles,
   faXmark
 } from '@fortawesome/free-solid-svg-icons'
-import { setSidebarCollapsed } from '@redux/reducers/Preferences'
-import type { RootState } from '@redux/stores'
 
 import type { Account } from '@/lib/types'
 import { useAlert } from '@/app/AlertProvider'
@@ -44,8 +39,6 @@ const AppShell = ({
   isPreview: boolean
 }) => {
   const pathname = usePathname()
-  const dispatch = useDispatch()
-  const isCollapsed = useSelector((state: RootState) => state.Preferences.isSidebarCollapsed)
   const showAlert = useAlert()
 
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -98,9 +91,6 @@ const AppShell = ({
   // Toggles the mobile drawer from its accessible menu button.
   const _handleMenuToggle = () => setIsMenuOpen(previousValue => !previousValue)
 
-  // Saves the user's preferred desktop sidebar width.
-  const _handleCollapse = () => dispatch(setSidebarCollapsed(!isCollapsed))
-
   // Invalidates the active session before returning to the public landing page.
   const _handleLogout = () => {
     if (isPreview) {
@@ -125,10 +115,7 @@ const AppShell = ({
   }
 
   return (
-    <div
-      className={['app-shell', isCollapsed && !isMobileViewport && 'collapsed', isMenuOpen && 'menu-open']
-        .filter(Boolean)
-        .join(' ')}>
+    <div className={['app-shell', isMenuOpen && 'menu-open'].filter(Boolean).join(' ')}>
       {isMenuOpen && <button className="menu-backdrop" aria-label="Close navigation" onClick={_handleMenuClose} />}
 
       <aside
@@ -165,8 +152,7 @@ const AppShell = ({
               className={['nav-link', activeNavigationItem.label === navigationItem.label && 'active']
                 .filter(Boolean)
                 .join(' ')}
-              aria-current={activeNavigationItem.label === navigationItem.label ? 'page' : undefined}
-              title={isCollapsed ? navigationItem.label : undefined}>
+              aria-current={activeNavigationItem.label === navigationItem.label ? 'page' : undefined}>
               <FontAwesomeIcon icon={navigationItem.icon} />
               <span>{navigationItem.label}</span>
               {navigationItem.label === 'Messages' && <small>Soon</small>}
@@ -206,14 +192,6 @@ const AppShell = ({
             </button>
           </div>
         </div>
-
-        <button
-          className="collapse-button"
-          aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          aria-expanded={!isCollapsed}
-          onClick={_handleCollapse}>
-          <FontAwesomeIcon icon={isCollapsed ? faChevronRight : faChevronLeft} />
-        </button>
       </aside>
 
       <div className="app-body">

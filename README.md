@@ -72,7 +72,6 @@ Apply the migration before connecting an account. All private tables have RLS en
 
 - `src/app/`: routes, providers and reusable `Components/`
 - `src/styles/`: shared SCSS tokens, mixins, foundations and component styles
-- `src/redux/`: an isolated store persisting only the sidebar preference
 - `src/mock-data/`: source fixtures retained for seeding and offline tests; the running app reads Supabase
 - `src/lib/data/`: direct audience snapshot reads, schema validation and editorial previews
 - `src/lib/analysis/`: AI generation, evidence validation and analysis cache keys

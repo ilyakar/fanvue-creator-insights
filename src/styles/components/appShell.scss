@@ -19,53 +19,6 @@ Styles navigation, account identity and the responsive application shell.
   @include max-width(tablet) {
     --sidebar-width: 0px;
   }
-
-  &.collapsed {
-    --sidebar-width: 85px;
-
-    .sidebar {
-      padding-left: 20px;
-      padding-right: 20px;
-
-      .brand-row .brand {
-        width: 35px;
-        justify-content: center;
-
-        .wordmark {
-          display: none;
-        }
-      }
-
-      .workspace {
-        padding: 10px 0;
-        justify-content: center;
-      }
-
-      .workspace-copy,
-      .navigation-label,
-      .sidebar-note,
-      .privacy-link,
-      .account-copy,
-      .account-row button,
-      .nav-link span,
-      .nav-link small {
-        display: none;
-      }
-
-      .nav-link {
-        justify-content: center;
-        padding: 15px 0;
-      }
-
-      .account-row {
-        justify-content: center;
-      }
-    }
-
-    @include max-width(tablet) {
-      --sidebar-width: 0px;
-    }
-  }
 }
 
 .sidebar {
@@ -78,7 +31,6 @@ Styles navigation, account identity and the responsive application shell.
   display: flex;
   flex-direction: column;
   padding: 30px 20px 0;
-  transition: width 180ms;
 
   .brand-row {
     padding: 0 5px;
@@ -310,34 +262,6 @@ Styles navigation, account identity and the responsive application shell.
     }
   }
 
-  .collapse-button {
-    position: absolute;
-    right: 0;
-    top: 100px;
-    transform: translateX(50%);
-    border-radius: 50%;
-    width: 25px;
-    height: 25px;
-    padding: 0;
-    border: 1px solid $color-border;
-    background: $color-surface;
-    color: $color-text-secondary;
-    font-size: $font-size-small;
-    line-height: 1;
-    display: grid;
-    place-items: center;
-
-    > svg {
-      display: block;
-      width: 10px;
-      height: 10px;
-    }
-
-    @include max-width(tablet) {
-      display: none;
-    }
-  }
-
   @include max-width(tablet-large) {
     padding-left: 15px;
     padding-right: 15px;
@@ -370,7 +294,6 @@ Styles navigation, account identity and the responsive application shell.
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  transition: margin-left 180ms;
 }
 
 .topbar {
