@@ -83,11 +83,8 @@ const AudienceInsights = ({
       <section className="insights-section" aria-labelledby="audience-themes-title">
         <div className="section-heading">
           <div>
-            <h2 id="audience-themes-title">
-              {scopedPostId ? 'What this post is telling you' : 'Here’s what’s coming through'}
-            </h2>
-
-            <p>Every insight starts with something a fan actually said.</p>
+            <h2 id="audience-themes-title">{scopedPostId ? 'Post insights' : 'Audience insights'}</h2>
+            <p>Open an insight to read the comments behind it.</p>
           </div>
 
           <label className="select-field">
@@ -110,7 +107,7 @@ const AudienceInsights = ({
         {insights.length === 0 && (
           <div className="empty-state">
             <FontAwesomeIcon icon={faCommentDots} />
-            <h3>A little more conversation will help.</h3>
+            <h3>Not enough feedback yet</h3>
             <p>These comments don’t contain specific feedback to identify useful themes yet.</p>
           </div>
         )}

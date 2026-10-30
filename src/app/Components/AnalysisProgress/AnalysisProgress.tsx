@@ -33,21 +33,21 @@ const AnalysisProgress = ({
   const [isRequestingAnalysis, setIsRequestingAnalysis] = useState(false)
   const [isWaiting, setIsWaiting] = useState(false)
 
-  let heading = 'Getting to know your audience.'
-  let description = 'We’re looking through sample comments to discover the things that matter most to fans.'
+  let heading = 'Analysing sample comments'
+  let description = 'Keep this page open until your insights are ready.'
   let actionLabel = 'Try again'
 
   // Invites an explicit analysis request after the previous saved results were cleared.
   if (analysisStage === 'idle') {
-    heading = 'Ready for a fresh perspective?'
-    description = 'Prepare a fresh set of insights from our sample comments, whenever you’re ready.'
+    heading = 'Create your insights'
+    description = 'Analyse sample comments to find praise, requests and suggestions.'
     actionLabel = 'Prepare my insights'
   }
 
   // Explains an interrupted analysis without suggesting that source comments were lost.
   else if (analysisStage === 'failed') {
-    heading = 'Let’s give that another try.'
-    description = 'Your comments are safe. We just couldn’t finish preparing your insights this time.'
+    heading = 'Analysis couldn’t be completed'
+    description = 'Try again to analyse the sample comments.'
   }
 
   // Polls saved processing state; no timing-based simulated progress is used.
@@ -160,7 +160,6 @@ const AnalysisProgress = ({
         <FontAwesomeIcon icon={faWandMagicSparkles} />
       </div>
 
-      <span className="eyebrow">GOOD INSIGHTS TAKE A LITTLE LISTENING</span>
       <h1>{heading}</h1>
       <p>{description}</p>
 

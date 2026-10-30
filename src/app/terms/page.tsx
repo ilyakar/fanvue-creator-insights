@@ -17,28 +17,27 @@ const AboutPrototypePage = () => (
     </header>
 
     <main id="main-content">
-      <span className="eyebrow">ABOUT THIS PROTOTYPE</span>
-      <h1>A little idea, brought to life.</h1>
+      <h1>About this prototype</h1>
 
       <p>
         Creator Insights is a product prototype exploring how creators could understand audience feedback more easily.
       </p>
 
-      <h2>What’s real</h2>
+      <h2>Live integrations</h2>
 
       <p>
         When configured, the app connects through Fanvue’s official OAuth flow and uses a real AI model to analyse
         comments. Counts and comment relationships are calculated and checked by application code.
       </p>
 
-      <h2>What’s sample content</h2>
+      <h2>Sample content</h2>
 
       <p>
         Source posts, fans, comments and imagery are illustrative. The local development preview additionally uses
         editorial insight fixtures, clearly labelled as design examples rather than AI output.
       </p>
 
-      <h2>What to expect</h2>
+      <h2>Limitations</h2>
 
       <p>
         This prototype does not offer billing, publishing tools or message analysis. AI interpretations can miss

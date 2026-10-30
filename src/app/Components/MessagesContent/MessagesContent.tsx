@@ -15,17 +15,8 @@ const MessagesContent = ({ basePath }: { basePath: string }) => (
       <span />
     </div>
 
-    <span className="coming-pill">A LITTLE FURTHER DOWN THE ROAD</span>
-
-    <h1>
-      More conversations.
-      <br />
-      More understanding.
-    </h1>
-
-    <p>
-      One day, your private conversations could help paint an even richer picture. Message insights are coming later.
-    </p>
+    <h1>Message insights</h1>
+    <p>Message analysis isn’t available yet.</p>
 
     <span className="privacy-reassurance">
       <FontAwesomeIcon icon={faLock} /> Your messages aren’t accessed or analysed.

@@ -14,16 +14,14 @@ const DashboardView = ({ dateRange, children }: { dateRange: React.ReactNode; ch
     <div className="page-heading">
       <div>
         <div className="eyebrow-row">
-          <span className="eyebrow">YOUR AUDIENCE, A LITTLE CLEARER</span>
-
           <span className="sample-pill">
             <span />
             Sample data
           </span>
         </div>
 
-        <h1>Good things start with listening.</h1>
-        <p>The little things they love. The ideas they’re hoping for. All in one place.</p>
+        <h1>Audience overview</h1>
+        <p>See what fans love, request and want improved across your posts.</p>
       </div>
 
       {dateRange}

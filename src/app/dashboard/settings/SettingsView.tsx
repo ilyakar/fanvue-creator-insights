@@ -14,9 +14,8 @@ const SettingsView = ({ isPreview, connectionDetails }: { isPreview: boolean; co
   <div className="settings-page">
     <div className="page-heading">
       <div>
-        <span className="eyebrow">YOUR WORKSPACE, YOUR WAY</span>
-        <h1>A few things, taken care of.</h1>
-        <p>Your connection, your information, and a little peace of mind.</p>
+        <h1>Settings</h1>
+        <p>Manage your Fanvue connection and saved analysis.</p>
       </div>
     </div>
 
@@ -27,8 +26,7 @@ const SettingsView = ({ isPreview, connectionDetails }: { isPreview: boolean; co
         </span>
 
         <div>
-          <h2>Your Fanvue connection</h2>
-          <p>One account. No extra passwords.</p>
+          <h2>Fanvue connection</h2>
         </div>
       </div>
 
@@ -51,14 +49,12 @@ const SettingsView = ({ isPreview, connectionDetails }: { isPreview: boolean; co
         </span>
 
         <div>
-          <h2>Your data, in your hands</h2>
-          <p>Keep what’s useful. Clear what you don’t need.</p>
+          <h2>Saved analysis</h2>
         </div>
       </div>
 
       <div className="settings-action">
         <div>
-          <h3>Clear saved analysis</h3>
           <p>Remove your saved insights. Your Fanvue account and its content won’t be changed.</p>
         </div>
 
@@ -72,7 +68,7 @@ const SettingsView = ({ isPreview, connectionDetails }: { isPreview: boolean; co
         Sample data
       </span>
 
-      <h2>A real connection. A sample audience.</h2>
+      <h2>About sample data</h2>
 
       <p>
         This prototype uses fictional posts, fans and comments. After you connect, a real AI model analyses that sample

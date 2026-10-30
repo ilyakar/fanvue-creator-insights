@@ -77,9 +77,8 @@ const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Data
         </div>
 
         <div className="preview-body">
-          <span className="eyebrow">YOUR AUDIENCE, A LITTLE CLEARER</span>
-          <h3>Good things start with listening.</h3>
-          <p>The little things they love. The ideas they’re hoping for.</p>
+          <h3>Audience overview</h3>
+          <p>See what fans love, request and want improved across your posts.</p>
 
           <div className="preview-metrics">
             {[
@@ -98,8 +97,8 @@ const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Data
             <FontAwesomeIcon icon={faWandMagicSparkles} />
 
             <div>
-              <strong>Your next idea? It’s in the comments.</strong>
-              <p>A little more connection could go a long way.</p>
+              <strong>Fan request</strong>
+              <p>{insights.find(insight => insight.category === 'requests')?.title}</p>
             </div>
 
             <span aria-hidden="true">
@@ -108,7 +107,7 @@ const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Data
           </div>
 
           <div className="preview-theme-heading">
-            Here’s what’s coming through <span>Illustrative insights</span>
+            Audience insights <span>Illustrative insights</span>
           </div>
 
           <div className="preview-insights">

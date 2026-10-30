@@ -10,16 +10,14 @@ const PostsView = ({ postCount, children }: { postCount: React.ReactNode; childr
     <div className="page-heading">
       <div>
         <div className="eyebrow-row">
-          <span className="eyebrow">ONE POST. MANY PERSPECTIVES.</span>
-
           <span className="sample-pill">
             <span />
             Sample data
           </span>
         </div>
 
-        <h1>Every post starts a conversation.</h1>
-        <p>Take a closer look at the moments your fans are responding to.</p>
+        <h1>Posts</h1>
+        <p>Choose a post to view its insights and audience feedback.</p>
       </div>
     </div>
 

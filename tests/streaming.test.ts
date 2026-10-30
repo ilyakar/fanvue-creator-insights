@@ -63,7 +63,7 @@ test('posts stream controls before results and consume one shared post request',
 
   await shellReady
 
-  assert.match(renderedMarkup, /Every post starts a conversation/)
+  assert.match(renderedMarkup, /<h1>Posts<\/h1>/)
   assert.match(renderedMarkup, /type="search"/)
   assert.match(renderedMarkup, /All formats/)
   assert.doesNotMatch(renderedMarkup, /class="post-card"/)
@@ -74,5 +74,5 @@ test('posts stream controls before results and consume one shared post request',
   assert.match(renderedMarkup, /class="post-card"/)
   assert.match(renderedMarkup, /20<!-- --> comments/)
   assert.match(renderedMarkup, /class="post-count">1<!-- --> <!-- -->post/)
-  assert.equal(renderedMarkup.match(/Every post starts a conversation/g)?.length, 1)
+  assert.equal(renderedMarkup.match(/<h1>Posts<\/h1>/g)?.length, 1)
 })

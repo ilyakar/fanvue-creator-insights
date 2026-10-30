@@ -31,13 +31,12 @@ const ConnectPage = async ({ searchParams }: { searchParams: Promise<{ reason?: 
           <FontAwesomeIcon icon={faLink} />
         </span>
 
-        <span className="eyebrow">A LITTLE CLOSER TO YOUR AUDIENCE</span>
-        <h1>{!isReady ? 'Almost ready to connect.' : 'Your next good idea starts here.'}</h1>
+        <h1>{!isReady ? 'Fanvue connection unavailable' : 'Connect your Fanvue account'}</h1>
 
         <p>
           {!isReady
             ? 'This app’s Fanvue connection is still being set up. Once it’s ready, you’ll be able to sign in securely with Fanvue.'
-            : 'Connect your Fanvue account to start discovering what your fans love and what they want next.'}
+            : 'Sign in with Fanvue to analyse sample comments and save your insights.'}
         </p>
 
         {reason === 'session' && (

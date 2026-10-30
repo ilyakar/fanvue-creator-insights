@@ -16,9 +16,8 @@ const NotFoundPage = () => (
     </header>
 
     <main id="main-content" className="connect-card">
-      <span className="eyebrow">A LITTLE DETOUR</span>
-      <h1>Nothing here just yet.</h1>
-      <p>This page or post couldn’t be found. Let’s get you back to familiar ground.</p>
+      <h1>Page not found</h1>
+      <p>This page or post may have moved or no longer exists.</p>
 
       <Link className="button primary" href="/">
         Back home <FontAwesomeIcon icon={faArrowRight} />

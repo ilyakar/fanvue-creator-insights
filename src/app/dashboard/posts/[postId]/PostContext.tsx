@@ -23,9 +23,8 @@ const PostContext = ({ post }: { post: Post }) => {
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">A CLOSER LOOK</span>
           <h1>{post.title}</h1>
-          <p>Here’s what your fans are saying about this post.</p>
+          <p>Explore audience feedback and insights for this post.</p>
         </div>
       </div>
 

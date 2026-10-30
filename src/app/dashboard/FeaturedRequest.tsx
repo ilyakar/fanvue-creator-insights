@@ -3,7 +3,7 @@ Highlights the strongest audience request and links to the audience insights sec
 ---------------------------------------------------------------*/
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowDown, faAsterisk, faStar, faWandMagicSparkles } from '@fortawesome/free-solid-svg-icons'
+import { faArrowDown, faAsterisk, faStar } from '@fortawesome/free-solid-svg-icons'
 
 import type { Dataset, Insight } from '@/lib/types'
 import { getEvidence, getInsightCounts } from '@/lib/insights'
@@ -23,11 +23,7 @@ const FeaturedRequest = ({ audienceFeedback, insights }: { audienceFeedback: Dat
     featuredInsight && (
       <section className="featured-insight">
         <div className="featured-copy">
-          <span className="eyebrow">
-            <FontAwesomeIcon icon={faWandMagicSparkles} /> A GOOD PLACE TO START
-          </span>
-
-          <h2>Your next idea? It’s in the comments.</h2>
+          <h2>Most requested by fans</h2>
           <p>{featuredInsight.opportunity || featuredInsight.summary}</p>
 
           <a className="text-button" href="#audience-themes-title">

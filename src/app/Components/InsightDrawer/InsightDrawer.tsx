@@ -95,7 +95,7 @@ const InsightDrawer = ({
           {opportunity && (
             <div className="opportunity">
               <span className="eyebrow">
-                <FontAwesomeIcon icon={faLightbulb} /> A LITTLE IDEA TO TRY
+                <FontAwesomeIcon icon={faLightbulb} /> SUGGESTED ACTION
               </span>
 
               <p>{opportunity}</p>
@@ -126,7 +126,7 @@ const InsightDrawer = ({
 
           <div className="comments-heading">
             <h3>
-              The comments behind it <span>{counts.comments}</span>
+              Supporting comments <span>{counts.comments}</span>
             </h3>
 
             <p>

@@ -15,8 +15,7 @@ const PrivacyPage = () => (
     </header>
 
     <main id="main-content">
-      <span className="eyebrow">A LITTLE TRANSPARENCY</span>
-      <h1>Your information, explained.</h1>
+      <h1>Privacy and data</h1>
       <p>This is a working product prototype. Here’s what it uses today.</p>
       <h2>Your connection</h2>
 

@@ -49,13 +49,6 @@ const HomePage = async () => {
 
       <main id="main-content">
         <section className="landing-hero">
-          <div className="hero-kicker">
-            <span aria-hidden="true">
-              <FontAwesomeIcon icon={faAsterisk} />
-            </span>{' '}
-            LESS GUESSING. MORE CONNECTION.
-          </div>
-
           <h1>
             Know what your
             <br />
@@ -63,8 +56,7 @@ const HomePage = async () => {
           </h1>
 
           <p>
-            They’re already telling you. Turn your Fanvue comments into clear insights about what they love and what
-            they’d love to see more of.
+            Find praise, requests and suggestions in Fanvue comments, with the original feedback behind every insight.
           </p>
 
           <a className="button primary hero-cta" href="/api/auth/fanvue">
@@ -91,22 +83,12 @@ const HomePage = async () => {
             </div>
           </div>
 
-          <p className="preview-caption">
-            A peek at your new perspective. Dashboard shown with sample data and illustrative insights.
-          </p>
+          <p className="preview-caption">Dashboard preview with sample data and illustrative insights.</p>
         </section>
 
         <section className="benefits-section" id="a-little-clarity">
           <div className="section-intro">
-            <span className="eyebrow">A LITTLE CLARITY GOES A LONG WAY</span>
-
-            <h2>
-              Behind every comment,
-              <br />
-              there’s a little direction.
-            </h2>
-
-            <p>Get past the noise and closer to what matters to your audience.</p>
+            <h2>Find out what fans love, want and would change</h2>
           </div>
 
           <div className="benefit-grid">
@@ -114,23 +96,20 @@ const HomePage = async () => {
               {
                 category: 'love',
                 icon: faHeart,
-                title: 'More of what they love.',
-                description: 'Find the moments, themes and little details that keep your fans coming back.',
-                label: 'Discover what resonates'
+                title: 'What fans love',
+                description: 'Find the moments, themes and details fans praise most.'
               },
               {
                 category: 'requests',
                 icon: faLightbulb,
-                title: 'Your next good idea.',
-                description: 'Spot the requests and suggestions hiding in your comments. Your audience has plenty.',
-                label: 'Know what to create next'
+                title: 'What fans want next',
+                description: 'See which content ideas and requests come up in comments.'
               },
               {
                 category: 'improve',
                 icon: faSliders,
-                title: 'Room to get even better.',
-                description: 'Understand recurring frustrations, with helpful context and a clear place to start.',
-                label: 'Make small, meaningful changes'
+                title: 'What could be better',
+                description: 'Identify recurring frustrations and suggestions for improvement.'
               }
             ].map(benefit => (
               <article className={`benefit ${benefit.category}`} key={benefit.category}>
@@ -140,7 +119,6 @@ const HomePage = async () => {
 
                 <h3>{benefit.title}</h3>
                 <p>{benefit.description}</p>
-                <span className="benefit-label">{benefit.label}</span>
               </article>
             ))}
           </div>
@@ -148,13 +126,7 @@ const HomePage = async () => {
 
         <section className="how-section" id="how-it-works">
           <div className="section-intro">
-            <span className="eyebrow">FROM COMMENTS TO CLARITY</span>
-
-            <h2>
-              A fresh perspective.
-              <br />
-              Without the extra work.
-            </h2>
+            <h2>How it works</h2>
           </div>
 
           <div className="steps-grid">
@@ -162,19 +134,19 @@ const HomePage = async () => {
               {
                 number: '01',
                 icon: faLink,
-                title: 'Connect your Fanvue.',
+                title: 'Connect your Fanvue account',
                 description: 'Sign in securely with the account you already use. No forms, no new password.'
               },
               {
                 number: '02',
                 icon: faWandMagicSparkles,
-                title: 'Let the themes come through.',
-                description: 'AI looks for the ideas, praise and requests your audience keeps coming back to.'
+                title: 'Analyse comments',
+                description: 'AI groups sample comments into praise, requests and suggestions.'
               },
               {
                 number: '03',
                 icon: faLightbulb,
-                title: 'Create with a little more clarity.',
+                title: 'Explore your insights',
                 description: 'Explore the insights, read the original comments and decide what comes next.'
               }
             ].map(step => (
@@ -202,19 +174,11 @@ const HomePage = async () => {
             <FontAwesomeIcon icon={faAsterisk} />
           </span>
 
-          <span className="eyebrow">YOUR AUDIENCE HAS SOMETHING TO SAY</span>
-
-          <h2>
-            Let’s turn a little listening
-            <br />
-            into your next <span>good thing.</span>
-          </h2>
+          <h2>Explore your audience insights</h2>
 
           <a className="button primary" href="/api/auth/fanvue">
             Start free <FontAwesomeIcon icon={faArrowRight} />
           </a>
-
-          <span className="cta-note">Less guesswork looks good on you.</span>
         </section>
       </main>
 
