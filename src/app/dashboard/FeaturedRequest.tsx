@@ -6,7 +6,7 @@ Highlights the strongest audience request and opens its supporting insight detai
 
 import { useCallback, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faArrowRight, faAsterisk, faStar } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight } from '@fortawesome/free-solid-svg-icons'
 
 import type { Dataset, Insight, PostTheme } from '@/lib/types'
 import { getEvidence, getInsightCounts } from '@/lib/insights'
@@ -68,17 +68,8 @@ const FeaturedRequest = ({
 
             <span className="quote">
               <span>“{featuredComment?.text}”</span>
-              <small>From the original comments.</small>
-            </span>
-
-            <span className="spark">
-              <FontAwesomeIcon icon={faStar} />
             </span>
           </div>
-
-          <span className="decorative-star">
-            <FontAwesomeIcon icon={faAsterisk} />
-          </span>
         </div>
       </section>
 

@@ -176,36 +176,19 @@ Styles audience metrics, featured requests, insight cards and source post contex
       border-radius: 15px;
       box-shadow: 0 10px 30px rgba(palette.$ink, 0.07);
       transform: rotate(-4deg);
-      white-space: nowrap;
       font-size: $font-size-small;
-
-      > span:not(.mini-avatar):not(.spark) {
-        color: $color-text;
-
-        small {
-          font-size: $font-size-small;
-          color: $color-text-secondary;
-          display: block;
-          margin-top: 5px;
-        }
-      }
 
       .quote {
         min-width: 0;
+        max-width: 200px;
+        color: $color-text;
 
         > span {
-          display: block;
-          max-width: 200px;
+          display: -webkit-box;
           overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 2;
         }
-      }
-
-      .spark {
-        color: color.adjust(palette.$gold, $lightness: -7%, $saturation: -12%);
-        margin-left: 10px;
-        font-size: 22px;
       }
 
       @include max-width(desktop) {
@@ -222,15 +205,6 @@ Styles audience metrics, featured requests, insight cards and source post contex
       display: grid;
       place-items: center;
       font-size: $font-size-small;
-    }
-
-    .decorative-star {
-      position: absolute;
-      top: -25px;
-      right: 20px;
-      font-size: 48px;
-      color: color.mix(palette.$white, palette.$lavender, 50%);
-      transform: rotate(15deg);
     }
 
     @include max-width(tablet-large) {
