@@ -405,10 +405,6 @@ Styles navigation, account identity and the responsive application shell.
     display: flex;
     align-items: center;
     gap: 25px;
-
-    .sample-pill {
-      font-size: $font-size-fine-print;
-    }
   }
 
   .mobile-toggle {
