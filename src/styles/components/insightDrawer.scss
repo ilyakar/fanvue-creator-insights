@@ -259,12 +259,23 @@ Styles the evidence drawer, original comments and supporting source links.
         }
 
         > button {
+          flex: 0 0 25px;
+          margin-left: auto;
           background: none;
           border: none;
+          border-radius: 5px;
           color: #b0a9c7;
           min-height: 25px;
           min-width: 25px;
-          font-size: $font-size-small;
+          font-size: $font-size-fine-print;
+          transition:
+            background 150ms,
+            color 150ms;
+
+          &:hover {
+            background: #f8f7ff;
+            color: $color-purple;
+          }
         }
       }
     }

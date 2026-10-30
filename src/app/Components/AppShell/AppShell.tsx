@@ -186,7 +186,7 @@ const AppShell = ({
             <p>A little clarity for your next big idea.</p>
           </div>
 
-          <Link href="/privacy" className="privacy-link">
+          <Link href="/privacy" className="privacy-link" target="_blank" rel="noopener noreferrer">
             <FontAwesomeIcon icon={faShieldHalved} />
             <span>Your privacy matters</span>
             <FontAwesomeIcon icon={faArrowUpRightFromSquare} />

@@ -368,6 +368,54 @@ Styles audience metrics, featured requests, insight cards and source post contex
     transform 180ms;
   min-height: 205px;
 
+  &.love {
+    background: #f9eef1;
+
+    &:hover {
+      border-color: #e3b9c2;
+
+      .card-heading svg {
+        color: #bf7c8a;
+      }
+    }
+
+    .evidence-counts {
+      border-top-color: #e6c3cb;
+    }
+  }
+
+  &.requests {
+    background: #faf3e4;
+
+    &:hover {
+      border-color: #e4d19a;
+
+      .card-heading svg {
+        color: #a48a45;
+      }
+    }
+
+    .evidence-counts {
+      border-top-color: #e6d7aa;
+    }
+  }
+
+  &.improve {
+    background: #efecf8;
+
+    &:hover {
+      border-color: #c7bde0;
+
+      .card-heading svg {
+        color: #8c81b5;
+      }
+    }
+
+    .evidence-counts {
+      border-top-color: #d3cbea;
+    }
+  }
+
   &:hover {
     border-color: #c8c1f5;
     box-shadow: 0 5px 20px #2a254c08;
@@ -406,6 +454,11 @@ Styles audience metrics, featured requests, insight cards and source post contex
     font-size: $font-size-small;
     line-height: 1.8;
     margin-bottom: 25px;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
   }
 
   .evidence-counts {
