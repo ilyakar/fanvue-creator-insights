@@ -46,6 +46,7 @@ const AudienceInsights = ({
     comments: scopedComments,
     posts: scopedPost ? [scopedPost] : audienceFeedback.posts
   })
+
   const insights = savedAnalysis.insights.filter(
     insight => !scopedPostId || getInsightCounts(insight, audienceFeedback, scopedPostId).comments > 0
   )
@@ -165,11 +166,9 @@ const AudienceInsights = ({
           behind every insight.
         </span>
 
-        {savedAnalysis && (
-          <span className="updated-at">
-            {isPreview ? 'Sample period' : 'Analysed'} {formatDate(savedAnalysis.analysedAt)}
-          </span>
-        )}
+        <span className="updated-at">
+          {isPreview ? 'Sample period' : 'Analysed'} {formatDate(savedAnalysis.analysedAt)}
+        </span>
       </div>
 
       {selectedInsight && (

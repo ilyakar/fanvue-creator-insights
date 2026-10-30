@@ -31,6 +31,14 @@ Small route-adjacent `DashboardView`, `PostsView`, `PostView` and `SettingsView`
 
 `src/styles/coreStyling/` loads shared foundations and component styles. Settings and confirmations, messages, onboarding/progress, information pages, alerts and empty/error states have recognizable stylesheets under `src/styles/components/`. `homePage.scss` owns marketing sections and imports `components/productPreview.scss` for the illustrative snapshot. Responsive rules stay with the selectors they modify where possible, preserving existing selectors, specificity and typography.
 
+## Alignment with the copied reference
+
+The closest reference examples are `src/app/home/page.tsx` for visible page composition, `src/app/Components/MyFutureSelfCard.tsx` for focused component props, `src/app/AlertProvider.tsx` for shared notices, and `src/styles/components/myFutureSelfCard.scss` for nested styles with local responsive rules, all inside `good-code-from-another-project/`.
+
+The active application follows that source grouping, component composition, promise-based request handling, Redux persistence approach and SCSS foundation. Explicit `AGENTS.md` rules take precedence over older reference examples, including arrow functions, descriptive names, underscore-prefixed interaction handlers, headers, comments, braces and whitespace.
+
+Two deliberate adaptations remain: authenticated reads run on the server, and small route-adjacent views share copy with streamed loading states. Redux stores are isolated per provider and restore only sidebar preferences after hydration, preserving immediate server-rendered content. These boundaries support the current app's privacy and loading requirements without adding generic loaders or another state-management layer.
+
 ## Identity and credentials
 
 Fanvue is the sole sign-in provider. Authorization uses PKCE S256, a random browser-bound state and a ten-minute database OAuth attempt containing an encrypted verifier. The callback atomically consumes the attempt, exchanges the code with `client_secret_basic`, validates the documented unwrapped v1 profile and accepts creator accounts.

@@ -23,7 +23,9 @@ const InsightCard = ({
   onOpen: (insight: Insight) => void
 }) => {
   const counts = getInsightCounts(insight, audienceFeedback, postId)
-  const summary = postId ? insight.postSummaries.find(entry => entry.postId === postId)?.summary : insight.summary
+  const summary = postId
+    ? insight.postSummaries.find(postSummary => postSummary.postId === postId)?.summary
+    : insight.summary
 
   // Opens the selected theme's original supporting comments.
   const _handleOpen = () => onOpen(insight)

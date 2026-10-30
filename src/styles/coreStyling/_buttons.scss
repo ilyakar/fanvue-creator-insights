@@ -20,34 +20,42 @@ Defines shared button variants and interactive control styling.
     box-shadow 180ms,
     transform 180ms;
   white-space: nowrap;
+
   &:not(:disabled):hover {
     transform: translateY(-1px);
   }
+
   &.primary {
     color: white;
     background: $color-purple;
+
     &:not(:disabled):hover {
       background: #5048e4;
       box-shadow: 0 5px 15px #625bf630;
     }
   }
+
   &.secondary {
     color: $color-navy;
     background: white;
     border-color: #dedfe8;
+
     &:not(:disabled):hover {
       background: #f5f4ff;
       border-color: #c6c1f7;
     }
   }
+
   &.danger {
     color: white;
     background: #b73950;
   }
+
   svg {
     font-size: $font-size-small;
   }
 }
+
 .text-button {
   display: inline-flex;
   align-items: center;
@@ -59,13 +67,16 @@ Defines shared button variants and interactive control styling.
   font-weight: 600;
   font-size: $font-size-small;
   text-align: left;
+
   &:hover {
     color: #443cce;
   }
+
   svg {
     font-size: $font-size-small;
   }
 }
+
 .icon-button {
   background: transparent;
   border: none;
@@ -77,11 +88,13 @@ Defines shared button variants and interactive control styling.
   justify-content: center;
   color: $color-muted;
   font-size: 15px;
+
   &:hover {
     color: $color-purple;
     background: #f0eeff;
   }
 }
+
 select {
   appearance: none;
   border: 1px solid #e0e2eb;
@@ -93,10 +106,12 @@ select {
   font-size: $font-size-small;
   cursor: pointer;
 }
+
 .select-field {
   position: relative;
   display: inline-flex;
   align-items: center;
+
   > svg {
     position: absolute;
     right: 15px;
@@ -105,6 +120,7 @@ select {
     pointer-events: none;
   }
 }
+
 .back-link {
   display: inline-flex;
   align-items: center;
@@ -112,10 +128,12 @@ select {
   color: $color-muted;
   font-size: $font-size-small;
   margin-bottom: 25px;
+
   &:hover {
     color: $color-purple;
   }
 }
+
 .sample-pill {
   display: inline-flex;
   align-items: center;
@@ -128,6 +146,7 @@ select {
   font-size: $font-size-small;
   font-weight: 500;
   white-space: nowrap;
+
   > span {
     width: 5px;
     height: 5px;

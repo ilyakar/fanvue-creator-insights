@@ -75,28 +75,30 @@ const AppShell = ({
     return () => mediaQuery.removeEventListener('change', updateViewport)
   }, [])
 
+  const accountDisplayName = account?.display_name || 'Sample creator'
+  const accountInitial = account?.display_name?.slice(0, 1) || 'S'
+  const accountDescription = isPreview ? 'Design preview' : `@${account?.username || 'creator'}`
   const basePath = isPreview ? '/preview' : '/dashboard'
 
-  const navigation = [
+  const navigationItems = [
     { label: 'Overview', href: basePath, icon: faChartSimple },
     { label: 'Posts', href: `${basePath}/posts`, icon: faLayerGroup },
     { label: 'Messages', href: `${basePath}/messages`, icon: faCommentDots },
     { label: 'Settings', href: `${basePath}/settings`, icon: faGear }
   ]
 
-  const activeItem =
-    navigation.find(item => item.href === pathname) ||
-    navigation.find(item => item.href !== basePath && pathname.startsWith(item.href)) ||
-    navigation[0]
+  const activeNavigationItem =
+    navigationItems.find(navigationItem => navigationItem.href === pathname) ||
+    navigationItems.find(
+      navigationItem => navigationItem.href !== basePath && pathname.startsWith(navigationItem.href)
+    ) ||
+    navigationItems[0]
 
   // Toggles the mobile drawer from its accessible menu button.
   const _handleMenuToggle = () => setIsMenuOpen(previousValue => !previousValue)
 
   // Saves the user's preferred desktop sidebar width.
   const _handleCollapse = () => dispatch(setSidebarCollapsed(!isCollapsed))
-
-  // Closes mobile navigation when a destination has been chosen.
-  const _handleNavigate = () => setIsMenuOpen(false)
 
   // Invalidates the active session before returning to the public landing page.
   const _handleLogout = () => {
@@ -126,7 +128,7 @@ const AppShell = ({
       className={['app-shell', isCollapsed && !isMobileViewport && 'collapsed', isMenuOpen && 'menu-open']
         .filter(Boolean)
         .join(' ')}>
-      {isMenuOpen && <button className="menu-backdrop" aria-label="Close navigation" onClick={_handleMenuToggle} />}
+      {isMenuOpen && <button className="menu-backdrop" aria-label="Close navigation" onClick={_handleMenuClose} />}
 
       <aside
         className="sidebar"
@@ -137,16 +139,16 @@ const AppShell = ({
         <div className="brand-row">
           <Brand href={basePath} />
 
-          <button className="icon-button mobile-close" aria-label="Close navigation" onClick={_handleMenuToggle}>
+          <button className="icon-button mobile-close" aria-label="Close navigation" onClick={_handleMenuClose}>
             <FontAwesomeIcon icon={faXmark} />
           </button>
         </div>
 
         <div className="workspace">
-          <span className="workspace-avatar">{account?.display_name?.slice(0, 1) || 'S'}</span>
+          <span className="workspace-avatar">{accountInitial}</span>
 
           <div className="workspace-copy">
-            <strong>{account?.display_name || 'Sample creator'}</strong>
+            <strong>{accountDisplayName}</strong>
             <span>Creator workspace</span>
           </div>
         </div>
@@ -154,17 +156,19 @@ const AppShell = ({
         <span className="navigation-label">YOUR WORKSPACE</span>
 
         <nav>
-          {navigation.map(item => (
+          {navigationItems.map(navigationItem => (
             <Link
-              key={item.label}
-              href={item.href}
-              onClick={_handleNavigate}
-              className={['nav-link', activeItem.label === item.label && 'active'].filter(Boolean).join(' ')}
-              aria-current={activeItem.label === item.label ? 'page' : undefined}
-              title={isCollapsed ? item.label : undefined}>
-              <FontAwesomeIcon icon={item.icon} />
-              <span>{item.label}</span>
-              {item.label === 'Messages' && <small>Soon</small>}
+              key={navigationItem.label}
+              href={navigationItem.href}
+              onClick={_handleMenuClose}
+              className={['nav-link', activeNavigationItem.label === navigationItem.label && 'active']
+                .filter(Boolean)
+                .join(' ')}
+              aria-current={activeNavigationItem.label === navigationItem.label ? 'page' : undefined}
+              title={isCollapsed ? navigationItem.label : undefined}>
+              <FontAwesomeIcon icon={navigationItem.icon} />
+              <span>{navigationItem.label}</span>
+              {navigationItem.label === 'Messages' && <small>Soon</small>}
             </Link>
           ))}
         </nav>
@@ -189,11 +193,11 @@ const AppShell = ({
           </Link>
 
           <div className="account-row">
-            <span className="account-avatar">{account?.display_name?.slice(0, 1) || 'S'}</span>
+            <span className="account-avatar">{accountInitial}</span>
 
             <div className="account-copy">
-              <strong>{account?.display_name || 'Sample creator'}</strong>
-              <span>{isPreview ? 'Design preview' : `@${account?.username || 'creator'}`}</span>
+              <strong>{accountDisplayName}</strong>
+              <span>{accountDescription}</span>
             </div>
 
             <button className="icon-button" aria-label="Sign out" onClick={_handleLogout}>
@@ -226,7 +230,7 @@ const AppShell = ({
               Your workspace <span>/</span>
             </span>
 
-            <strong>{activeItem.label}</strong>
+            <strong>{activeNavigationItem.label}</strong>
           </div>
 
           <div className="topbar-context">

@@ -1,7 +1,7 @@
 'use client'
 
 /* ------------------------------------------------------------
-Displays actual durable job stages and supports retrying failed analysis.
+Displays saved analysis progress and supports explicit starts and retries.
 ---------------------------------------------------------------*/
 
 import { useEffect, useState } from 'react'
@@ -14,7 +14,7 @@ import type { JobStage } from '@/lib/types'
 
 const stageOrder: JobStage[] = ['queued', 'analysing', 'validating', 'complete']
 
-// Displays actual durable job stages and supports retrying failed analysis.
+// Displays saved analysis progress and supports explicit starts and retries.
 const AnalysisProgress = ({
   initialStage,
   initialError
@@ -23,9 +23,10 @@ const AnalysisProgress = ({
   initialError: string | null
 }) => {
   const router = useRouter()
-  const [stage, setStage] = useState(initialStage)
+
+  const [analysisStage, setAnalysisStage] = useState(initialStage)
   const [errorMessage, setErrorMessage] = useState(initialError)
-  const [isRetrying, setIsRetrying] = useState(false)
+  const [isRequestingAnalysis, setIsRequestingAnalysis] = useState(false)
   const [isWaiting, setIsWaiting] = useState(false)
 
   let heading = 'Getting to know your audience.'
@@ -33,27 +34,27 @@ const AnalysisProgress = ({
   let actionLabel = 'Try again'
 
   // Invites an explicit analysis request after the previous saved results were cleared.
-  if (stage === 'idle') {
+  if (analysisStage === 'idle') {
     heading = 'Ready for a fresh perspective?'
     description = 'Prepare a fresh set of insights from our sample comments, whenever you’re ready.'
     actionLabel = 'Prepare my insights'
   }
 
   // Explains an interrupted analysis without suggesting that source comments were lost.
-  else if (stage === 'failed') {
+  else if (analysisStage === 'failed') {
     heading = 'Let’s give that another try.'
     description = 'Your comments are safe. We just couldn’t finish preparing your insights this time.'
   }
 
   // Polls saved processing state; no timing-based simulated progress is used.
   useEffect(() => {
-    if (stage === 'complete') {
+    if (analysisStage === 'complete') {
       router.replace('/dashboard')
 
       return
     }
 
-    if (stage === 'failed' || stage === 'idle') {
+    if (analysisStage === 'failed' || analysisStage === 'idle') {
       return
     }
 
@@ -76,10 +77,10 @@ const AnalysisProgress = ({
 
           return response.json()
         })
-        .then(body => {
-          if (isActive && body?.job) {
-            setStage(body.job.status)
-            setErrorMessage(body.job.error)
+        .then(analysisResponse => {
+          if (isActive && analysisResponse?.job) {
+            setAnalysisStage(analysisResponse.job.status)
+            setErrorMessage(analysisResponse.job.error)
           }
         })
         .catch(() => {
@@ -96,15 +97,15 @@ const AnalysisProgress = ({
       clearInterval(interval)
       clearTimeout(waitingTimer)
     }
-  }, [stage, router])
+  }, [analysisStage, router])
 
-  // Requeues a failed run after verifying the account connection on the server.
-  const _handleRetry = () => {
-    setIsRetrying(true)
+  // Starts or retries analysis after the server verifies the account connection.
+  const _handlePrepareAnalysis = () => {
+    setIsRequestingAnalysis(true)
 
     fetch('/api/analysis', { method: 'POST' })
       .then(async response => {
-        const body = await response.json()
+        const analysisResponse = await response.json()
 
         if (response.status === 401) {
           window.location.assign('/connect?reason=session')
@@ -113,21 +114,21 @@ const AnalysisProgress = ({
         }
 
         if (!response.ok) {
-          throw new Error(body.error)
+          throw new Error(analysisResponse.error)
         }
 
-        setStage(body.job.status)
+        setAnalysisStage(analysisResponse.job.status)
         setErrorMessage(null)
         setIsWaiting(false)
       })
       .catch(error => setErrorMessage(error.message || 'Please try again in a moment.'))
-      .finally(() => setIsRetrying(false))
+      .finally(() => setIsRequestingAnalysis(false))
   }
 
   return (
     <div className="analysis-card">
       <div
-        className={['analysis-symbol', stage !== 'failed' && stage !== 'idle' && 'processing']
+        className={['analysis-symbol', analysisStage !== 'failed' && analysisStage !== 'idle' && 'processing']
           .filter(Boolean)
           .join(' ')}>
         <FontAwesomeIcon icon={faWandMagicSparkles} />
@@ -149,22 +150,24 @@ const AnalysisProgress = ({
           { stage: 'analysing' as const, label: 'Analysing comments and discovering themes' },
           { stage: 'validating' as const, label: 'Checking the comments behind each insight' },
           { stage: 'complete' as const, label: 'Preparing your insights' }
-        ].map(entry => {
-          const isDone = stageOrder.indexOf(stage as JobStage) > stageOrder.indexOf(entry.stage)
-          const isCurrent = stage === entry.stage
+        ].map(progressStep => {
+          const isDone = stageOrder.indexOf(analysisStage as JobStage) > stageOrder.indexOf(progressStep.stage)
+          const isCurrent = analysisStage === progressStep.stage
 
           return (
-            <li className={[isDone && 'done', isCurrent && 'current'].filter(Boolean).join(' ')} key={entry.stage}>
+            <li
+              className={[isDone && 'done', isCurrent && 'current'].filter(Boolean).join(' ')}
+              key={progressStep.stage}>
               <span>{isDone ? <FontAwesomeIcon icon={faCheck} /> : <span />}</span>
-              {entry.label}
+              {progressStep.label}
             </li>
           )
         })}
       </ol>
 
-      {stage === 'queued' && <p className="analysis-notice">Your analysis is queued and waiting to begin.</p>}
+      {analysisStage === 'queued' && <p className="analysis-notice">Your analysis is queued and waiting to begin.</p>}
 
-      {isWaiting && stage !== 'failed' && (
+      {isWaiting && analysisStage !== 'failed' && (
         <p className="analysis-notice">
           This is taking a little longer. You can return later. Your analysis doesn’t depend on this page staying open.
         </p>
@@ -176,11 +179,11 @@ const AnalysisProgress = ({
         </p>
       )}
 
-      {(stage === 'failed' || stage === 'idle') && (
+      {(analysisStage === 'failed' || analysisStage === 'idle') && (
         <div className="analysis-actions">
-          <button className="button primary" onClick={_handleRetry} disabled={isRetrying}>
+          <button className="button primary" onClick={_handlePrepareAnalysis} disabled={isRequestingAnalysis}>
             <FontAwesomeIcon icon={faRotateRight} />
-            {isRetrying ? 'One moment…' : actionLabel}
+            {isRequestingAnalysis ? 'One moment…' : actionLabel}
           </button>
 
           <Link className="text-button" href="/dashboard/settings">

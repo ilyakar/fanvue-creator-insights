@@ -7,31 +7,40 @@ Styles navigation, account identity and the responsive application shell.
 .app-shell {
   --sidebar-width: 245px;
   min-height: 100vh;
+
   @include max-width(desktop) {
     --sidebar-width: 220px;
   }
+
   @include max-width(tablet-large) {
     --sidebar-width: 200px;
   }
+
   @include max-width(tablet) {
     --sidebar-width: 0px;
   }
+
   &.collapsed {
     --sidebar-width: 85px;
+
     .sidebar {
       padding-left: 20px;
       padding-right: 20px;
+
       .brand-row .brand {
         width: 35px;
         justify-content: center;
+
         .wordmark {
           display: none;
         }
       }
+
       .workspace {
         padding: 10px 0;
         justify-content: center;
       }
+
       .workspace-copy,
       .navigation-label,
       .sidebar-note,
@@ -42,19 +51,23 @@ Styles navigation, account identity and the responsive application shell.
       .nav-link small {
         display: none;
       }
+
       .nav-link {
         justify-content: center;
         padding: 15px 0;
       }
+
       .account-row {
         justify-content: center;
       }
     }
+
     @include max-width(tablet) {
       --sidebar-width: 0px;
     }
   }
 }
+
 .sidebar {
   position: fixed;
   inset: 0 auto 0 0;
@@ -66,31 +79,39 @@ Styles navigation, account identity and the responsive application shell.
   flex-direction: column;
   padding: 30px 20px 0;
   transition: width 180ms;
+
   .brand-row {
     padding: 0 5px;
     margin-bottom: 35px;
+
     .mobile-close {
       display: none;
+
       @include max-width(tablet) {
         display: inline-flex;
       }
     }
+
     @include max-width(tablet) {
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
   }
+
   .brand {
     gap: 5px;
+
     .mark {
       width: 20px;
       height: 20px;
     }
+
     .wordmark {
       font-size: 18px;
     }
   }
+
   .workspace {
     display: flex;
     align-items: center;
@@ -100,6 +121,7 @@ Styles navigation, account identity and the responsive application shell.
     border-radius: 10px;
     margin-bottom: 35px;
   }
+
   .workspace-avatar {
     display: flex;
     align-items: center;
@@ -113,10 +135,12 @@ Styles navigation, account identity and the responsive application shell.
     font-weight: 600;
     font-size: $font-size-small;
   }
+
   .workspace-copy {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+
     strong {
       font-size: $font-size-small;
       font-weight: 600;
@@ -124,11 +148,13 @@ Styles navigation, account identity and the responsive application shell.
       text-overflow: ellipsis;
       white-space: nowrap;
     }
+
     span {
       color: #73788a;
       font-size: $font-size-small;
     }
   }
+
   .navigation-label {
     font-size: $font-size-small;
     letter-spacing: 0.1em;
@@ -136,11 +162,13 @@ Styles navigation, account identity and the responsive application shell.
     color: #73788a;
     margin: 0 10px 15px;
   }
+
   nav {
     display: flex;
     flex-direction: column;
     gap: 5px;
   }
+
   .nav-link {
     display: flex;
     align-items: center;
@@ -151,19 +179,23 @@ Styles navigation, account identity and the responsive application shell.
     min-height: 45px;
     font-size: $font-size-small;
     transition: background 150ms;
+
     svg {
       width: 15px;
       font-size: 15px;
     }
+
     &:hover {
       background: #f8f7ff;
       color: $color-purple;
     }
+
     &.active {
       background: #efedff;
       color: $color-purple;
       font-weight: 600;
     }
+
     small {
       margin-left: auto;
       font-size: $font-size-fine-print;
@@ -173,11 +205,13 @@ Styles navigation, account identity and the responsive application shell.
       border-radius: 5px;
       padding: 0 5px;
     }
+
     @include max-width(tablet-large) {
       gap: 10px;
       padding-left: 10px;
     }
   }
+
   .sidebar-bottom {
     margin-top: auto;
     padding-top: 50px;
@@ -186,6 +220,7 @@ Styles navigation, account identity and the responsive application shell.
       padding-top: 25px;
     }
   }
+
   .sidebar-note {
     @include max-height(850px) {
       display: none;
@@ -195,11 +230,13 @@ Styles navigation, account identity and the responsive application shell.
     border-radius: 15px;
     background: linear-gradient(130deg, #fbf9f3, #f7f4ff);
     margin-bottom: 25px;
+
     > svg {
       color: #a393c4;
       font-size: 16px;
       margin-bottom: 15px;
     }
+
     strong {
       font-size: $font-size-small;
       font-weight: 500;
@@ -207,15 +244,18 @@ Styles navigation, account identity and the responsive application shell.
       display: block;
       margin-bottom: 10px;
     }
+
     p {
       color: #898797;
       font-size: $font-size-small;
       max-width: 140px;
     }
+
     @include max-width(tablet) {
       display: none;
     }
   }
+
   .privacy-link {
     display: flex;
     align-items: center;
@@ -224,43 +264,52 @@ Styles navigation, account identity and the responsive application shell.
     font-size: $font-size-fine-print;
     margin-bottom: 25px;
     padding-left: 5px;
+
     svg {
       font-size: $font-size-fine-print;
+
       &:last-child {
         margin-left: auto;
       }
     }
+
     &:hover {
       color: $color-purple;
     }
   }
+
   .account-row {
     border-top: 1px solid $color-border;
     padding: 20px 0;
     display: flex;
     gap: 10px;
     align-items: center;
+
     .account-copy {
       display: flex;
       flex-direction: column;
       flex: 1;
       min-width: 0;
+
       strong {
         font-size: $font-size-small;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }
+
       span {
         font-size: $font-size-small;
         color: #727789;
       }
     }
+
     .icon-button {
       width: 25px;
       font-size: $font-size-small;
     }
   }
+
   .collapse-button {
     position: absolute;
     right: 0;
@@ -277,19 +326,23 @@ Styles navigation, account identity and the responsive application shell.
     line-height: 1;
     display: grid;
     place-items: center;
+
     > svg {
       display: block;
       width: 10px;
       height: 10px;
     }
+
     @include max-width(tablet) {
       display: none;
     }
   }
+
   @include max-width(tablet-large) {
     padding-left: 15px;
     padding-right: 15px;
   }
+
   @include max-width(tablet) {
     width: 270px;
     transform: translateX(-100%);
@@ -297,6 +350,7 @@ Styles navigation, account identity and the responsive application shell.
     padding: 25px 20px 0;
   }
 }
+
 .account-avatar {
   width: 35px;
   height: 35px;
@@ -310,6 +364,7 @@ Styles navigation, account identity and the responsive application shell.
   font-size: $font-size-small;
   font-weight: 600;
 }
+
 .app-body {
   margin-left: var(--sidebar-width);
   min-height: 100vh;
@@ -317,6 +372,7 @@ Styles navigation, account identity and the responsive application shell.
   flex-direction: column;
   transition: margin-left 180ms;
 }
+
 .topbar {
   min-height: 75px;
   border-bottom: 1px solid $color-border;
@@ -326,45 +382,55 @@ Styles navigation, account identity and the responsive application shell.
   padding: 0 40px;
   background: #fff;
   gap: 15px;
+
   .breadcrumb {
     display: flex;
     align-items: center;
     gap: 15px;
     font-size: $font-size-small;
     color: #73788a;
+
     strong {
       color: #525768;
       font-weight: 500;
     }
+
     .workspace-breadcrumb span {
       padding-left: 15px;
       color: #c6c9d2;
     }
   }
+
   .topbar-context {
     display: flex;
     align-items: center;
     gap: 25px;
+
     .sample-pill {
       font-size: $font-size-fine-print;
     }
   }
+
   .mobile-toggle {
     display: none;
+
     @include max-width(tablet) {
       display: inline-flex;
     }
   }
+
   @include max-width(tablet) {
     padding: 0 20px;
     min-height: 65px;
   }
+
   .workspace-breadcrumb {
     @include max-width(tablet) {
       display: none;
     }
   }
 }
+
 .preview-notice {
   display: flex;
   align-items: center;
@@ -374,19 +440,23 @@ Styles navigation, account identity and the responsive application shell.
   background: #f0eefb;
   color: #8179a3;
   font-size: $font-size-small;
+
   strong {
     font-weight: 600;
     color: #6b608e;
   }
+
   svg {
     font-size: $font-size-small;
   }
+
   @include max-width(phone) {
     align-items: flex-start;
     justify-content: flex-start;
     gap: 5px;
     flex-wrap: wrap;
   }
+
   span {
     @include max-width(phone) {
       flex-basis: 100%;
@@ -394,19 +464,23 @@ Styles navigation, account identity and the responsive application shell.
     }
   }
 }
+
 .app-main {
   width: 100%;
   max-width: 1500px;
   margin: 0 auto;
   padding: 45px 40px 30px;
   flex: 1;
+
   @include max-width(desktop) {
     padding: 35px 25px 25px;
   }
+
   @include max-width(tablet) {
     padding: 30px 20px;
   }
 }
+
 .app-footer {
   max-width: 1500px;
   width: 100%;
@@ -417,36 +491,43 @@ Styles navigation, account identity and the responsive application shell.
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   .brand {
     .mark {
       width: 15px;
       height: 15px;
     }
+
     .wordmark {
       font-size: $font-size-small;
       font-weight: 600;
     }
   }
+
   @include max-width(phone) {
     padding: 15px 20px;
     flex-wrap: wrap;
     gap: 15px;
   }
+
   > span:first-child {
     @include max-width(phone) {
       max-width: 200px;
     }
   }
 }
+
 .menu-backdrop {
   display: none;
 }
+
 .menu-open {
   .sidebar {
     @include max-width(tablet) {
       transform: translateX(0);
     }
   }
+
   .menu-backdrop {
     @include max-width(tablet) {
       display: block;

@@ -11,6 +11,7 @@ Styles dismissible application alerts.
   transform: translateX(-50%);
   width: min(500px, calc(100% - 40px));
   z-index: 90;
+
   .toast {
     display: flex;
     gap: 15px;
@@ -20,22 +21,27 @@ Styles dismissible application alerts.
     border: 1px solid #e5e0ef;
     border-radius: 15px;
     padding: 15px 20px;
+
     > svg {
       color: #9b8db5;
       font-size: 18px;
     }
+
     > div {
       flex: 1;
+
       strong {
         font-size: $font-size-small;
         font-weight: 600;
       }
+
       p {
         color: #9996a9;
         font-size: $font-size-small;
         margin-top: 5px;
       }
     }
+
     > button {
       flex: 0 0 30px;
     }

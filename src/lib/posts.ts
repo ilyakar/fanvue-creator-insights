@@ -24,11 +24,16 @@ export const filterPosts = <SourcePost extends Post>(
   posts: SourcePost[],
   searchQuery: string,
   selectedFormat: string
-) =>
-  posts
-    .filter(
-      post =>
-        `${post.title} ${post.caption}`.toLowerCase().includes(searchQuery.toLowerCase()) &&
-        (selectedFormat === 'all' || post.format === selectedFormat)
-    )
+) => {
+  const normalizedSearchQuery = searchQuery.toLowerCase()
+
+  return posts
+    .filter(post => {
+      const searchablePostText = `${post.title} ${post.caption}`.toLowerCase()
+      const matchesSearch = searchablePostText.includes(normalizedSearchQuery)
+      const matchesFormat = selectedFormat === 'all' || post.format === selectedFormat
+
+      return matchesSearch && matchesFormat
+    })
     .sort((firstPost, secondPost) => secondPost.publishedAt.localeCompare(firstPost.publishedAt))
+}

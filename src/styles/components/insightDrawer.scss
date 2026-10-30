@@ -13,12 +13,14 @@ Styles the evidence drawer, original comments and supporting source links.
   background: #11152845;
   backdrop-filter: blur(3px);
 }
+
 .drawer-dismiss {
   position: absolute;
   inset: 0;
   background: none;
   border: 0;
 }
+
 .insight-drawer {
   position: relative;
   width: min(650px, 100%);
@@ -28,6 +30,7 @@ Styles the evidence drawer, original comments and supporting source links.
   box-shadow: -15px 0 70px #14102515;
   animation: slide-in 220ms ease;
   outline: none;
+
   .drawer-toolbar {
     position: sticky;
     top: 0;
@@ -39,18 +42,22 @@ Styles the evidence drawer, original comments and supporting source links.
     justify-content: space-between;
     align-items: center;
     padding: 15px 30px;
+
     > span {
       font-size: $font-size-small;
       color: #9194a5;
       letter-spacing: 0.1em;
       font-weight: 600;
     }
+
     @include max-width(phone) {
       padding: 15px 20px;
     }
   }
+
   .drawer-content {
     padding: 35px 40px;
+
     .category-label {
       display: flex;
       align-items: center;
@@ -59,41 +66,49 @@ Styles the evidence drawer, original comments and supporting source links.
       color: #7e8193;
       margin-bottom: 20px;
     }
+
     h2 {
       font-size: 31px;
       letter-spacing: -0.035em;
       margin-bottom: 15px;
+
       @include max-width(phone) {
         font-size: 28px;
       }
     }
+
     .drawer-counts {
       display: flex;
       gap: 10px;
       font-size: $font-size-small;
       color: #6d7384;
       margin-bottom: 25px;
+
       strong {
         color: #6c648e;
         font-weight: 500;
       }
     }
+
     .drawer-summary {
       font-size: $font-size-small;
       line-height: 1.85;
       color: #6c7285;
       margin-bottom: 25px;
     }
+
     @include max-width(phone) {
       padding: 25px 20px;
     }
   }
+
   .opportunity {
     border: 1px solid #ece5f2;
     border-radius: 15px;
     padding: 20px;
     background: linear-gradient(115deg, #f7f4fd, #fcf8f0);
     margin-bottom: 35px;
+
     .eyebrow {
       color: #9581ac;
       display: flex;
@@ -102,38 +117,46 @@ Styles the evidence drawer, original comments and supporting source links.
       font-size: $font-size-small;
       margin-bottom: 10px;
     }
+
     p {
       font-size: $font-size-small;
       color: #6f657c;
       line-height: 1.8;
     }
   }
+
   .comments-heading {
     border-bottom: 1px solid $color-border;
     padding-bottom: 20px;
+
     h3 {
       font-size: 16px;
       margin-bottom: 10px;
+
       span {
         color: #9295a4;
         font-size: $font-size-small;
         padding-left: 5px;
       }
     }
+
     p {
       font-size: $font-size-small;
       color: #73788a;
+
       svg {
         margin-right: 5px;
         color: #9baa9d;
       }
     }
   }
+
   .comment-row {
     display: flex;
     gap: 15px;
     padding: 25px 0;
     border-bottom: 1px solid #eff0f5;
+
     .fan-avatar {
       width: 35px;
       height: 35px;
@@ -144,58 +167,70 @@ Styles the evidence drawer, original comments and supporting source links.
       background: #eee7f4;
       color: #9c87ad;
       font-size: $font-size-small;
+
       &.tone-1 {
         background: #e5ede8;
         color: #83a391;
       }
+
       &.tone-2 {
         background: #f4e8df;
         color: #b69b83;
       }
+
       &.tone-3 {
         background: #e5e9f5;
         color: #899ab6;
       }
     }
+
     .comment-content {
       flex: 1;
       min-width: 0;
+
       .identity {
         display: flex;
         justify-content: space-between;
         gap: 15px;
         font-size: $font-size-small;
         margin-bottom: 10px;
+
         strong {
           font-weight: 600;
           color: #5b6074;
         }
+
         time {
           color: #73788a;
           font-size: $font-size-small;
           white-space: nowrap;
         }
       }
+
       > p {
         color: #6d7385;
         font-size: $font-size-small;
         line-height: 1.8;
         margin-bottom: 10px;
       }
+
       .comment-source {
         display: flex;
         gap: 10px;
         align-items: center;
         font-size: $font-size-small;
         color: #7b6e97;
+
         > a {
           white-space: nowrap;
           text-overflow: ellipsis;
           overflow: hidden;
+
           &:hover {
             color: $color-purple;
           }
         }
+
         > button {
           background: none;
           border: none;
@@ -207,10 +242,12 @@ Styles the evidence drawer, original comments and supporting source links.
       }
     }
   }
+
   .load-more {
     margin-top: 25px;
     width: 100%;
   }
+
   .evidence-note {
     margin-top: 25px;
     font-size: $font-size-fine-print;
@@ -218,11 +255,13 @@ Styles the evidence drawer, original comments and supporting source links.
     line-height: 1.8;
   }
 }
+
 @keyframes slide-in {
   from {
     transform: translateX(40px);
     opacity: 0;
   }
+
   to {
     transform: translateX(0);
     opacity: 1;

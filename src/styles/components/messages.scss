@@ -12,6 +12,7 @@ Styles the messages placeholder and privacy reassurance.
   justify-content: center;
   text-align: center;
   padding: 30px;
+
   .coming-illustration {
     position: relative;
     width: 150px;
@@ -20,16 +21,19 @@ Styles the messages placeholder and privacy reassurance.
     place-items: center;
     margin-bottom: 25px;
     color: #9b8bbb;
+
     > svg {
       font-size: 55px;
       transform: rotate(-10deg);
     }
+
     > span {
       position: absolute;
       width: 120px;
       height: 120px;
       border-radius: 50%;
       border: 1px solid #e5e0ef;
+
       &:last-child {
         width: 160px;
         height: 160px;
@@ -37,6 +41,7 @@ Styles the messages placeholder and privacy reassurance.
       }
     }
   }
+
   .coming-pill {
     color: #9d90b6;
     font-size: $font-size-small;
@@ -44,14 +49,17 @@ Styles the messages placeholder and privacy reassurance.
     letter-spacing: 0.09em;
     margin-bottom: 20px;
   }
+
   h1 {
     font-size: 39px;
     letter-spacing: -0.04em;
     margin-bottom: 20px;
+
     @include max-width(phone) {
       font-size: 32px;
     }
   }
+
   > p {
     color: #73788a;
     font-size: $font-size-small;
@@ -59,14 +67,17 @@ Styles the messages placeholder and privacy reassurance.
     max-width: 390px;
     margin-bottom: 25px;
   }
+
   .privacy-reassurance {
     font-size: $font-size-fine-print;
     color: #73788a;
     margin-bottom: 30px;
+
     svg {
       margin-right: 5px;
     }
   }
+
   @include max-width(phone) {
     min-height: 550px;
     padding: 20px 0;

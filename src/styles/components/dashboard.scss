@@ -15,11 +15,13 @@ Styles audience metrics, featured requests, insight cards and source post contex
   font-size: $font-size-small;
   color: #6e7484;
   white-space: nowrap;
+
   svg {
     font-size: $font-size-small;
     color: #8c90a0;
   }
 }
+
 .metric-strip {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -28,14 +30,17 @@ Styles audience metrics, featured requests, insight cards and source post contex
   border-radius: 15px;
   background: white;
   margin-bottom: 25px;
+
   .metric {
     display: flex;
     flex-direction: column;
     padding: 0 25px;
     border-right: 1px solid #eff0f4;
+
     &:last-child {
       border-right: none;
     }
+
     .metric-label {
       display: flex;
       gap: 10px;
@@ -43,15 +48,17 @@ Styles audience metrics, featured requests, insight cards and source post contex
       color: #686f81;
       font-size: $font-size-small;
       margin-bottom: 10px;
+
       svg {
         font-size: $font-size-small;
         color: #a6a8bb;
       }
+
       @include max-width(tablet-large) {
-        font-size: $font-size-small;
         gap: 5px;
       }
     }
+
     > strong {
       font-size: 31px;
       font-weight: 500;
@@ -59,28 +66,34 @@ Styles audience metrics, featured requests, insight cards and source post contex
       letter-spacing: -0.04em;
       margin-bottom: 10px;
     }
+
     .metric-caption {
       font-size: $font-size-small;
       color: #73788a;
     }
+
     @include max-width(tablet-large) {
       padding: 0 15px;
     }
+
     @include max-width(phone) {
       padding: 0 20px;
     }
+
     &:nth-child(2) {
       @include max-width(phone) {
         border: none;
       }
     }
   }
+
   @include max-width(phone) {
     grid-template-columns: repeat(2, 1fr);
     padding: 20px 0;
     gap: 25px 0;
   }
 }
+
 .featured-insight {
   overflow: hidden;
   display: grid;
@@ -90,8 +103,10 @@ Styles audience metrics, featured requests, insight cards and source post contex
   padding: 30px;
   border-radius: 15px;
   margin-bottom: 40px;
+
   .featured-copy {
     z-index: 1;
+
     .eyebrow {
       display: flex;
       align-items: center;
@@ -100,24 +115,29 @@ Styles audience metrics, featured requests, insight cards and source post contex
       font-size: $font-size-small;
       margin-bottom: 15px;
     }
+
     h2 {
       font-size: 23px;
       letter-spacing: -0.035em;
       margin-bottom: 10px;
+
       @include max-width(phone) {
         font-size: 22px;
       }
     }
+
     p {
       font-size: $font-size-small;
       color: #838092;
       max-width: 450px;
       margin-bottom: 20px;
     }
+
     .text-button {
       font-size: $font-size-small;
     }
   }
+
   .featured-visual {
     position: relative;
     min-height: 130px;
@@ -125,6 +145,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
     align-items: center;
     justify-content: flex-end;
     padding-left: 20px;
+
     .orbit {
       position: absolute;
       border: 1px solid #e4dce8;
@@ -133,6 +154,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
       height: 250px;
       top: -60px;
       right: -40px;
+
       &.orbit-two {
         width: 350px;
         height: 350px;
@@ -140,6 +162,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
         right: -90px;
       }
     }
+
     .floating-comment {
       position: relative;
       display: flex;
@@ -153,8 +176,10 @@ Styles audience metrics, featured requests, insight cards and source post contex
       transform: rotate(-4deg);
       white-space: nowrap;
       font-size: $font-size-small;
+
       > span:not(.mini-avatar):not(.spark) {
         color: #625b72;
+
         small {
           font-size: $font-size-small;
           color: #a59cae;
@@ -162,8 +187,10 @@ Styles audience metrics, featured requests, insight cards and source post contex
           margin-top: 5px;
         }
       }
+
       .quote {
         min-width: 0;
+
         > span {
           display: block;
           max-width: 200px;
@@ -172,16 +199,18 @@ Styles audience metrics, featured requests, insight cards and source post contex
           white-space: nowrap;
         }
       }
+
       .spark {
         color: #ccab68;
         margin-left: 10px;
         font-size: 22px;
       }
+
       @include max-width(desktop) {
-        font-size: $font-size-small;
         padding: 15px;
       }
     }
+
     .mini-avatar {
       background: #e8dfd8;
       color: #a48e83;
@@ -192,6 +221,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
       place-items: center;
       font-size: $font-size-small;
     }
+
     .decorative-star {
       position: absolute;
       top: -25px;
@@ -200,49 +230,60 @@ Styles audience metrics, featured requests, insight cards and source post contex
       color: #ccafcc;
       transform: rotate(15deg);
     }
+
     @include max-width(tablet-large) {
       display: none;
     }
   }
+
   @include max-width(desktop) {
     grid-template-columns: 1.6fr 1fr;
   }
+
   @include max-width(tablet-large) {
     grid-template-columns: 1fr;
   }
+
   @include max-width(phone) {
     padding: 25px;
   }
 }
+
 .insight-columns {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 20px;
+
   &.filtered {
     grid-template-columns: 1fr;
+
     .column-cards {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
+
       @include max-width(tablet-large) {
-        display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 15px;
       }
+
       @include max-width(phone) {
         grid-template-columns: 1fr;
       }
     }
   }
+
   .column-heading {
     display: flex;
     align-items: center;
     gap: 10px;
     margin-bottom: 20px;
+
     h3 {
       font-size: $font-size-small;
       font-weight: 600;
     }
+
     > span:last-child {
       color: #73788a;
       background: #eff0f4;
@@ -253,33 +294,40 @@ Styles audience metrics, featured requests, insight cards and source post contex
       display: grid;
       place-items: center;
       margin-left: auto;
+
       @include max-width(tablet-large) {
         margin-left: 0;
       }
     }
+
     @include max-width(tablet-large) {
       max-width: 100%;
       margin-bottom: 15px;
     }
   }
+
   .column-cards {
     display: flex;
     flex-direction: column;
     gap: 15px;
+
     @include max-width(tablet-large) {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 15px;
     }
+
     @include max-width(phone) {
       grid-template-columns: 1fr;
     }
   }
+
   @include max-width(tablet-large) {
     grid-template-columns: 1fr;
     gap: 30px;
   }
 }
+
 .category-icon {
   width: 30px;
   height: 30px;
@@ -288,19 +336,23 @@ Styles audience metrics, featured requests, insight cards and source post contex
   place-items: center;
   border-radius: 10px;
   font-size: $font-size-small;
+
   &.love {
     color: #bf7c8a;
     background: #faedf0;
   }
+
   &.requests {
     color: #a48a45;
     background: #faf2d9;
   }
+
   &.improve {
     color: #8c81b5;
     background: #eeeafa;
   }
 }
+
 .insight-card {
   width: 100%;
   display: flex;
@@ -315,27 +367,32 @@ Styles audience metrics, featured requests, insight cards and source post contex
     box-shadow 180ms,
     transform 180ms;
   min-height: 205px;
+
   &:hover {
     border-color: #c8c1f5;
     box-shadow: 0 5px 20px #2a254c08;
     transform: translateY(-2px);
+
     .card-heading svg {
       opacity: 1;
       color: $color-purple;
     }
   }
+
   .card-heading {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 15px;
     margin-bottom: 15px;
+
     h3 {
       font-size: 15px;
       font-weight: 600;
       letter-spacing: -0.015em;
       line-height: 1.45;
     }
+
     svg {
       opacity: 0.35;
       color: #a7a5b6;
@@ -343,12 +400,14 @@ Styles audience metrics, featured requests, insight cards and source post contex
       margin-top: 5px;
     }
   }
+
   > p {
     color: #707587;
     font-size: $font-size-small;
     line-height: 1.8;
     margin-bottom: 25px;
   }
+
   .evidence-counts {
     display: flex;
     flex-wrap: wrap;
@@ -359,20 +418,24 @@ Styles audience metrics, featured requests, insight cards and source post contex
     border-top: 1px solid #f0f1f5;
     font-size: $font-size-small;
     color: #727789;
+
     span {
       display: flex;
       align-items: center;
       gap: 5px;
     }
+
     strong {
       color: #676d7d;
       font-weight: 600;
     }
+
     svg {
       font-size: $font-size-small;
     }
   }
 }
+
 .category-empty {
   border: 1px dashed #dddde8;
   padding: 25px;
@@ -380,6 +443,7 @@ Styles audience metrics, featured requests, insight cards and source post contex
   color: $color-muted;
   font-size: $font-size-small;
 }
+
 .trust-note {
   display: flex;
   align-items: center;
@@ -389,20 +453,25 @@ Styles audience metrics, featured requests, insight cards and source post contex
   border-top: 1px solid $color-border;
   color: #727789;
   font-size: $font-size-fine-print;
+
   > svg {
     font-size: $font-size-small;
   }
+
   .updated-at {
     margin-left: auto;
     white-space: nowrap;
+
     @include max-width(phone) {
       display: none;
     }
   }
+
   @include max-width(phone) {
     align-items: flex-start;
   }
 }
+
 .post-context {
   display: flex;
   align-items: center;
@@ -412,33 +481,36 @@ Styles audience metrics, featured requests, insight cards and source post contex
   border: 1px solid $color-border;
   border-radius: 15px;
   background: white;
+
   > img {
     width: 160px;
     height: 115px;
     border-radius: 10px;
     object-fit: cover;
+
     @include max-width(phone) {
       width: 85px;
       height: 115px;
     }
   }
+
   > div {
     .post-format {
       color: #9295a5;
       font-size: $font-size-small;
+
       span {
         padding: 0 5px;
       }
     }
+
     p {
       margin: 10px 0 15px;
       color: #676e80;
       font-size: $font-size-small;
-      @include max-width(phone) {
-        font-size: $font-size-small;
-      }
     }
   }
+
   @include max-width(phone) {
     align-items: flex-start;
     gap: 15px;

@@ -6,17 +6,20 @@ Styles settings panels and account confirmation dialogs.
 
 .settings-page {
   max-width: 900px;
+
   .settings-panel {
     border: 1px solid $color-border;
     background: white;
     border-radius: 15px;
     padding: 30px;
     margin-bottom: 25px;
+
     .panel-heading {
       display: flex;
       gap: 15px;
       align-items: center;
       margin-bottom: 25px;
+
       .settings-icon {
         width: 40px;
         height: 40px;
@@ -26,16 +29,19 @@ Styles settings panels and account confirmation dialogs.
         display: grid;
         place-items: center;
       }
+
       h2 {
         font-size: 16px;
         margin-bottom: 5px;
         letter-spacing: -0.02em;
       }
+
       p {
         font-size: $font-size-small;
         color: #727789;
       }
     }
+
     .connection-row {
       display: flex;
       gap: 20px;
@@ -45,36 +51,44 @@ Styles settings panels and account confirmation dialogs.
       border-radius: 10px;
       background: #fafafb;
       margin-bottom: 25px;
+
       .connected-identity {
         display: flex;
         align-items: center;
         gap: 15px;
+
         > div {
           display: flex;
           flex-direction: column;
+
           strong {
             font-size: $font-size-small;
           }
+
           span {
             font-size: $font-size-small;
             color: #727789;
           }
         }
       }
+
       .connection-status {
         display: flex;
         align-items: center;
         gap: 5px;
         color: #7f968b;
         font-size: $font-size-small;
+
         &.reconnect {
           color: #a08345;
         }
+
         &.checking,
         &.unavailable {
           color: $color-muted;
         }
       }
+
       @include max-width(phone) {
         align-items: flex-start;
         flex-direction: column;
@@ -82,11 +96,13 @@ Styles settings panels and account confirmation dialogs.
         padding: 15px;
       }
     }
+
     .settings-action {
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 30px;
+
       > p,
       > div p {
         color: #727789;
@@ -94,38 +110,46 @@ Styles settings panels and account confirmation dialogs.
         max-width: 440px;
         line-height: 1.8;
       }
+
       h3 {
         font-size: $font-size-small;
         margin-bottom: 5px;
       }
+
       .button {
         font-size: $font-size-small;
         min-height: 40px;
         padding: 10px 20px;
       }
+
       @include max-width(phone) {
         flex-direction: column;
         align-items: flex-start;
         gap: 20px;
       }
     }
+
     @include max-width(phone) {
       padding: 20px;
     }
   }
+
   .sample-explainer {
     padding: 30px;
     border: 1px solid #eee6d5;
     border-radius: 15px;
     background: #fdfbf5;
+
     .sample-pill {
       margin-bottom: 15px;
     }
+
     h2 {
       font-size: 17px;
       letter-spacing: -0.025em;
       margin-bottom: 10px;
     }
+
     p {
       color: #9a9487;
       font-size: $font-size-small;
@@ -133,19 +157,23 @@ Styles settings panels and account confirmation dialogs.
       margin-bottom: 20px;
       max-width: 650px;
     }
+
     .text-button {
       font-size: $font-size-small;
     }
   }
+
   .settings-privacy {
     margin-top: 25px;
     font-size: $font-size-fine-print;
     color: #73788a;
+
     svg {
       margin-right: 5px;
     }
   }
 }
+
 .confirmation {
   position: fixed;
   inset: 0;
@@ -155,21 +183,25 @@ Styles settings panels and account confirmation dialogs.
   place-items: center;
   padding: 25px;
   backdrop-filter: blur(3px);
+
   .confirmation-card {
     background: white;
     border-radius: 20px;
     padding: 35px;
     max-width: 450px;
+
     h2 {
       font-size: 22px;
       margin-bottom: 15px;
     }
+
     p {
       font-size: $font-size-small;
       line-height: 1.8;
       color: $color-muted;
       margin-bottom: 25px;
     }
+
     > div {
       display: flex;
       justify-content: flex-end;

@@ -15,10 +15,12 @@ Defines resets, shared surfaces, focus states and foundational layout utilities.
 * {
   box-sizing: border-box;
 }
+
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 30px;
 }
+
 body {
   margin: 0;
   background: $color-background;
@@ -29,42 +31,52 @@ body {
   font-size: $font-size-body;
   line-height: 1.55;
 }
+
 button,
 input,
 select {
   font: inherit;
 }
+
 button,
 a,
 input,
 select {
   -webkit-tap-highlight-color: transparent;
 }
+
 button {
   cursor: pointer;
 }
+
 button:disabled {
   cursor: not-allowed;
   opacity: 0.55;
 }
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
 img {
   display: block;
   max-width: 100%;
 }
+
 svg {
   flex-shrink: 0;
 }
+
 :focus-visible {
   outline: 3px solid #837cfc;
   outline-offset: 4px;
 }
+
 ::selection {
   background: #e4e1ff;
 }
+
 .sr-only {
   position: absolute;
   width: 1px;
@@ -76,6 +88,7 @@ svg {
   white-space: nowrap;
   border: 0;
 }
+
 .skip-link {
   position: fixed;
   z-index: 100;
@@ -85,10 +98,12 @@ svg {
   border-radius: 10px;
   background: $color-navy;
   color: white;
+
   &:focus {
     top: 15px;
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

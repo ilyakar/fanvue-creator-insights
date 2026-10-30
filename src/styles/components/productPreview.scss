@@ -12,6 +12,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
   background: #fff;
   box-shadow: 0 20px 75px #8e647322;
   pointer-events: none;
+
   .preview-sidebar {
     flex: 0 0 175px;
     padding: 25px 15px;
@@ -19,19 +20,24 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
     border-right: 1px solid #eeedf2;
     display: flex;
     flex-direction: column;
+
     .preview-logo {
       margin-bottom: 25px;
+
       .brand {
         gap: 5px;
+
         .mark {
           width: 15px;
           height: 15px;
         }
+
         .wordmark {
           font-size: 16px;
         }
       }
     }
+
     .preview-workspace {
       display: flex;
       gap: 10px;
@@ -42,10 +48,12 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
       padding: 10px;
       font-size: $font-size-small;
       margin-bottom: 25px;
+
       > span {
         color: #9b94a7;
       }
     }
+
     .mini-nav {
       display: flex;
       align-items: center;
@@ -55,25 +63,30 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
       border-radius: 5px;
       padding: 10px;
       margin-bottom: 5px;
+
       svg {
         width: 10px;
         font-size: $font-size-small;
       }
+
       &.active {
         color: #8172bf;
         background: #f3effb;
       }
     }
+
     .preview-sidebar-note {
       margin-top: auto;
       border-radius: 10px;
       background: #faf7fc;
       padding: 15px;
+
       > svg {
         color: #b6a8c4;
         font-size: $font-size-small;
         margin-bottom: 10px;
       }
+
       > span {
         display: block;
         color: #b2a6ba;
@@ -81,17 +94,17 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
         line-height: 1.8;
       }
     }
+
     @include max-width(tablet) {
       display: none;
     }
-    @include max-width(phone) {
-      display: none;
-    }
   }
+
   .preview-main {
     flex: 1;
     min-width: 0;
     background: #f9f9fc;
+
     .preview-topbar {
       height: 50px;
       background: white;
@@ -100,46 +113,53 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
       align-items: center;
       justify-content: space-between;
       padding: 0 25px;
+
       > span:first-child {
         color: #b4acbd;
         font-size: $font-size-small;
+
         > span {
           padding: 0 10px;
         }
       }
+
       .sample-pill {
         font-size: $font-size-small;
         padding: 0 5px;
       }
+
       @include max-width(phone) {
         height: 35px;
         padding: 0 15px;
       }
     }
+
     .preview-body {
       padding: 25px;
+
       > .eyebrow {
         font-size: $font-size-small;
         color: #a99fb6;
         margin-bottom: 10px;
       }
+
       > h3 {
         font-size: 25px;
         font-weight: 500;
         letter-spacing: -0.04em;
         margin-bottom: 10px;
+
         @include max-width(tablet) {
           font-size: 19px;
         }
-        @include max-width(phone) {
-          font-size: 19px;
-        }
       }
+
       > p {
         font-size: $font-size-small;
         color: #b2aabd;
         margin-bottom: 20px;
       }
+
       .preview-metrics {
         display: flex;
         background: white;
@@ -147,36 +167,40 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
         border-radius: 10px;
         padding: 15px 0;
         margin-bottom: 20px;
+
         > div {
           flex: 1;
           padding: 0 20px;
           border-right: 1px solid #f1eef5;
+
           &:last-child {
             border: none;
           }
+
           > span {
             display: block;
             color: #b6acbf;
             font-size: $font-size-small;
             margin-bottom: 5px;
-            @include max-width(phone) {
-              font-size: $font-size-small;
-            }
           }
+
           > strong {
             display: block;
             font-size: 25px;
             font-weight: 500;
             letter-spacing: -0.035em;
+
             @include max-width(phone) {
               font-size: 23px;
             }
           }
+
           @include max-width(phone) {
             padding: 0 15px;
           }
         }
       }
+
       .preview-highlight {
         display: flex;
         align-items: center;
@@ -186,34 +210,37 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
         padding: 20px;
         margin-bottom: 25px;
         background: linear-gradient(110deg, #f3edfb, #faf0df);
+
         > svg {
           font-size: 18px;
           color: #b6a5c9;
         }
+
         > div {
           > strong {
             font-size: $font-size-small;
             font-weight: 500;
-            @include max-width(phone) {
-              font-size: $font-size-small;
-            }
           }
+
           > p {
             color: #b3a4b6;
             font-size: $font-size-small;
             margin-top: 5px;
           }
         }
+
         > span {
           color: #d4b5ca;
           font-size: 35px;
           margin-left: auto;
           line-height: 1;
         }
+
         @include max-width(tablet) {
           padding: 15px;
         }
       }
+
       .preview-theme-heading {
         font-weight: 500;
         font-size: $font-size-small;
@@ -221,16 +248,19 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
         display: flex;
         align-items: center;
         justify-content: space-between;
+
         > span {
           color: #baaec3;
           font-size: $font-size-small;
           font-weight: 400;
         }
       }
+
       .preview-insights {
         display: grid;
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 15px;
+
         .mini-category {
           display: flex;
           gap: 5px;
@@ -238,19 +268,20 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
           font-size: $font-size-small;
           color: #a397af;
           margin-bottom: 10px;
+
           svg {
             color: #bf9daa;
           }
-          @include max-width(tablet) {
-            font-size: $font-size-small;
-          }
         }
+
         .requests .mini-category svg {
           color: #c1ab75;
         }
+
         .improve .mini-category svg {
           color: #b2a4c7;
         }
+
         .preview-card {
           background: white;
           border: 1px solid #edebf1;
@@ -259,6 +290,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
           min-height: 160px;
           display: flex;
           flex-direction: column;
+
           > h4 {
             font-size: $font-size-small;
             line-height: 1.4;
@@ -266,6 +298,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
             letter-spacing: -0.02em;
             margin-bottom: 10px;
           }
+
           > p {
             color: #b1a7bd;
             font-size: $font-size-small;
@@ -276,6 +309,7 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
             overflow: hidden;
             margin-bottom: 15px;
           }
+
           > span {
             margin-top: auto;
             display: flex;
@@ -284,37 +318,46 @@ Styles the illustrative landing-page dashboard snapshot and its responsive layou
             color: #b3a9bd;
             border-top: 1px solid #f1eef5;
             padding-top: 10px;
+
             strong {
               margin-right: 5px;
               color: #9c8dab;
             }
+
             svg {
               margin-left: auto;
               font-size: $font-size-small;
             }
           }
+
           @include max-width(tablet) {
             padding: 10px;
           }
+
           @include max-width(phone) {
             min-height: 150px;
           }
         }
+
         @include max-width(tablet) {
           gap: 10px;
         }
+
         @include max-width(phone) {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
         .preview-column:last-child {
           @include max-width(phone) {
             display: none;
           }
         }
       }
+
       @include max-width(tablet) {
         padding: 20px;
       }
+
       @include max-width(phone) {
         padding: 20px 15px;
       }

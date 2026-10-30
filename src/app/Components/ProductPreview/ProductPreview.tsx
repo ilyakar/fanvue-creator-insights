@@ -21,7 +21,7 @@ import Brand from '@/app/Components/Brand/Brand'
 // Shows an explicitly illustrative product snapshot using the same sample evidence as the app.
 const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Dataset; insights: Insight[] }) => {
   const counts = getDatasetCounts(audienceFeedback)
-  const featured = [insights[0], insights[1], insights[2]]
+  const previewInsights = [insights[0], insights[1], insights[2]]
 
   return (
     <div className="product-preview" aria-label="Illustrative dashboard preview with sample data">
@@ -112,7 +112,7 @@ const ProductPreview = ({ audienceFeedback, insights }: { audienceFeedback: Data
           </div>
 
           <div className="preview-insights">
-            {featured.map(insight => (
+            {previewInsights.map(insight => (
               <div className={`preview-column ${insight.category}`} key={insight.id}>
                 <span className="mini-category">
                   <FontAwesomeIcon icon={categoryIcons[insight.category]} />

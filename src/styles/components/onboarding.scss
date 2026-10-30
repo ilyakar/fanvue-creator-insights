@@ -7,6 +7,7 @@ Styles connection setup and durable analysis progress.
 .onboarding-page {
   min-height: 100vh;
   background: #faf9fc;
+
   > header {
     max-width: 1250px;
     margin: 0 auto;
@@ -14,15 +15,18 @@ Styles connection setup and durable analysis progress.
     display: flex;
     align-items: center;
     justify-content: space-between;
+
     .back-link {
       margin: 0;
       font-size: $font-size-small;
     }
+
     @include max-width(phone) {
       padding: 25px 20px;
     }
   }
 }
+
 .connect-card,
 .analysis-card {
   max-width: 530px;
@@ -33,6 +37,7 @@ Styles connection setup and durable analysis progress.
   border-radius: 25px;
   border: 1px solid $color-border;
   box-shadow: $shadow-soft;
+
   .connect-symbol,
   .analysis-symbol {
     width: 75px;
@@ -45,25 +50,30 @@ Styles connection setup and durable analysis progress.
     margin: 0 auto 30px;
     font-size: 25px;
   }
+
   > .eyebrow {
     font-size: $font-size-small;
     color: #a296b4;
     margin-bottom: 15px;
   }
+
   > h1 {
     font-size: 35px;
     letter-spacing: -0.045em;
     margin-bottom: 20px;
+
     @include max-width(phone) {
       font-size: 30px;
     }
   }
+
   > p {
     font-size: $font-size-small;
     line-height: 1.85;
     color: #73788a;
     margin-bottom: 25px;
   }
+
   > ul {
     text-align: left;
     list-style: none;
@@ -71,6 +81,7 @@ Styles connection setup and durable analysis progress.
     background: #faf9fd;
     border-radius: 15px;
     margin: 0 0 25px;
+
     li {
       color: #9691a7;
       font-size: $font-size-small;
@@ -78,23 +89,28 @@ Styles connection setup and durable analysis progress.
       align-items: center;
       gap: 10px;
       padding: 5px 0;
+
       svg {
         color: #b3a2c4;
         font-size: $font-size-small;
       }
     }
   }
+
   > .button {
     width: 100%;
   }
+
   .connection-footnote {
     margin: 20px 0 0;
     font-size: $font-size-fine-print;
     color: #73788a;
+
     svg {
       margin-right: 5px;
     }
   }
+
   .connection-message {
     padding: 15px;
     font-size: $font-size-small;
@@ -103,21 +119,26 @@ Styles connection setup and durable analysis progress.
     border-radius: 10px;
     margin-bottom: 20px;
   }
+
   @include max-width(phone) {
     margin: 30px 20px;
     padding: 30px 25px;
   }
 }
+
 .analysis-card {
   max-width: 560px;
+
   .analysis-symbol.processing {
     animation: breathe 2.5s ease infinite;
   }
+
   .analysis-stages {
     text-align: left;
     list-style: none;
     padding: 20px 0;
     margin: 0 0 15px;
+
     li {
       display: flex;
       align-items: center;
@@ -125,9 +146,11 @@ Styles connection setup and durable analysis progress.
       color: #73788a;
       padding-bottom: 25px;
       font-size: $font-size-small;
+
       &:last-child {
         padding-bottom: 0;
       }
+
       > span {
         width: 25px;
         height: 25px;
@@ -137,18 +160,23 @@ Styles connection setup and durable analysis progress.
         border-radius: 50%;
         font-size: $font-size-small;
       }
+
       &.done {
         color: #9393a9;
+
         > span {
           background: #f0f5f0;
           border-color: #e0ece1;
           color: #9daf9a;
         }
       }
+
       &.current {
         color: #8a79b6;
+
         > span {
           border-color: #bcabe1;
+
           > span {
             background: #aa96cf;
             width: 5px;
@@ -159,6 +187,7 @@ Styles connection setup and durable analysis progress.
       }
     }
   }
+
   .analysis-notice,
   .analysis-error {
     font-size: $font-size-small;
@@ -167,6 +196,7 @@ Styles connection setup and durable analysis progress.
     border-radius: 10px;
     padding: 15px;
   }
+
   .analysis-actions {
     display: flex;
     align-items: center;
@@ -175,6 +205,7 @@ Styles connection setup and durable analysis progress.
     margin-bottom: 25px;
   }
 }
+
 @keyframes breathe {
   50% {
     box-shadow: 0 0 0 10px #f7f4fc;

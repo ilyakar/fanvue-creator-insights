@@ -42,7 +42,7 @@ const InsightDrawer = ({
 
   const comments = getEvidence(insight, audienceFeedback, postId)
   const counts = getInsightCounts(insight, audienceFeedback, postId)
-  const scopedSummary = insight.postSummaries.find(entry => entry.postId === postId)
+  const scopedSummary = insight.postSummaries.find(postSummary => postSummary.postId === postId)
   const summary = postId ? scopedSummary?.summary : insight.summary
   const opportunity = postId ? scopedSummary?.opportunity : insight.opportunity
 
@@ -112,8 +112,8 @@ const InsightDrawer = ({
 
           <div className="comment-list">
             {comments.slice(0, visibleCount).map((comment, position) => {
-              const fan = audienceFeedback.fans.find(entry => entry.id === comment.fanId)!
-              const post = audienceFeedback.posts.find(entry => entry.id === comment.postId)!
+              const fan = audienceFeedback.fans.find(sourceFan => sourceFan.id === comment.fanId)!
+              const post = audienceFeedback.posts.find(sourcePost => sourcePost.id === comment.postId)!
 
               return (
                 <article className="comment-row" key={comment.id}>

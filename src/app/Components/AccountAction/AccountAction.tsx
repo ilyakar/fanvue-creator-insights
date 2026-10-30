@@ -15,17 +15,17 @@ type AccountActionType = 'disconnect' | 'clear-analysis'
 
 // Owns the trigger, confirmation, request and focus restoration for an account action.
 const AccountAction = ({ action, isPreview }: { action: AccountActionType; isPreview: boolean }) => {
-  const [pendingAction, setPendingAction] = useState<AccountActionType | null>(null)
-  const [isPending, setIsPending] = useState(false)
-
   const router = useRouter()
   const showAlert = useAlert()
+
+  const [isConfirmationOpen, setIsConfirmationOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   const confirmationReference = useRef<HTMLDivElement>(null)
 
   // Dismisses the confirmation without changing any saved information.
-  const _handleConfirmationClose = useCallback(() => setPendingAction(null), [])
-  useFocusTrap(confirmationReference, Boolean(pendingAction), _handleConfirmationClose)
+  const _handleConfirmationClose = useCallback(() => setIsConfirmationOpen(false), [])
+  useFocusTrap(confirmationReference, isConfirmationOpen, _handleConfirmationClose)
 
   // Opens an explicit confirmation before removing saved analysis or account access.
   const _handleRequestAction = () => {
@@ -35,40 +35,38 @@ const AccountAction = ({ action, isPreview }: { action: AccountActionType; isPre
       return
     }
 
-    setPendingAction(action)
+    setIsConfirmationOpen(true)
   }
 
   // Applies the confirmed data action and refreshes the authenticated view.
   const _handleConfirm = () => {
-    setIsPending(true)
+    setIsSubmitting(true)
 
     fetch('/api/account', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ action: pendingAction })
+      body: JSON.stringify({ action })
     })
       .then(async response => {
-        const body = await response.json()
+        const accountResponse = await response.json()
 
         if (!response.ok) {
-          throw new Error(body.error)
+          throw new Error(accountResponse.error)
         }
-
-        return body
       })
       .then(() => {
-        if (pendingAction === 'disconnect') {
+        if (action === 'disconnect') {
           window.location.assign('/')
 
           return
         }
 
-        setPendingAction(null)
+        setIsConfirmationOpen(false)
         showAlert('Saved analysis cleared', 'You can prepare your insights again whenever you’re ready.')
         router.refresh()
       })
       .catch(error => showAlert('Couldn’t complete that action', error.message || 'Please try again.'))
-      .finally(() => setIsPending(false))
+      .finally(() => setIsSubmitting(false))
   }
 
   return (
@@ -78,7 +76,7 @@ const AccountAction = ({ action, isPreview }: { action: AccountActionType; isPre
       </button>
 
       {/* Keep confirmation styling independent from the compact settings action row. */}
-      {pendingAction &&
+      {isConfirmationOpen &&
         createPortal(
           <div
             className="confirmation"
@@ -88,22 +86,22 @@ const AccountAction = ({ action, isPreview }: { action: AccountActionType; isPre
             aria-modal="true">
             <div className="confirmation-card" ref={confirmationReference} tabIndex={-1}>
               <h2 id="confirmation-title">
-                {pendingAction === 'disconnect' ? 'Disconnect your account?' : 'Clear your saved analysis?'}
+                {action === 'disconnect' ? 'Disconnect your account?' : 'Clear your saved analysis?'}
               </h2>
 
               <p id="confirmation-description">
-                {pendingAction === 'disconnect'
+                {action === 'disconnect'
                   ? 'Your stored connection, sessions and insights will be removed. You can reconnect at any time.'
                   : 'Your saved insights will be removed. You can run a fresh analysis afterwards.'}
               </p>
 
               <div>
-                <button className="button secondary" onClick={_handleConfirmationClose} disabled={isPending}>
+                <button className="button secondary" onClick={_handleConfirmationClose} disabled={isSubmitting}>
                   Keep it
                 </button>
 
-                <button className="button danger" onClick={_handleConfirm} disabled={isPending}>
-                  {isPending ? 'One moment…' : 'Yes, continue'}
+                <button className="button danger" onClick={_handleConfirm} disabled={isSubmitting}>
+                  {isSubmitting ? 'One moment…' : 'Yes, continue'}
                 </button>
               </div>
             </div>
